@@ -26,8 +26,12 @@ def read_data(cols_features, cols_filter, **kwargs):
 	## Remove rows which contains ANY Na
 	
 	features_index = temp.columns
-	features_index_clean = [int(elem.split('-')[0]) for elem in features_index]
-	features = [feature_id_to_name[elem] for elem in features_index_clean]
+	features = []
+	for elem in features_index:
+	    if elem != '21003-2.0' and elem != '31-0.0':
+	        features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
+	    else:
+	        features.append(feature_id_to_name[int(elem.split('-')[0])])
 	
 	df = temp.dropna(how = 'any')
 	df.columns = features

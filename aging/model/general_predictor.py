@@ -18,10 +18,10 @@ import numpy as np
 import scipy.stats as stat
 
 from ..processing.abdominal_composition_processing import read_abdominal_data
-from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain
+from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data
 from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
-from ..processing.body_composition_processing import read_body_composition
-from ..processing.bone_composition_processing import read_bone_composition
+from ..processing.body_composition_processing import read_body_composition_data
+from ..processing.bone_composition_processing import read_bone_composition_data
 
 
 NAME = {'elasticnet', 'random_forest', 'gradient_boosting', 'xgboost', 'lightgbm', 'neural_network'}
@@ -142,13 +142,19 @@ class BaseModel():
 
         inner_cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10)
+
         clf.fit(X_train, y_train)
-
-
+	
         best_estim = clf.best_estimator_
         best_params = clf.best_params_
-
-        self.best_params = best_params
+        best_params_flat = []
+        for elem in best_params.values():
+    	    if type(elem) == tuple:
+                for sub_elem in elem:
+            	    best_params_flat.append(sub_elem)
+    	    else:
+                best_params_flat.append(elem)
+        self.best_params = best_params_flat
 
         y_predict_test = best_estim.predict(X_test)
         y_predict_train = best_estim.predict(X_train)
@@ -157,13 +163,13 @@ class BaseModel():
         eid_train = index[index_train]
 
         df_test = pd.DataFrame(data = {'eid' : eid_test, 'fold' : fold, 'predictions' : y_predict_test, 'real' : y_test} )
-        df_train = pd.DataFrame(data = {'eid' : eid_train, 'fold' : fold, 'predictions' : y_predict_train, 'real' : y_test} )
+        df_train = pd.DataFrame(data = {'eid' : eid_train, 'fold' : fold, 'predictions' : y_predict_train, 'real' : y_train} )
         
         return df_test, df_train
        
 
 
-    def features_importance_(self, X, y, n_splits, n_iter):
+    def features_importance_(self, X, y, n_splits, n_iter, scoring):
         cv = KFold(n_splits = n_splits, shuffle = False, random_state = 0)
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring)
         clf.fit(X, y)
@@ -171,15 +177,15 @@ class BaseModel():
 
         if self.name == 'elasticnet':
             self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
-        elif name == 'random_forest':
+        elif self.name == 'random_forest':
             self.features_imp = best_estim.feature_importances_
-        elif name == 'gradient_boosting':
+        elif self.name == 'gradient_boosting':
             self.features_imp = best_estim.feature_importances_
-        elif name == 'xgboost':
+        elif self.name == 'xgboost':
             self.features_imp = best_estim.feature_importances_
-        elif name == 'lightgbm':
+        elif self.name == 'lightgbm':
             self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-        elif name == 'neural_network':
+        elif self.name == 'neural_network':
             raise ValueError('No feature_importances for NN')
         else :
             raise ValueError('Wrong model name')
@@ -249,9 +255,9 @@ class GeneralPredictor(BaseModel):
         else :
             raise ValueError('GeneralPredictor not instancied')
 
-        self.feature_importance_(X, y, n_splits, n_iter,)
+        self.features_importance_(X, y, n_splits, n_iter, self.scoring)
         final_df = pd.DataFrame(data = {'features' : df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns, 'weight' : self.features_imp})
-        final_df.set_index('features').to_csv('/n/groups/patel/samuel/HMS-Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + self.name + '.csv')
+        final_df.set_index('features').to_csv('/n/groups/patel/samuel/Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + self.name + '.csv')
 
         
     def optimize_hyperparameters_fold(self, df, fold):
@@ -289,19 +295,19 @@ class GeneralPredictor(BaseModel):
             elif self.dataset == 'heart_PWA':
                 df = read_heart_PWA_data(**kwargs) 
             elif self.dataset == 'bone_composition':
-                df = read_bone_composition(**kwargs)
+                df = read_bone_composition_data(**kwargs)
             elif self.dataset == 'body_composition':
-                df = read_body_composition(**kwargs)
+                df = read_body_composition_data(**kwargs)
             return df  
 
 
-    def save_predictions(self, predicts_df, step):
-        hyper_parameters_name = '_'.join([str(elem) for elem in self.best_params.values()])
-        if len(self.best_params.values()) != 7:
-            hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(self.best_params.values()))])
+    def save_predictions(self, predicts_df, step, fold):
+        hyper_parameters_name = '_'.join([str(elem) for elem in self.best_params])
+        if len(self.best_params) != 7:
+            hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(self.best_params))])
 
-        filename = 'Predictions_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + dataset_to_field[self.dataset] + '_main' +  '_raw' + '_' + self.name + hyper_parameters_name + '_' + step + '_B.csv'
-        predicts_df.to_csv('/n/groups/patel/samuel/HMS-Aging/aging/predictions/' + filename)
+        filename = 'Predictions_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + str(dataset_to_field[self.dataset]) + '_main' +  '_raw' + '_' + self.name + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
+        predicts_df.to_csv('/n/groups/patel/samuel/Aging/aging/predictions/' + filename)
 
     def normalise_dataset(self, df):
         # Save old data

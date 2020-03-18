@@ -3,7 +3,7 @@ import sys
 import os
 print(os.getcwd()) 
 print(sys.path)
-sys.path.append('/n/groups/patel/samuel/HMS-Aging')
+sys.path.append('/n/groups/patel/samuel/Aging')
 print(sys.path)
 from aging.model.general_predictor import GeneralPredictor
 
@@ -20,13 +20,13 @@ n_splits = int(sys.argv[5])
 
 hyperparameters = dict()
 hyperparameters['name'] = name
-hyperparameters['n_splits'] = inner_splits
+hyperparameters['n_splits'] = n_splits
 hyperparameters['n_iter'] = n_iter
 hyperparameters['target'] = target
 hyperparameters['dataset'] = dataset
 print(hyperparameters)
 
-gp = GeneralPredictor(name, -1, inner_splits, n_iter, target, dataset)
+gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset)
 print("Loading Dataset")
 df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")

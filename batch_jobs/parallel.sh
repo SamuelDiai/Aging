@@ -1,9 +1,11 @@
 #!/bin/bash
-targets=( "Age" "Sex" )                                                                         
-#models=( "random_forest" "xgboost" "lightgbm" "neural_network" )                                                                   
-models=( "xgboost" "elasticnet" "random_forest" "gradient_boosting" "lightgbm" "neural_network")
-datasets=( "abdominal_composition" "brain_grey_matter_volumes" "brain_subcortical_volumes" "brain" "heart" "heart_size" "heart_PWA" "body_composition" "bone_composition")
-#datasets=( "abdominal_composition" ) 
+#targets=( "Sex" )
+targets=( "Age" )                                                                         
+#models=( "neural_network" )                                                                   
+#models=( "xgboost" "random_forest" "gradient_boosting" "lightgbm" "neural_network")
+models=( "elasticnet" )
+datasets=( "abdominal_composition" "brain_grey_matter_volumes" "brain_subcortical_volumes" "heart_size" "heart_PWA" "body_composition" "bone_composition" "brain" )
+#datasets=( "abdominal_composition" )
 outer_splits=5
 inner_splits=5
 n_iter=50

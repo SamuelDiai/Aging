@@ -3,7 +3,7 @@ import sys
 import os
 print(os.getcwd()) 
 print(sys.path)
-sys.path.append('/n/groups/patel/samuel/HMS-Aging')
+sys.path.append('/n/groups/patel/samuel/Aging')
 print(sys.path)
 from aging.model.general_predictor import GeneralPredictor
 
@@ -41,6 +41,6 @@ else :
 	df_predicts_no_scaled_train = gp.inverse_normalise_dataset(df_predicts_rescaled_train)
 	df_predicts_no_scaled_test = gp.inverse_normalise_dataset(df_predicts_rescaled_test)
 	print("Hyper Opt over, saving file")
-	gp.save_predictions(df_predicts_no_scaled_test, 'test')
-	gp.save_predictions(df_predicts_no_scaled_train, 'train')
+	gp.save_predictions(df_predicts_no_scaled_test, 'test', fold)
+	gp.save_predictions(df_predicts_no_scaled_train, 'train', fold)
 	print("task complete")
