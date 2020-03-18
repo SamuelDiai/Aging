@@ -24,26 +24,17 @@ from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
 
 
-NAME = {'elasticnet', 'random_forest', 'gradient_boosting', 'xgboost', 'lightgbm', 'neural_network'}
+NAME = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
 
-dataset_to_field = {'abdominal_composition' : 149, 
-                    'brain_grey_matter_volumes' : 1101,
-                    'brain_subcortical_volumes': 1102,
-                    'brain' : 100,
-                    'heart' : 102,
-                    'heart_size' : 133,
-                    'heart_PWA' : 128,
-                    'body_composition' : 124,
-                    'bone_composition' : 125}
-dataset_to_proper_name = {'abdominal_composition' : 'AbdominalComposition', 
-                    'brain_grey_matter_volumes' : 'BrainGreyMatter',
-                    'brain_subcortical_volumes': 'BrainSubcorticalVolumes',
-                    'brain' : 'Brain',
-                    'heart' : 'Heart',
-                    'heart_size' : 'HeartSize',
-                    'heart_PWA' : 'HeartPWA',
-                    'body_composition' : 'BodyComposition',
-                    'bone_composition' : 'BoneComposition'}
+dataset_to_field = {'AbdominalComposition' : 149, 
+                    'BrainGreyMatter' : 1101,
+                    'BrainSubcorticalVolumes': 1102,
+                    'Brain' : 100,
+                    'Heart' : 102,
+                    'HeartSize' : 133,
+                    'HeartPWA' : 128,
+                    'BodyComposition' : 124,
+                    'BoneComposition' : 125}
 
 class BaseModel():
     def __init__(self, name, outer_splits, inner_splits, n_iter):
@@ -62,25 +53,25 @@ class BaseModel():
         return self.model
 
     def get_hyper_distribution(self):
-        if self.name == 'elasticnet':
+        if self.name == 'ElasticNet':
             return {
                     'alpha': np.geomspace(0.01, 10, 30),
                     'l1_ratio': stat.uniform(loc = 0.01, scale = 0.99)
                     }
-        elif self.name == 'random_forest':
+        elif self.name == 'RandomForest':
             return {
                     'n_estimators': stat.randint(low = 50, high = 300),
                     'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4],
                     'max_depth': [None, 10, 8, 6]
                     }
-        elif self.name == 'gradient_boosting':
+        elif self.name == 'GradientBoosting':
             return {
                     'n_estimators': stat.randint(low = 250, high = 500),
                     'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3],
                     'learning_rate': stat.uniform(0.01, 0.3),
                     'max_depth': stat.randint(3, 6)
                     }
-        elif self.name == 'xgboost':
+        elif self.name == 'Xgboost':
             return {
                     'colsample_bytree': stat.uniform(loc = 0.2, scale = 0.7),
                     'gamma': stat.uniform(loc = 0.1, scale = 0.5),
@@ -89,7 +80,7 @@ class BaseModel():
                     'n_estimators': stat.randint(low = 200, high = 400),
                     'subsample': stat.uniform(0.6, 0.4)
             }
-        elif self.name == 'lightgbm':
+        elif self.name == 'LightGbm':
             return {
                     'num_leaves': stat.randint(6, 50), 
                     'min_child_samples': stat.randint(100, 500), 
@@ -99,7 +90,7 @@ class BaseModel():
                     'reg_alpha': [0, 1e-1, 1, 2, 5, 7, 10, 50, 100],
                     'reg_lambda': [0, 1e-1, 1, 5, 10, 20, 50, 100]
                 }
-        elif self.name == 'neural_network':
+        elif self.name == 'NeuralNetwork':
             return {
                     'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
                     'alpha': np.geomspace(1e-5, 1e-1, 30),
@@ -175,17 +166,17 @@ class BaseModel():
         clf.fit(X, y)
         best_estim = clf.best_estimator_
 
-        if self.name == 'elasticnet':
+        if self.name == 'ElasticNet':
             self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
-        elif self.name == 'random_forest':
+        elif self.name == 'RandomForest':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'gradient_boosting':
+        elif self.name == 'GradientBoosting':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'xgboost':
+        elif self.name == 'Xgboost':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'lightgbm':
+        elif self.name == 'LightGbm':
             self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-        elif self.name == 'neural_network':
+        elif self.name == 'NeuralNetwork':
             raise ValueError('No feature_importances for NN')
         else :
             raise ValueError('Wrong model name')
@@ -203,47 +194,35 @@ class GeneralPredictor(BaseModel):
         if target == 'Sex': 
             self.scoring = 'f1'
             self.target = 'Sex'
-            if name == 'elasticnet':
+            if name == 'ElasticNet':
                 self.model = ElasticNet(max_iter = 2000)
-            elif name == 'random_forest':
+            elif name == 'RandomForest':
                 self.model = RandomForestClassifier()
-            elif name == 'gradient_boosting':
+            elif name == 'GradientBoosting':
                 self.model = GradientBoostingClassifier()
-            elif name == 'xgboost':
+            elif name == 'Xgboost':
                 self.model = XGBClassifier()
-            elif name == 'lightgbm':
+            elif name == 'LightGbm':
                 self.model = LGBMClassifier()
-            elif name == 'neural_network':
+            elif name == 'NeuralNetwork':
                 self.model = MLPClassifier(solver = 'adam')
         elif target == 'Age':
             self.scoring = 'r2'
             self.target = 'Age'
-            if name == 'elasticnet':
+            if name == 'ElasticNet':
                 self.model = ElasticNet(max_iter = 2000)
-            elif name == 'random_forest':
+            elif name == 'RandomForest':
                 self.model = RandomForestRegressor()
-            elif name == 'gradient_boosting':
+            elif name == 'GradientBoosting':
                 self.model = GradientBoostingRegressor()
-            elif name == 'xgboost':
+            elif name == 'Xgboost':
                 self.model = XGBRegressor()
-            elif name == 'lightgbm':
+            elif name == 'LightGbm':
                 self.model = LGBMRegressor()
-            elif name == 'neural_network':
+            elif name == 'NeuralNetwork':
                 self.model = MLPRegressor(solver = 'adam')
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
-
-    # def optimize_hyperparameters(self, df):
-    #     if self.target == 'Sex':
-    #         X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
-    #         y = df['Sex'].values
-    #     elif self.target == 'Age':
-    #         X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
-    #         y = df['Age when attended assessment centre'].values
-    #     else :
-    #         raise ValueError('GeneralPredictor not instancied')
-
-    #     return self.optimize_hyperparameters_(X, y, self.scoring)
 
     def feature_importance(self, df, n_iter, n_splits):
         if self.target == 'Sex':
@@ -257,7 +236,7 @@ class GeneralPredictor(BaseModel):
 
         self.features_importance_(X, y, n_splits, n_iter, self.scoring)
         final_df = pd.DataFrame(data = {'features' : df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns, 'weight' : self.features_imp})
-        final_df.set_index('features').to_csv('/n/groups/patel/samuel/Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + self.name + '.csv')
+        final_df.set_index('features').to_csv('/n/groups/patel/samuel/Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + self.dataset + '_' + self.name + '.csv')
 
         
     def optimize_hyperparameters_fold(self, df, fold):
@@ -280,23 +259,23 @@ class GeneralPredictor(BaseModel):
             raise ValueError('Wrong dataset name ! ')
         else :
             self.field_id = dataset_to_field[self.dataset]
-            if self.dataset == 'abdominal_composition':
+            if self.dataset == 'AbdominalComposition':
                 df = read_abdominal_data(**kwargs)
-            elif self.dataset == 'brain':
+            elif self.dataset == 'Brain':
                 df = read_brain_data(**kwargs)
-            elif self.dataset == 'brain_grey_matter_volumes':
+            elif self.dataset == 'BrainGreyMatterVolumes':
                 df = read_grey_matter_volumes_data(**kwargs)
-            elif self.dataset == 'brain_subcortical_volumes':
+            elif self.dataset == 'BrainSubCorticalVolumes':
                 df = read_subcortical_volumes_data(**kwargs)
-            elif self.dataset == 'heart':
+            elif self.dataset == 'Heart':
                 df = read_heart_data(**kwargs)
-            elif self.dataset == 'heart_size':
+            elif self.dataset == 'HeartSize':
                 df = read_heart_size_data(**kwargs) 
-            elif self.dataset == 'heart_PWA':
+            elif self.dataset == 'HeartPWA':
                 df = read_heart_PWA_data(**kwargs) 
-            elif self.dataset == 'bone_composition':
+            elif self.dataset == 'BoneComposition':
                 df = read_bone_composition_data(**kwargs)
-            elif self.dataset == 'body_composition':
+            elif self.dataset == 'BodyComposition':
                 df = read_body_composition_data(**kwargs)
             return df  
 
@@ -306,7 +285,7 @@ class GeneralPredictor(BaseModel):
         if len(self.best_params) != 7:
             hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(self.best_params))])
 
-        filename = 'Predictions_' + self.target + '_' + dataset_to_proper_name[self.dataset] + '_' + str(dataset_to_field[self.dataset]) + '_main' +  '_raw' + '_' + self.name + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
+        filename = 'Predictions_' + self.target + '_' + self.dataset + '_' + str(dataset_to_field[self.dataset]) + '_main' +  '_raw' + '_' + self.name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
         predicts_df.to_csv('/n/groups/patel/samuel/Aging/aging/predictions/' + filename)
 
     def normalise_dataset(self, df):
