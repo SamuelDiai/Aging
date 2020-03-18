@@ -24,7 +24,7 @@ from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
 
 
-NAME = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
+MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
 
 dataset_to_field = {'AbdominalComposition' : 149, 
                     'BrainGreyMatter' : 1101,
@@ -37,14 +37,14 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'BoneComposition' : 125}
 
 class BaseModel():
-    def __init__(self, name, outer_splits, inner_splits, n_iter):
+    def __init__(self, model, outer_splits, inner_splits, n_iter):
         self.outer_splits = outer_splits
         self.inner_splits = inner_splits
         self.n_iter = n_iter
-        if name not in NAME:
-            raise ValueError(f'{name} model unrecognized')
+        if model not in MODELS:
+            raise ValueError(f'{model} model unrecognized')
         else :
-            self.name = name      
+            self.model = model      
                 
     def fit(self, df):
         return self.model.fit(X, y)
@@ -53,25 +53,25 @@ class BaseModel():
         return self.model
 
     def get_hyper_distribution(self):
-        if self.name == 'ElasticNet':
+        if self.model == 'ElasticNet':
             return {
                     'alpha': np.geomspace(0.01, 10, 30),
                     'l1_ratio': stat.uniform(loc = 0.01, scale = 0.99)
                     }
-        elif self.name == 'RandomForest':
+        elif self.model == 'RandomForest':
             return {
                     'n_estimators': stat.randint(low = 50, high = 300),
                     'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4],
                     'max_depth': [None, 10, 8, 6]
                     }
-        elif self.name == 'GradientBoosting':
+        elif self.model == 'GradientBoosting':
             return {
                     'n_estimators': stat.randint(low = 250, high = 500),
                     'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3],
                     'learning_rate': stat.uniform(0.01, 0.3),
                     'max_depth': stat.randint(3, 6)
                     }
-        elif self.name == 'Xgboost':
+        elif self.model == 'Xgboost':
             return {
                     'colsample_bytree': stat.uniform(loc = 0.2, scale = 0.7),
                     'gamma': stat.uniform(loc = 0.1, scale = 0.5),
@@ -80,7 +80,7 @@ class BaseModel():
                     'n_estimators': stat.randint(low = 200, high = 400),
                     'subsample': stat.uniform(0.6, 0.4)
             }
-        elif self.name == 'LightGbm':
+        elif self.model == 'LightGbm':
             return {
                     'num_leaves': stat.randint(6, 50), 
                     'min_child_samples': stat.randint(100, 500), 
@@ -90,7 +90,7 @@ class BaseModel():
                     'reg_alpha': [0, 1e-1, 1, 2, 5, 7, 10, 50, 100],
                     'reg_lambda': [0, 1e-1, 1, 5, 10, 20, 50, 100]
                 }
-        elif self.name == 'NeuralNetwork':
+        elif self.model == 'NeuralNetwork':
             return {
                     'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
                     'alpha': np.geomspace(1e-5, 1e-1, 30),
@@ -100,39 +100,13 @@ class BaseModel():
             }
 
 
-         
-    def optimize_hyperparameters_(self, X, y, scoring):
-
-        list_predicts_test_fold = []
-        list_index_test_fold = []
-        outer_cv = StratifiedKFold(n_splits = self.outer_splits)
-        for index_train, index_test in outer_cv.split(X, y):
-            
-            X_train, X_test, y_train, y_test = X[index_train], X[index_test], y[index_train], y[index_test]
-
-            inner_cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
-            clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring)
-            clf.fit(X_train, y_train)
-
-            best_estim = clf.best_estimator_
-            y_predict = best_estim.predict(X_test)
-            list_predicts_test_fold.append(y_predict)
-            list_index_test_fold.append(index_test)
-            
-
-
-        concat_predicts = np.concatenate(list_predicts_test_fold)
-        concat_index = np.concatenate(list_index_test_fold)
-        concat_index_order = concat_index.argsort()
-        concat_predicts_ordered = concat_predicts[concat_index_order]
-
     def optimize_hyperparameters_fold_(self, X, y, index, scoring, fold):
         outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
         index_train, index_test = list(outer_cv.split(X, y))[fold]
         X_train, X_test, y_train, y_test = X[index_train], X[index_test], y[index_train], y[index_test]
 
         inner_cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
-        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10)
+        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter)
 
         clf.fit(X_train, y_train)
 	
@@ -160,23 +134,23 @@ class BaseModel():
        
 
 
-    def features_importance_(self, X, y, n_splits, n_iter, scoring):
-        cv = KFold(n_splits = n_splits, shuffle = False, random_state = 0)
-        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring)
+    def features_importance_(self, X, y, scoring):
+        cv = KFold(n_splits = self.n_splits, shuffle = False, random_state = 0)
+        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
         clf.fit(X, y)
         best_estim = clf.best_estimator_
 
-        if self.name == 'ElasticNet':
+        if self.model == 'ElasticNet':
             self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
-        elif self.name == 'RandomForest':
+        elif self.model == 'RandomForest':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'GradientBoosting':
+        elif self.model == 'GradientBoosting':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'Xgboost':
+        elif self.model == 'Xgboost':
             self.features_imp = best_estim.feature_importances_
-        elif self.name == 'LightGbm':
+        elif self.model == 'LightGbm':
             self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-        elif self.name == 'NeuralNetwork':
+        elif self.model == 'NeuralNetwork':
             raise ValueError('No feature_importances for NN')
         else :
             raise ValueError('Wrong model name')
@@ -187,44 +161,43 @@ class BaseModel():
 
     
 class GeneralPredictor(BaseModel):
-    def __init__(self, name, outer_splits, inner_splits, n_iter, target, dataset):
-        BaseModel.__init__(self, name, outer_splits, inner_splits, n_iter)
-        self.name = name
+    def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset):
+        BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter)
         self.dataset = dataset
         if target == 'Sex': 
             self.scoring = 'f1'
             self.target = 'Sex'
-            if name == 'ElasticNet':
+            if model == 'ElasticNet':
                 self.model = ElasticNet(max_iter = 2000)
-            elif name == 'RandomForest':
+            elif model == 'RandomForest':
                 self.model = RandomForestClassifier()
-            elif name == 'GradientBoosting':
+            elif model == 'GradientBoosting':
                 self.model = GradientBoostingClassifier()
-            elif name == 'Xgboost':
+            elif model == 'Xgboost':
                 self.model = XGBClassifier()
-            elif name == 'LightGbm':
+            elif model == 'LightGbm':
                 self.model = LGBMClassifier()
-            elif name == 'NeuralNetwork':
+            elif model == 'NeuralNetwork':
                 self.model = MLPClassifier(solver = 'adam')
         elif target == 'Age':
             self.scoring = 'r2'
             self.target = 'Age'
-            if name == 'ElasticNet':
+            if model == 'ElasticNet':
                 self.model = ElasticNet(max_iter = 2000)
-            elif name == 'RandomForest':
+            elif model == 'RandomForest':
                 self.model = RandomForestRegressor()
-            elif name == 'GradientBoosting':
+            elif model == 'GradientBoosting':
                 self.model = GradientBoostingRegressor()
-            elif name == 'Xgboost':
+            elif model == 'Xgboost':
                 self.model = XGBRegressor()
-            elif name == 'LightGbm':
+            elif model == 'LightGbm':
                 self.model = LGBMRegressor()
-            elif name == 'NeuralNetwork':
+            elif model == 'NeuralNetwork':
                 self.model = MLPRegressor(solver = 'adam')
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
 
-    def feature_importance(self, df, n_iter, n_splits):
+    def feature_importance(self, df):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
             y = df['Sex'].values
@@ -234,9 +207,9 @@ class GeneralPredictor(BaseModel):
         else :
             raise ValueError('GeneralPredictor not instancied')
 
-        self.features_importance_(X, y, n_splits, n_iter, self.scoring)
+        self.features_importance_(X, y, self.n_splits, self.n_iter, self.scoring)
         final_df = pd.DataFrame(data = {'features' : df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns, 'weight' : self.features_imp})
-        final_df.set_index('features').to_csv('/n/groups/patel/samuel/Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + self.dataset + '_' + self.name + '.csv')
+        final_df.set_index('features').to_csv('/n/groups/patel/samuel/Aging/aging/feature_importances/FeatureImp_' + self.target + '_' + self.dataset + '_' + self.model + '.csv')
 
         
     def optimize_hyperparameters_fold(self, df, fold):
@@ -285,7 +258,7 @@ class GeneralPredictor(BaseModel):
         if len(self.best_params) != 7:
             hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(self.best_params))])
 
-        filename = 'Predictions_' + self.target + '_' + self.dataset + '_' + str(dataset_to_field[self.dataset]) + '_main' +  '_raw' + '_' + self.name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
+        filename = 'Predictions_' + self.target + '_' + self.dataset + '_' + str(dataset_to_field[self.dataset]) + '_main' +  '_raw' + '_' + self.model + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
         predicts_df.to_csv('/n/groups/patel/samuel/Aging/aging/predictions/' + filename)
 
     def normalise_dataset(self, df):

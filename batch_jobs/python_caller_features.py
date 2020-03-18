@@ -1,12 +1,12 @@
 
 import sys
 import os
-print(os.getcwd()) 
-print(sys.path)
-sys.path.append('/n/groups/patel/samuel/Aging')
-print(sys.path)
-from aging.model.general_predictor import GeneralPredictor
+if sys.platform == 'linux':
+	sys.path.append('/n/groups/patel/samuel/Aging')
+elif sys.platform == 'darwin':
+	sys.path.append('/Users/samuel/Desktop/Aging')
 
+from aging.model.general_predictor import GeneralPredictor
 
 
 name = sys.argv[1]
@@ -14,7 +14,6 @@ n_iter = int(sys.argv[2])
 target = sys.argv[3]
 dataset = sys.argv[4]
 n_splits = int(sys.argv[5])
-
 
 
 
