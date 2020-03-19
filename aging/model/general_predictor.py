@@ -86,7 +86,7 @@ class BaseModel():
         index_train, index_test = list(outer_cv.split(X, y))[fold]
         X_train, X_test, y_train, y_test = X[index_train], X[index_test], y[index_train], y[index_test]
 
-        inner_cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
+        inner_cv = KFold(n_splits = self.inner_splits, random_state = 0)
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter)
 
         clf.fit(X_train, y_train)
@@ -116,7 +116,7 @@ class BaseModel():
 
 
     def features_importance_(self, X, y, scoring):
-        cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
+        cv = KFold(n_splits = self.inner_splits, shuffle = False)
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
         clf.fit(X, y)
         best_estim = clf.best_estimator_

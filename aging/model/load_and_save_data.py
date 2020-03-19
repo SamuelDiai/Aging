@@ -6,6 +6,7 @@ from ..processing.heart_processing import read_heart_data, read_heart_size_data,
 from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
 from ..processing.ecg_processing import read_ecg_at_rest_data
+from ..processing.anthropometry_processing import read_anthropometry_impedance_data
 
 dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -16,7 +17,8 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'HeartPWA' : 128,
                     'BodyComposition' : 124,
                     'BoneComposition' : 125,
-                    'ECGAtRest' : 12657}
+                    'ECGAtRest' : 12657,
+                    'AnthropometryImpedance' : 100008}
 
 def load_data(dataset, **kwargs):
     nrows = None
@@ -45,6 +47,8 @@ def load_data(dataset, **kwargs):
             df = read_body_composition_data(**kwargs)
         elif dataset == 'ECGAtRest':
             df = read_ecg_at_rest_data(**kwargs)
+        elif dataset == 'AnthropometryImpedance':
+            df = read_anthropometry_impedance_data(**kwargs)
         return df
 
 
@@ -59,4 +63,4 @@ def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold
 		hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
 	filename = 'Predictions_' + target + '_' + dataset + '_' + str(dataset_to_field[dataset]) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
-	predicts_df.to_csv(path_predictions + '/' + filename)
+	predicts_df.set_index('eid').to_csv(path_predictions + '/' + filename)

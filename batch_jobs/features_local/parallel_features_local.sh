@@ -1,11 +1,10 @@
 #!/bin/bash
 targets=( "Age" "Sex" )
 
-#models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" )
-models=( "ElasticNet" "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" )
-
-datasets=( "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition")
-#datasets=( "HeartPWA" )
+models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "ElasticNet ")
+#models=( "ElasticNet" )
+#datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition" )
+datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" )
 n_splits=2
 n_iter=1
 
