@@ -28,7 +28,7 @@ do
 					job_name="$target-$model-$dataset-$fold.job"
 					out_file="./logs/$target-$model-$dataset-$fold.out"
 					err_file="./logs/$target-$model-$dataset-$fold.err"
-					sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -t 0-11:59 batch_jobs/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold
+					sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -t 0-11:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold
 				done
 			done
 		else
