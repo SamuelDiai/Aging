@@ -8,7 +8,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
 	sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.general_predictor import GeneralPredictor
+from aging.model.specific_predictor import GeneralPredictor
 
 
 name = sys.argv[1]
@@ -27,7 +27,7 @@ hyperparameters['target'] = target
 hyperparameters['dataset'] = dataset
 print(hyperparameters)
 
-gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset)
+gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset, -1)
 print("Loading Dataset")
 df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")

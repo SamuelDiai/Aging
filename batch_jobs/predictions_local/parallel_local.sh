@@ -4,8 +4,8 @@ targets=( "Age" "Sex" )
                                                                   
 #models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
 models=( "Xgboost" "ElasticNet" )
-#datasets=( "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "HeartSize" "HeartPWA" "BodyComposition" "BoneComposition" "Brain" )
-datasets=( "AbdominalComposition" )
+datasets=( "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "HeartSize" "HeartPWA" "BodyComposition" "BoneComposition" "Brain" )
+#datasets=( "BrainGreyMatterVolumes" "" )
 outer_splits=2
 inner_splits=2
 n_iter=1
