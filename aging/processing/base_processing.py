@@ -4,7 +4,7 @@ import sys
 
 # To edit for dev
 if sys.platform == 'linux':
-	path_data = "/n/groups/patel/uk_biobank/main_data_52887/ukb37397.csv"
+	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
 	path_features = "/n/groups/patel/samuel/feature_importances/"
 	path_predictions = "/n/groups/patel/samuel/predictions/"
@@ -24,7 +24,7 @@ def read_data(cols_features, cols_filter, **kwargs):
 	df_features.set_index('FieldID', inplace = True)
 	feature_id_to_name = df_features.to_dict()['Field']
 
-
+	print("PATH DATA : ", path_data)
 	temp = pd.read_csv(path_data, usecols = ['eid', '21003-2.0', '31-0.0'] + cols_features + cols_filter, nrows = nrows)
 	temp.set_index('eid', inplace = True)
 
