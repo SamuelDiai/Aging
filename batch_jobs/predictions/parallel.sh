@@ -11,7 +11,7 @@ outer_splits=5
 inner_splits=5
 n_iter=30
 
-memory=8G
+memory=16G
 n_cores=4
 time=30
 
