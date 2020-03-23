@@ -25,7 +25,7 @@ def read_data(cols_features, cols_filter, instance, **kwargs):
 	feature_id_to_name = df_features.to_dict()['Field']
 
 	age_col = '21003-' + str(instance) + '.0'
-	print("PATH DATA : ", path_data)
+	#print("PATH DATA : ", path_data)
 	temp = pd.read_csv(path_data, usecols = ['eid', age_col, '31-0.0'] + cols_features + cols_filter, nrows = nrows)
 	temp.set_index('eid', inplace = True)
 
@@ -79,8 +79,3 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 	df = temp.dropna(how = 'any')
 	df.columns = features
 	return df
-
-#def read_data_and_merge_temporal_features_mix_columns(dict_features_to_timesteps, **kwargs):
-#	nrows = None
-#	if 'nrows' in kwargs.keys():
-#		nrows = kwargs['nrows']

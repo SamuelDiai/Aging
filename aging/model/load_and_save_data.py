@@ -8,6 +8,8 @@ from ..processing.bone_composition_processing import read_bone_composition_data
 from ..processing.ecg_processing import read_ecg_at_rest_data
 from ..processing.anthropometry_processing import read_anthropometry_impedance_data
 from ..processing.biochemestry_processing import read_blood_biomarkers_data, read_urine_biomarkers_data, read_blood_count_data, read_blood_data, read_urine_and_blood_data
+from ..processing.eye_processing import read_eye_autorefraction_data, read_eye_acuity_data, read_eye_intraocular_pressure_data, read_eye_data
+
 
 dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -24,7 +26,11 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'BloodBiochemestry' : 17518,
                     'BloodCount' : 100081, # Need to do blood infection
                     'Blood' : 100080,
-                    'UrineAndBlood' : 'Custom'
+                    'UrineAndBlood' : 'Custom',
+                    'EyeAutorefraction' : 100014,
+                    'EyeAcuity' : 100017,
+                    'EyeIntraoculaPressure' : 100015,
+                    'Eye' : 100013
                     }
 
 def load_data(dataset, **kwargs):
@@ -66,6 +72,14 @@ def load_data(dataset, **kwargs):
             df = read_blood_data(**kwargs)
         elif dataset == 'UrineAndBlood':
             df = read_urine_and_blood_data(**kwargs)
+        elif dataset == 'EyeAutorefraction':
+            df = read_eye_autorefraction_data(**kwargs)
+        elif dataset == 'EyeIntraoculaPressure':
+            df = read_eye_intraocular_pressure_data(**kwargs)
+        elif dataset == 'EyeAcuity':
+            df = read_eye_acuity_data(**kwargs)
+        elif dataset == 'Eye':
+            df = read_eye_data(**kwargs)
         return df
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):

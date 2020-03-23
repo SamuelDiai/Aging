@@ -4,8 +4,8 @@ targets=( "Sex" "Age" )
 models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
 #models=( "Xgboost" )
 #datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition" )
-datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
-
+#datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
+datasets=( "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eye" )
 
 outer_splits=5
 inner_splits=5
