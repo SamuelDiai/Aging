@@ -6,3 +6,4 @@ from . import brain_processing
 from . import heart_processing
 from . import ecg_processing
 from . import anthropometry_processing
+from . import biochemestry_processing

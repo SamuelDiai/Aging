@@ -7,6 +7,7 @@ from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
 from ..processing.ecg_processing import read_ecg_at_rest_data
 from ..processing.anthropometry_processing import read_anthropometry_impedance_data
+from ..processing.biochemestry_processing import read_blood_biomarkers_data, read_urine_biomarkers_data, read_blood_count_data, read_blood_data, read_urine_and_blood_data
 
 dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -18,7 +19,13 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'BodyComposition' : 124,
                     'BoneComposition' : 125,
                     'ECGAtRest' : 12657,
-                    'AnthropometryImpedance' : 100008}
+                    'AnthropometryImpedance' : 100008,
+                    'UrineBiochemestry' : 100083,
+                    'BloodBiochemestry' : 17518,
+                    'BloodCount' : 100081, # Need to do blood infection
+                    'Blood' : 100080,
+                    'UrineAndBlood' : 'Custom'
+                    }
 
 def load_data(dataset, **kwargs):
     nrows = None
@@ -49,8 +56,17 @@ def load_data(dataset, **kwargs):
             df = read_ecg_at_rest_data(**kwargs)
         elif dataset == 'AnthropometryImpedance':
             df = read_anthropometry_impedance_data(**kwargs)
+        elif dataset == 'UrineBiochemestry':
+            df = read_blood_biomarkers_data(**kwargs)
+        elif dataset == 'BloodBiochemestry':
+            df = read_urine_biomarkers_data(**kwargs)
+        elif dataset == 'BloodCount':
+            df = read_blood_count_data(**kwargs)
+        elif dataset == 'Blood':
+            df = read_blood_data(**kwargs)
+        elif dataset == 'UrineAndBlood':
+            df = read_urine_and_blood_data(**kwargs)
         return df
-
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
 	final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})

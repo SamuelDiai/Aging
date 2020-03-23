@@ -5,14 +5,14 @@ from ..processing.abdominal_composition_processing import read_abdominal_data
 from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data
 from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
 from ..processing.body_composition_processing import read_body_composition_data
-from ..processing.bone_composition_processing import read_bone_composition_data 
+from ..processing.bone_composition_processing import read_bone_composition_data
 
 class GeneralPredictor(BaseModel):
     def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold):
         BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter)
         self.fold = fold
         self.dataset = dataset
-        if target == 'Sex': 
+        if target == 'Sex':
             self.scoring = 'f1'
             self.target = 'Sex'
             if model == 'ElasticNet':
@@ -50,7 +50,7 @@ class GeneralPredictor(BaseModel):
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
             y = df['Sex'].values
         elif self.target == 'Age':
-            X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
+            X = df.drop(columns = ['Age when attended assessment centre']).values
             y = df['Age when attended assessment centre'].values
         else :
             raise ValueError('GeneralPredictor not instancied')
@@ -63,7 +63,7 @@ class GeneralPredictor(BaseModel):
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
             y = df['Sex'].values
         elif self.target == 'Age':
-            X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
+            X = df.drop(columns = ['Age when attended assessment centre']).values
             y = df['Age when attended assessment centre'].values
         else :
             raise ValueError('GeneralPredictor not instancied')
@@ -105,7 +105,7 @@ class GeneralPredictor(BaseModel):
         return df_rescaled
 
     def inverse_normalise_dataset(self, df_rescaled):
-        
+
         if self.target == 'Sex':
             return df_rescaled
         elif self.target == 'Age':
@@ -115,4 +115,4 @@ class GeneralPredictor(BaseModel):
                 df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
             return df_noscaled
         else :
-            raise ValueError('dataframe is not rescaled') 
+            raise ValueError('dataframe is not rescaled')

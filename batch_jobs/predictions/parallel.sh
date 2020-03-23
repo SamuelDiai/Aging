@@ -4,7 +4,7 @@ targets=( "Sex" "Age" )
 models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
 #models=( "Xgboost" )
 #datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition" )
-datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" )
+datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
 
 
 outer_splits=5

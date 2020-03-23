@@ -10,7 +10,9 @@ Features used :
 
 def read_abdominal_data(**kwargs):
 	cols_features = ['22403-2.0', '22404-2.0', '22405-2.0', '22406-2.0', '22407-2.0', '22408-2.0',
-					  '22409-2.0', '22410-2.0', '22415-2.0', '22416-2.0']
-	cols_filter = ['22411-2.0', '22412-2.0', '22413-2.0', '22414-2.0']
-	return read_data(cols_features, cols_filter, **kwargs)
+	'22409-2.0', '22410-2.0', '22415-2.0', '22416-2.0']
 
+
+	cols_filter = ['22411-2.0', '22412-2.0', '22413-2.0', '22414-2.0']
+	instance = 2
+	return read_data(cols_features, cols_filter, instance, **kwargs)

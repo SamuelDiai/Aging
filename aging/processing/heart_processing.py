@@ -14,9 +14,11 @@ def read_heart_data(**kwargs):
 def read_heart_size_data(**kwargs):
 	cols_features = ['22420-2.0', '22421-2.0', '22422-2.0', '22423-2.0', '22424-2.0', '22425-2.0', '22426-2.0', '22427-2.0']
 	cols_filter = []
-	return read_data(cols_features, cols_filter, **kwargs)
+	instance = 2
+	return read_data(cols_features, cols_filter, instance, **kwargs)
 
 def read_heart_PWA_data(**kwargs):
 	cols_features = [12673, 12674, 12675, 12676, 12677, 12678, 12679, 12680, 12681, 12682, 12683, 12684, 12685, 12686, 12687]
 	timesteps = 4
-	return read_data_and_merge_temporal_features(cols_features, timesteps, **kwargs)
+	instance = 2
+	return read_data_and_merge_temporal_features(cols_features, timesteps, instance, **kwargs)

@@ -11,14 +11,17 @@ Features used :
 def read_grey_matter_volumes_data(**kwargs):
 	cols_features = [str(elem) + '-2.0' for elem in range(25782, 25920 + 1)]
 	cols_filter = [ ]
-	return read_data(cols_features, cols_filter, **kwargs)
+	instance = 2
+	return read_data(cols_features, cols_filter, instance, **kwargs)
 
 def read_subcortical_volumes_data(**kwargs):
 	cols_features = [str(elem) + '-2.0' for elem in range(25011, 25024 + 1)]
 	cols_filter = [ ]
-	return read_data(cols_features, cols_filter, **kwargs)
+	instance = 2
+	return read_data(cols_features, cols_filter, instance, **kwargs)
 
 def read_brain_data(**kwargs):
 	cols_features = [str(elem) + '-2.0' for elem in range(25011, 25024 + 1)] + [str(elem) + '-2.0' for elem in range(25782, 25920 + 1)]
 	cols_filter = [ ]
-	return read_data(cols_features, cols_filter, **kwargs)
+	instance = 2
+	return read_data(cols_features, cols_filter, instance, **kwargs)
