@@ -49,14 +49,19 @@ class GeneralPredictor(BaseModel):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
             y = df['Sex'].values
+            self.features_importance_(X, y, self.scoring)
+            return df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns
         elif self.target == 'Age':
             X = df.drop(columns = ['Age when attended assessment centre']).values
             y = df['Age when attended assessment centre'].values
+            self.features_importance_(X, y, self.scoring)
+            return df.drop(columns = ['Age when attended assessment centre']).columns
         else :
             raise ValueError('GeneralPredictor not instancied')
 
-        self.features_importance_(X, y, self.scoring)
-        return df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns
+
+
+
 
     def optimize_hyperparameters_fold(self, df):
         if self.target == 'Sex':
