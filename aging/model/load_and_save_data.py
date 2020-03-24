@@ -1,7 +1,7 @@
 import pandas as pd
 from ..processing .base_processing import path_features , path_predictions
 from ..processing.abdominal_composition_processing import read_abdominal_data
-from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data
+from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data, read_brain_dMRI_weighted_means_data
 from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
 from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
@@ -30,7 +30,8 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'EyeAutorefraction' : 100014,
                     'EyeAcuity' : 100017,
                     'EyeIntraoculaPressure' : 100015,
-                    'Eye' : 100013
+                    'Eye' : 100013,
+                    'BraindMRIWeightedMeans' : 135
                     }
 
 def load_data(dataset, **kwargs):
@@ -80,6 +81,8 @@ def load_data(dataset, **kwargs):
             df = read_eye_acuity_data(**kwargs)
         elif dataset == 'Eye':
             df = read_eye_data(**kwargs)
+        elif dataset == 'BraindMRIWeightedMeans':
+            df = read_brain_dMRI_weighted_means_data(**kwargs)
         return df
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
