@@ -1,12 +1,14 @@
 #!/bin/bash
 targets=( "Age" "Sex" )
-
+#targets=( "Age" ) 
+#models=( "RandomForest" )
 models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "ElasticNet ")
 datasets=( "BraindMRIWeightedMeans" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "Heart" "HeartSize" "HeartPWA" "BodyComposition" "BoneComposition" "ECGAtRest" "AnthropometryImpedance" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" "EyeAutorefraction" "EyeAcuity" "EyeIntraoculaPressure" "Eye" )
+#datasets=( "Eye" )
 n_splits=5
 n_iter=50
 
-memory=8G
+memory=16G
 n_cores=4
 time=30
 
