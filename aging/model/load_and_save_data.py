@@ -64,9 +64,9 @@ def load_data(dataset, **kwargs):
         elif dataset == 'AnthropometryImpedance':
             df = read_anthropometry_impedance_data(**kwargs)
         elif dataset == 'UrineBiochemestry':
-            df = read_blood_biomarkers_data(**kwargs)
-        elif dataset == 'BloodBiochemestry':
             df = read_urine_biomarkers_data(**kwargs)
+        elif dataset == 'BloodBiochemestry':
+            df = read_blood_biomarkers_data(**kwargs)
         elif dataset == 'BloodCount':
             df = read_blood_count_data(**kwargs)
         elif dataset == 'Blood':
