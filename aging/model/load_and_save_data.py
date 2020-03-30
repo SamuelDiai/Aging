@@ -95,5 +95,5 @@ def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold
 	if len(best_params) != 7:
 		hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
-	filename = 'Predictions_' + target + '_' + dataset + '_' + str(dataset_to_field[dataset]) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B.csv'
+	filename = 'Predictions_' + target + '_' + dataset + '_' + str(dataset_to_field[dataset]) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '_B_withoutRF.csv'
 	predicts_df.set_index('eid').to_csv(path_predictions + '/' + filename)

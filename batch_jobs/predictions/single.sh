@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -p short
 #SBATCH -t 0-12:00
-#SBATCH --mail-user=sasha_collin@hms.harvard.edu
+#SBATCH --mail-user=samuel_diai@hms.harvard.edu
 
 
 module load gcc/6.2.0

@@ -1,15 +1,11 @@
 #!/bin/bash
 #targets=( "Age" )
-#models=( "Xgboost" )
-#datasets=( "EyeAcuity" )
+#models=( "RandomForest" )
+#datasets=( "UrineAndBlood" )
 
-targets=( "Age" )
-#models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
-models=( "NeuralNetwork" )
-#datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition" )
-#datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
-datasets=( "BloodCount" )
-#datasets=( "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eye" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
+targets=( "Age" "Sex")
+models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
+datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
 
 
 outer_splits=5
