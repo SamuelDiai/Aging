@@ -8,7 +8,7 @@ if sys.platform == 'linux':
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
 	path_features = "/n/groups/patel/samuel/feature_importances/"
 	path_predictions = "/n/groups/patel/samuel/predictions/"
-	path_inputs = "/n/groups/patel/samuel/inputs"
+	path_inputs = "/n/groups/patel/samuel/inputs/"
 elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
