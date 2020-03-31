@@ -8,3 +8,5 @@ from . import ecg_processing
 from . import anthropometry_processing
 from . import biochemestry_processing
 from . import eye_processing
+from . import spirometry_processing
+from . import blood_pressure_processing

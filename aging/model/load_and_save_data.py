@@ -1,5 +1,5 @@
 import pandas as pd
-from ..processing .base_processing import path_features , path_predictions
+from ..processing .base_processing import path_features , path_predictions, path_inputs
 from ..processing.abdominal_composition_processing import read_abdominal_data
 from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data, read_brain_dMRI_weighted_means_data
 from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
@@ -9,7 +9,8 @@ from ..processing.ecg_processing import read_ecg_at_rest_data
 from ..processing.anthropometry_processing import read_anthropometry_impedance_data
 from ..processing.biochemestry_processing import read_blood_biomarkers_data, read_urine_biomarkers_data, read_blood_count_data, read_blood_data, read_urine_and_blood_data
 from ..processing.eye_processing import read_eye_autorefraction_data, read_eye_acuity_data, read_eye_intraocular_pressure_data, read_eye_data
-
+from ..processing.spirometry_processing import read_spirometry_data
+from ..processing.blood_pressure_processing import read_blood_pressure_data
 
 dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -31,10 +32,12 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'EyeAcuity' : 100017,
                     'EyeIntraoculaPressure' : 100015,
                     'Eye' : 100013,
-                    'BraindMRIWeightedMeans' : 135
+                    'BraindMRIWeightedMeans' : 135,
+                    'Spirometry' :  100020,
+                    'BloodPressure' : 100011
                     }
 
-def load_data(dataset, **kwargs):
+def load_data_(dataset, **kwargs):
     nrows = None
     if 'nrows' in kwargs.keys():
         nrows = kwargs['nrows']
@@ -83,7 +86,25 @@ def load_data(dataset, **kwargs):
             df = read_eye_data(**kwargs)
         elif dataset == 'BraindMRIWeightedMeans':
             df = read_brain_dMRI_weighted_means_data(**kwargs)
+        elif dataset == 'BloodPressure':
+            df = read_blood_pressure_data(**kwargs)
+        elif dataset == 'Spirometry':
+            df = read_spirometry_data(**kwargs)
         return df
+
+
+def load_data(dataset, **kwargs):
+    list_inputs = glob.glob(path_inputs + '*.csv')
+    selected_inputs = [elem for elem in list_inputs if dataset in elem]
+    if len(selected_inputs) == 0:
+        df = load_data_(dataset, **kwargs)
+        df.to_csv(path_inputs + dataset + '.csv')
+        return df
+    elif len(selected_inputs) == 1 :
+        df = pd.read_csv(selected_inputs[0]).set_index('eid')
+        return df
+    else :
+        raise ValueError('Too many Input file for the selected dataset')
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
 	final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})

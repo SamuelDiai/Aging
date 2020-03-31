@@ -8,11 +8,13 @@ if sys.platform == 'linux':
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
 	path_features = "/n/groups/patel/samuel/feature_importances/"
 	path_predictions = "/n/groups/patel/samuel/predictions/"
+	path_inputs = "/n/groups/patel/samuel/inputs"
 elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
 	path_features = "/Users/samuel/Desktop/Aging/feature_importances/"
 	path_predictions = "/Users/samuel/Desktop/Aging/predictions/"
+	path_inputs = "/Users/samuel/Desktop/Aging/inputs/"
 
 
 def read_data(cols_features, cols_filter, instance, **kwargs):
