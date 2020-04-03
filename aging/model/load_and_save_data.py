@@ -114,8 +114,7 @@ def load_data_(dataset, **kwargs):
 
 
 def load_data(dataset, **kwargs):
-    list_inputs = glob.glob(path_inputs + '*.csv')
-    selected_inputs = [elem for elem in list_inputs if dataset + '.csv' in elem]
+    selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
     if len(selected_inputs) == 0:
         print("Load New Data")
         df = load_data_(dataset, **kwargs)
