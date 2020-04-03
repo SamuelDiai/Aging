@@ -1,5 +1,5 @@
 from .arterial_stiffness_processing import read_arterial_stiffness_data
-from .blood_pressure_processing import read_blood_data
+from .blood_pressure_processing import read_blood_pressure_data
 from .ecg_processing import read_ecg_at_rest_data
 from .spirometry_processing import read_spirometry_data
 import pandas as pd
