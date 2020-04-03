@@ -10,3 +10,5 @@ from . import biochemestry_processing
 from . import eye_processing
 from . import spirometry_processing
 from . import blood_pressure_processing
+from . import arterial_stiffness_processing
+from . import mix_processing

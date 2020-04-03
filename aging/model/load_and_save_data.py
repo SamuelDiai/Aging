@@ -7,11 +7,15 @@ from ..processing.heart_processing import read_heart_data, read_heart_size_data,
 from ..processing.body_composition_processing import read_body_composition_data
 from ..processing.bone_composition_processing import read_bone_composition_data
 from ..processing.ecg_processing import read_ecg_at_rest_data
-from ..processing.anthropometry_processing import read_anthropometry_impedance_data
+from ..processing.anthropometry_processing import read_anthropometry_impedance_data, read_anthropometry_body_size_data, read_anthropometry_data
 from ..processing.biochemestry_processing import read_blood_biomarkers_data, read_urine_biomarkers_data, read_blood_count_data, read_blood_data, read_urine_and_blood_data
 from ..processing.eye_processing import read_eye_autorefraction_data, read_eye_acuity_data, read_eye_intraocular_pressure_data, read_eye_data
 from ..processing.spirometry_processing import read_spirometry_data
 from ..processing.blood_pressure_processing import read_blood_pressure_data
+from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
+from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data
+
+
 
 dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -35,7 +39,12 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'Eye' : 100013,
                     'BraindMRIWeightedMeans' : 135,
                     'Spirometry' :  100020,
-                    'BloodPressure' : 100011
+                    'BloodPressure' : 100011,
+                    'AnthropometryBodySize' : 100010,
+                    'Anthropometry' : 100008,
+                    'ArterialStiffness' : 100007,
+                    'ArterialAndBloodPressure' : 'Custom',
+                    'SpiroAndArterialAndBp' : 'Custom'
                     }
 
 def load_data_(dataset, **kwargs):
@@ -91,6 +100,16 @@ def load_data_(dataset, **kwargs):
             df = read_blood_pressure_data(**kwargs)
         elif dataset == 'Spirometry':
             df = read_spirometry_data(**kwargs)
+        elif dataset == 'AnthropometryBodySize':
+            df = read_anthropometry_body_size_data(**kwargs)
+        elif dataset == 'Anthropometry':
+            df = read_anthropometry_data(**kwargs)
+        elif dataset == 'ArterialStiffness':
+            df = read_arterial_stiffness_data(**kwargs)
+        elif dataset == 'ArterialAndBloodPressure':
+            df = read_arterial_and_bp_data(**kwargs)
+        elif dataset == 'SpiroAndArterialAndBp':
+            df = read_spiro_and_arterial_and_bp_data(**kwargs)
         return df
 
 
