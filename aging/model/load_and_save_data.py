@@ -117,10 +117,12 @@ def load_data(dataset, **kwargs):
     list_inputs = glob.glob(path_inputs + '*.csv')
     selected_inputs = [elem for elem in list_inputs if dataset + '.csv' in elem]
     if len(selected_inputs) == 0:
+        print("Load New Data")
         df = load_data_(dataset, **kwargs)
         df.to_csv(path_inputs + dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
+        print("Load Existing Data")
         df = pd.read_csv(selected_inputs[0]).set_index('eid')
         return df
     else :
