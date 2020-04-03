@@ -115,6 +115,7 @@ def load_data_(dataset, **kwargs):
 
 def load_data(dataset, **kwargs):
     selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
+    print(selected_inputs)
     if len(selected_inputs) == 0:
         print("Load New Data")
         df = load_data_(dataset, **kwargs)
@@ -125,6 +126,7 @@ def load_data(dataset, **kwargs):
         df = pd.read_csv(selected_inputs[0]).set_index('eid')
         return df
     else :
+        print("Error")
         raise ValueError('Too many Input file for the selected dataset')
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
