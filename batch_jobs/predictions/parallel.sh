@@ -5,8 +5,8 @@
 
 targets=( "Age" "Sex" )
 models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
-datasets=( "Anthropometry" "SpiroAndArterialAndBp" "ArterialAndBloodPressure" "ArterialStiffness" "AnthropometryBodySize" "BloodPressure" "Spirometry" )
-
+#datasets=( "Anthropometry" "SpiroAndArterialAndBp" "ArterialAndBloodPressure" "ArterialStiffness" "AnthropometryBodySize" "BloodPressure" "Spirometry" )
+datasets=( "AnthropometryImpedance" )
 
 outer_splits=10
 inner_splits=5
