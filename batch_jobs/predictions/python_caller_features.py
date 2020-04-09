@@ -28,7 +28,7 @@ hyperparameters['dataset'] = dataset
 print(hyperparameters)
 gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset, -1)
 print("Loading Dataset")
-df = gp.load_dataset(nrows=20000)
+df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")
 df_scaled = gp.normalise_dataset(df)
 feature_importance_cols = gp.feature_importance(df_scaled)

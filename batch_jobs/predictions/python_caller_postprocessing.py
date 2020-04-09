@@ -1,9 +1,9 @@
-
+import numpy as np
 import sys
 import os
 import glob
 from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, StratifiedKFold, RandomizedSearchCV
-
+import pandas as pd
 
 if sys.platform == 'linux':
 	sys.path.append('/n/groups/patel/samuel/Aging')
@@ -28,14 +28,13 @@ print(hyperparameters)
 
 def dataset_map_fold(dataset, target, outer_splits):
     dataset = dataset.replace('_', '')
-    df = load_data(dataset, nrows = 20000)
+    df = load_data(dataset)
     if target == 'Sex':
         X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
         y = df['Sex'].values
     elif target == 'Age':
         X = df.drop(columns = ['Age when attended assessment centre']).values
         y = df['Age when attended assessment centre'].values
-    list_folds = [elem[1] for elem in outer_cv.split(X, y)]
 
     outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
     list_folds = [elem[1] for elem in outer_cv.split(X, y)]
@@ -71,9 +70,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
-    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' %  target, dataset, dataset_to_field[dataset], model)
-    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' %  target, dataset, dataset_to_field[dataset], model)
-    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' %  target, dataset, dataset_to_field[dataset], model)
+    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' % ( target, dataset, dataset_to_field[dataset], model))
+    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' % ( target, dataset, dataset_to_field[dataset], model))
+    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' % ( target, dataset, dataset_to_field[dataset], model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
