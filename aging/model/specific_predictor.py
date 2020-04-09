@@ -1,11 +1,7 @@
 
 from .general_predictor import *
 from .load_and_save_data import load_data, save_features_to_csv, save_predictions_to_csv
-from ..processing.abdominal_composition_processing import read_abdominal_data
-from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data
-from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
-from ..processing.body_composition_processing import read_body_composition_data
-from ..processing.bone_composition_processing import read_bone_composition_data
+
 
 class GeneralPredictor(BaseModel):
     def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold):
@@ -117,7 +113,7 @@ class GeneralPredictor(BaseModel):
             df_noscaled = df_rescaled
             if hasattr(self, 'scaler'):
                 df_noscaled['predictions'] = self.scaler.inverse_transform(df_noscaled['predictions'].values.reshape(-1, 1))
-                df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
+                #df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
             return df_noscaled
         else :
             raise ValueError('dataframe is not rescaled')

@@ -35,7 +35,7 @@ if fold not in list(range(outer_splits)):
 else :
 	gp = GeneralPredictor(name, outer_splits, inner_splits, n_iter, target, dataset, fold)
 	print("Loading Dataset")
-	df = gp.load_dataset()
+	df = gp.load_dataset(nrows=20000)
 	print("Dataset Loaded, optimizing hyper")
 	df_scaled = gp.normalise_dataset(df)
 	df_predicts_rescaled_test, df_predicts_rescaled_train = gp.optimize_hyperparameters_fold(df_scaled)

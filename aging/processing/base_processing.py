@@ -13,7 +13,8 @@ elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
 	path_features = "/Users/samuel/Desktop/Aging/feature_importances/"
-	path_predictions = "/Users/samuel/Desktop/Aging/predictions/"
+	#path_predictions = "/Users/samuel/Desktop/Aging/predictions/"
+	path_predictions = "/Users/samuel/Desktop/Aging/predictions2/"
 	path_inputs = "/Users/samuel/Desktop/Aging/inputs/"
 
 

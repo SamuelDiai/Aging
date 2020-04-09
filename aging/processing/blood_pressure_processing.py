@@ -13,5 +13,5 @@ def read_blood_pressure_data(**kwargs):
     instance = 0
     temp = read_data(cols_features, cols_filter, instance, **kwargs)
     for elem in pd.Series([elem.split('.')[0] for elem in temp.columns.values if 'Age' not in elem and 'Sex' not in elem]).drop_duplicates():
-        temp[elem + '.0'] = (t[elem + '.0'] + t[elem + '.1'])/2
-    return temp[[elem for elem in t.columns if '.1' not in elem]]
+        temp[elem + '.0'] = (temp[elem + '.0'] + temp[elem + '.1'])/2
+    return temp[[elem for elem in temp.columns if '.1' not in elem]]
