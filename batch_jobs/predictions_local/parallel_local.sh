@@ -1,13 +1,13 @@
 #!/bin/bash
 
-targets=( "Age" "Sex" )
-#models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
-models=( "RandomForest" )
+targets=( "Age" )
+models=( "Xgboost" )
+#models=( "RandomForest" )
 #datasets=( "Heart" "HeartPWA" "AnthropometryImpedance" "ECGAtRest" "AbdominalComposition" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "HeartSize" "BodyComposition" "BoneComposition" )
 #datasets=( "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" )
-datasets=( "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eye" )
-outer_splits=2
-inner_splits=2
+datasets=( "BloodCount" )
+outer_splits=6
+inner_splits=5
 n_iter=1
 
 

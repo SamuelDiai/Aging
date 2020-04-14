@@ -41,22 +41,9 @@ class GeneralPredictor(BaseModel):
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
 
-    def feature_importance(self, df):
-        if self.target == 'Sex':
-            X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
-            y = df['Sex'].values
-            self.features_importance_(X, y, self.scoring)
-            return df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns
-        elif self.target == 'Age':
-            X = df.drop(columns = ['Age when attended assessment centre']).values
-            y = df['Age when attended assessment centre'].values
-            self.features_importance_(X, y, self.scoring)
-            return df.drop(columns = ['Age when attended assessment centre']).columns
-        else :
-            raise ValueError('GeneralPredictor not instancied')
 
-
-
+    def load_dataset(self, **kwargs):
+        return load_data(self.dataset, **kwargs)
 
 
     def optimize_hyperparameters_fold(self, df):
@@ -70,18 +57,20 @@ class GeneralPredictor(BaseModel):
             raise ValueError('GeneralPredictor not instancied')
         return self.optimize_hyperparameters_fold_(X, y, df.index, self.scoring, self.fold)
 
-    def save_features(self, cols):
-        if not hasattr(self, 'features_imp'):
-            raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.target, self.dataset, self.model_name)
 
-    def load_dataset(self, **kwargs):
-        return load_data(self.dataset, **kwargs)
-
-    def save_predictions(self, predicts_df, step):
-        if not hasattr(self, 'best_params'):
-            raise ValueError('Predictions not trained')
-        save_predictions_to_csv(predicts_df, step, self.target, self.dataset, self.model_name, self.fold, self.best_params)
+    def feature_importance(self, df):
+        if self.target == 'Sex':
+            X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
+            y = df['Sex'].values
+            self.features_importance_(X, y, self.scoring)
+            return df.drop(columns = ['Sex', 'Age when attended assessment centre']).columns
+        elif self.target == 'Age':
+            X = df.drop(columns = ['Age when attended assessment centre']).values
+            y = df['Age when attended assessment centre'].values
+            self.features_importance_(X, y, self.scoring)
+            return df.drop(columns = ['Age when attended assessment centre']).columns
+        else :
+            raise ValueError('GeneralPredictor not instancied')
 
 
     def normalise_dataset(self, df):
@@ -105,8 +94,8 @@ class GeneralPredictor(BaseModel):
 
         return df_rescaled
 
-    def inverse_normalise_dataset(self, df_rescaled):
 
+    def inverse_normalise_dataset(self, df_rescaled):
         if self.target == 'Sex':
             return df_rescaled
         elif self.target == 'Age':
@@ -117,3 +106,15 @@ class GeneralPredictor(BaseModel):
             return df_noscaled
         else :
             raise ValueError('dataframe is not rescaled')
+
+
+    def save_features(self, cols):
+        if not hasattr(self, 'features_imp'):
+            raise ValueError('Features importance not trained')
+        save_features_to_csv(cols, self.features_imp, self.target, self.dataset, self.model_name)
+
+
+    def save_predictions(self, predicts_df, step):
+        if not hasattr(self, 'best_params'):
+            raise ValueError('Predictions not trained')
+        save_predictions_to_csv(predicts_df, step, self.target, self.dataset, self.model_name, self.fold, self.best_params)
