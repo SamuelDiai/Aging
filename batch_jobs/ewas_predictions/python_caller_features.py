@@ -7,13 +7,14 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.specific_predictor import GeneralPredictor
+from aging.model.environment_predictor import EnvironmentPredictor
+
 
 
 name = sys.argv[1]
 n_iter = int(sys.argv[2])
-target = sys.argv[3]
-dataset = sys.argv[4]
+target_dataset = sys.argv[3]
+input_dataset = sys.argv[4]
 n_splits = int(sys.argv[5])
 
 
@@ -21,8 +22,8 @@ hyperparameters = dict()
 hyperparameters['name'] = name
 hyperparameters['n_splits'] = n_splits
 hyperparameters['n_iter'] = n_iter
-hyperparameters['target'] = target
-hyperparameters['dataset'] = dataset
+hyperparameters['target_dataset'] = target_dataset
+hyperparameters['input_dataset'] = input_dataset
 
 
 print(hyperparameters)

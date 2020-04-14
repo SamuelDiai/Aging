@@ -10,11 +10,11 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.load_and_save_data_environment_data import load_data, dataset_to_field
+from aging.model.load_and_save_environment_data import load_data
 
 model = sys.argv[1]
-target = sys.argv[2]
-dataset = sys.argv[3]
+target_dataset = sys.argv[2]
+input_dataset = sys.argv[3]
 outer_splits = int(sys.argv[4])
 
 
@@ -26,8 +26,9 @@ hyperparameters['outer_splits'] = outer_splits
 print(hyperparameters)
 
 
+
 def dataset_map_fold(input_dataset, target_dataset, outer_splits):
-    dataset = dataset.replace('_', '')
+
     df = load_data(input_dataset, target_dataset)
     X = df.drop(columns = ['residual']).values
     y = df['residual'].values
@@ -43,8 +44,8 @@ def dataset_map_fold(input_dataset, target_dataset, outer_splits):
     return map_eid_to_fold
 
 
-dataset = '_' + dataset + '_'
-list_files = glob.glob('/n/groups/patel/samuel/residuals/*%s*%s*%s*.csv' % (target, dataset, model)) # mod
+dataset = '_' + input_dataset + '_' + target_dataset + '_'
+list_files = glob.glob('/n/groups/patel/samuel/EWAS/predictions/*%s*%s*.csv' % (dataset, model))
 
 list_train = [elem for elem in list_files if 'train' in elem]
 list_test = [elem for elem in list_files if 'test' in elem]
@@ -59,16 +60,16 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     # Avg df_val
     df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
     df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
-    map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
+    map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
     df_val['fold'] = df_val.index.map(map_eid_to_fold)
     df_train['fold'] = df_train.index.map(map_eid_to_fold)
 
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
-    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' % ( target, dataset, dataset_to_field[dataset], model))
-    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' % ( target, dataset, dataset_to_field[dataset], model))
-    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds3/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' % ( target, dataset, dataset_to_field[dataset], model))
+    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
+    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
+    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")

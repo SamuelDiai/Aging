@@ -39,30 +39,38 @@ class EnvironmentPredictor(BaseModel):
         X = df.drop(columns = ['residual']).values
         y = df['residual'].values
         self.features_importance_(X, y, 'r2')
+
+
         return df.drop(columns = ['residual']).columns
 
 
     def normalise_dataset(self, df):
-        # Get categorical data apart from continous ones
-        df_cat = df.select_dtypes(include=['int'])
-        df_cont = df.drop(columns = df_cat.columns)
-
-        cols = df_cont.columns
-        indexes = df_cont.index
-
-        # save scaler
-        scaler = StandardScaler()
-        scaler.fit(df_cont)
 
         scaler_residual = StandardScaler()
         scaler_residual.fit(df['residual'].values.reshape(-1, 1))
         self.scaler = scaler_residual
 
-        # Scale and create Dataframe
-        array_rescaled =  scaler.transform(df_cont)
-        df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(df_cat)
+        if self.model_name != 'ElasticNet':
+            scaler = StandardScaler()
+            scaler.fit(df)
+            return scaler.transform(df)
+        else :
+            # Get categorical data apart from continous ones
+            df_cat = df.select_dtypes(include=['int'])
+            df_cont = df.drop(columns = df_cat.columns)
 
-        return df_rescaled
+            cols = df_cont.columns
+            indexes = df_cont.index
+
+            # save scaler
+            scaler = StandardScaler()
+            scaler.fit(df_cont)
+
+            # Scale and create Dataframe
+            array_rescaled =  scaler.transform(df_cont)
+            df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(df_cat)
+
+            return df_rescaled
 
     def inverse_normalise_dataset(self, df_rescaled):
         if hasattr(self, 'scaler'):
