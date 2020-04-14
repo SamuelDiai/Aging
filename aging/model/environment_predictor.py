@@ -42,7 +42,7 @@ class EnvironmentPredictor(BaseModel):
         return df.drop(columns = ['residual']).columns
 
 
-    def normalise_dataset(df):
+    def normalise_dataset(self, df):
         # Get categorical data apart from continous ones
         df_cat = df.select_dtypes(include=['int'])
         df_cont = df.drop(columns = df_cat.columns)
@@ -66,17 +66,17 @@ class EnvironmentPredictor(BaseModel):
 
     def inverse_normalise_dataset(self, df_rescaled):
         if hasattr(self, 'scaler'):
-            df_noscaled['residual'] = self.scaler.inverse_transform(df_noscaled['residual'].values.reshape(-1, 1))
-            return df_noscaled
+            df_rescaled['predictions'] = self.scaler.inverse_transform(df_rescaled['predictions'].values.reshape(-1, 1))
+            return df_rescaled
         else :
             raise ValueError('dataframe is not rescaled')
 
     def save_features(self, cols):
         if not hasattr(self, 'features_imp'):
             raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.organ_target, self.dataset_env, self.model_name)
+        save_features_to_csv(cols, self.features_imp, self.target_dataset, self.env_dataset, self.model_name)
 
     def save_predictions(self, predicts_df, step):
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
-        save_predictions_to_csv(predicts_df, step, self.organ_target, self.dataset_env, self.model_name, self.fold, self.best_params)
+        save_predictions_to_csv(predicts_df, step, self.target_dataset, self.env_dataset, self.model_name, self.fold, self.best_params)

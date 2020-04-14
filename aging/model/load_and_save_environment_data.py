@@ -1,7 +1,7 @@
 import pandas as pd
 import glob
 from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
-from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_diseases_antigens_data
+from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 
 
 
@@ -108,5 +108,5 @@ def save_predictions_to_csv(predicts_df, step, organ_target, dataset_env, model_
     if len(best_params) != 7:
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
-    filename = 'Predictions_' + dataset_env + '_' + organ_target + '_' + str(target_dataset_to_field[dataset]) + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
+    filename = 'Predictions_' + dataset_env + '_' + organ_target + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
     predicts_df.set_index('eid').to_csv(path_predictions + '/' + filename)
