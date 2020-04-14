@@ -50,7 +50,7 @@ class EnvironmentPredictor(BaseModel):
         scaler_residual.fit(df['residual'].values.reshape(-1, 1))
         self.scaler = scaler_residual
 
-        if self.model_name != 'ElasticNet':
+        if self.model_name == 'ElasticNet':
             scaler = StandardScaler()
             scaler.fit(df)
             return scaler.transform(df)
