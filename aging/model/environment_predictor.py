@@ -51,9 +51,12 @@ class EnvironmentPredictor(BaseModel):
         self.scaler = scaler_residual
 
         if self.model_name == 'ElasticNet':
+            cols = df.columns
+            indexes = df.index
             scaler = StandardScaler()
             scaler.fit(df)
-            return scaler.transform(df)
+            array_rescaled = scaler.transform(df)
+            return pd.DataFrame(array_rescaled, columns = cols, index = indexes)
         else :
             # Get categorical data apart from continous ones
             df_cat = df.select_dtypes(include=['int'])
