@@ -84,7 +84,7 @@ def load_target_residuals(target_dataset, **kwargs):
         df_organ = pd.read_csv(list_files[0]).set_index('eid')
     else :
         raise ValueError('')
-    return df_organ[['residual', 'Sex']]
+    return df_organ[['residual', 'Sex', 'Age']]
 
 
 ## Load FULL DATA

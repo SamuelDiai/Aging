@@ -137,23 +137,26 @@ class BaseModel():
             model_.fit(X_train_train, y_train_train)
 
             y_predict_train_val_fold = model_.predict(X_train_val)
-            y_predict_train_train_fold = model_.predict(X_train_train)
+            #y_predict_train_train_fold = model_.predict(X_train_train)
 
             eid_train_val = index[index_train_val]
-            eid_train_train = index[index_train_train]
+            #eid_train_train = index[index_train_train]
 
             df_train_val = pd.DataFrame(data = {'eid' : eid_train_val, 'fold' : fold, 'predictions' : y_predict_train_val_fold })
-            df_train_train = pd.DataFrame(data = {'eid' : eid_train_train, 'fold' : fold, 'predictions' : y_predict_train_train_fold })
+            #df_train_train = pd.DataFrame(data = {'eid' : eid_train_train, 'fold' : fold, 'predictions' : y_predict_train_train_fold })
             list_train_val.append(df_train_val)
-            list_train_train.append(df_train_train)
+            #list_train_train.append(df_train_train)
 
         df_val = pd.concat(list_train_val)
-        df_train = pd.concat(list_train_train)
+        #df_train = pd.concat(list_train_train)
 
 
         y_predict_test = best_estim.predict(X_test)
+        y_predict_train = best_estim.predict(X_train)
         eid_test = index[index_test]
+        eid_train = index[index_train]
         df_test = pd.DataFrame(data = {'eid' : eid_test, 'fold' : fold, 'predictions' : y_predict_test} )
+        df_train = pd.DataFrame(data = {'eid' : eid_train, 'fold' : np.nan, 'predictions' : y_predict_train })
         #df_train = pd.DataFrame(data = {'eid' : eid_train, 'fold' : fold, 'predictions' : y_predict_train, 'real' : y_train} )
 
         # return model_.predict(X_train_train), model_.predict(X_train_val)

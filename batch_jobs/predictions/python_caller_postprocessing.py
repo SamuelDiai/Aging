@@ -62,10 +62,10 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
 
     # Avg df_val
     df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
-    df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
+    #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
     map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
     df_val['fold'] = df_val.index.map(map_eid_to_fold)
-    df_train['fold'] = df_train.index.map(map_eid_to_fold)
+    #df_train['fold'] = df_train['outer_fold']
 
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv

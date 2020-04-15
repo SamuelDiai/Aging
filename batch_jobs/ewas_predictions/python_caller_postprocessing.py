@@ -30,7 +30,7 @@ print(hyperparameters)
 def dataset_map_fold(input_dataset, target_dataset, outer_splits):
 
     df = load_data(input_dataset, target_dataset)
-    X = df.drop(columns = ['residual']).values
+    X = df.drop(columns = ['residual', 'Age']).values
     y = df['residual'].values
 
     outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
@@ -59,10 +59,10 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
 
     # Avg df_val
     df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
-    df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
+    #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
     map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
     df_val['fold'] = df_val.index.map(map_eid_to_fold)
-    df_train['fold'] = df_train.index.map(map_eid_to_fold)
+    #df_train['fold'] = df_train.index.map(map_eid_to_fold)
 
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv

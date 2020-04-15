@@ -14,11 +14,15 @@ memory=8G
 n_cores=1
 
 
-
 for target_dataset in "${target_datasets[@]}"
 do
 	for input_dataset in "${input_datasets[@]}"
 	do
+		job_name="${target_dataset}_${input_dataset}.job"
+		out_file="./logs/${target_dataset}_${input_dataset}.out"
+		err_file="./logs/${target_dataset}_${input_dataset}.err"
+
+		sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
 		for model in "${models[@]}"
 		do
 			declare -a IDs=()

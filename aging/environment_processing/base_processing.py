@@ -38,11 +38,7 @@ def read_data(cols_categorical, cols_features, instance, **kwargs):
     features_index = temp.columns
     features = []
     for elem in features_index:
-        if elem != age_col and elem != '31-0.0':
-            features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
-        else:
-            features.append(feature_id_to_name[int(elem.split('-')[0])])
-
+        features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
     df = temp.dropna(how = 'any')
     df.columns = features
     return df

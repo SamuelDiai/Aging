@@ -30,13 +30,13 @@ class EnvironmentPredictor(BaseModel):
 
 
     def optimize_hyperparameters_fold(self, df):
-        X = df.drop(columns = ['residual']).values
+        X = df.drop(columns = ['Age', 'residual']).values
         y = df['residual'].values
         return self.optimize_hyperparameters_fold_(X, y, df.index, 'r2', self.fold)
 
 
     def feature_importance(self, df):
-        X = df.drop(columns = ['residual']).values
+        X = df.drop(columns = ['Age', 'residual']).values
         y = df['residual'].values
         self.features_importance_(X, y, 'r2')
 
