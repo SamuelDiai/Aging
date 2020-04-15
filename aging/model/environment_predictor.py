@@ -39,9 +39,7 @@ class EnvironmentPredictor(BaseModel):
         X = df.drop(columns = ['Age', 'residual']).values
         y = df['residual'].values
         self.features_importance_(X, y, 'r2')
-
-
-        return df.drop(columns = ['residual']).columns
+        return df.drop(columns = ['Age', 'residual']).columns
 
 
     def normalise_dataset(self, df):
