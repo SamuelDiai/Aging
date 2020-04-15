@@ -27,7 +27,7 @@ hyperparameters['input_dataset'] = input_dataset
 
 
 print(hyperparameters)
-gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset, -1)
+gp = EnvironmentPredictor(name, -1, n_splits, n_iter, target_dataset, input_dataset, -1)
 print("Loading Dataset")
 df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")
