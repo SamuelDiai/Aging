@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
 from scipy.stats import pearsonr
 
 if sys.platform == 'linux':
@@ -18,21 +19,43 @@ hyperparameters['target_dataset'] = target_dataset
 hyperparameters['input_dataset'] = input_dataset
 print(hyperparameters)
 
+def normalise_dataset(df):
+
+    scaler_residual = StandardScaler()
+    scaler_residual.fit(df['residual'].values.reshape(-1, 1))
+
+# Get categorical data apart from continous ones
+    df_cat = df.select_dtypes(include=['int'])
+    df_cont = df.drop(columns = df_cat.columns)
+
+    cols = df_cont.columns
+    indexes = df_cont.index
+
+    # save scaler
+    scaler = StandardScaler()
+    scaler.fit(df_cont)
+
+    # Scale and create Dataframe
+    array_rescaled =  scaler.transform(df_cont)
+    df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(df_cat)
+
+    return df_rescaled, scaler_residual
+
+
 df = load_data(input_dataset, target_dataset)
-cols_except_age_sex_residual = df.drop(columns = ['residual', 'Age when attended assessment centre', 'Sex']).columns
-col_age = df['Age when attended assessment centre']
-col_sex = df['Sex']
-col_residual = df['residual']
+df_rescaled, scaler_residual = normalise_dataset(df)
+cols_except_age_sex_residual = df_rescaled.drop(columns = ['residual', 'Age', 'Sex']).columns
+
 
 d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value'])
 for column in cols_except_age_sex_residual:
     lin_residual = LinearRegression()
-    lin_residual.fit(df[['Age when attended assessment centre', 'Sex']].values, df['residual'].values)
-    res_residual = lin_residual.predict(df[['Age when attended assessment centre', 'Sex']].values) - df['residual'].values
+    lin_residual.fit(df_rescaled[['Age', 'Sex']].values, df_rescaled['residual'].values)
+    res_residual = lin_residual.predict(df[['Age', 'Sex']].values) - df_rescaled['residual'].values
 
     lin_feature = LinearRegression()
-    lin_feature.fit(df[['Age when attended assessment centre', 'Sex']].values, df[column].values)
-    res_feature = lin_feature.predict(df[['Age when attended assessment centre', 'Sex']].values) - df[column].values
+    lin_feature.fit(df_rescaled[['Age', 'Sex']].values, df_rescaled[column].values)
+    res_feature = lin_feature.predict(df_rescaled[['Age', 'Sex']].values) - df_rescaled[column].values
 
     corr, p_val = pearsonr(res_residual, res_feature)
     d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr}, ignore_index = True)
