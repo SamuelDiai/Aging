@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import os
 import glob
-from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, StratifiedKFold, RandomizedSearchCV
+#from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, StratifiedKFold, RandomizedSearchCV
 import pandas as pd
 
 if sys.platform == 'linux':
@@ -10,7 +10,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.load_and_save_environment_data import load_data
+#from aging.model.load_and_save_environment_data import load_data
 
 model = sys.argv[1]
 target_dataset = sys.argv[2]
@@ -27,21 +27,21 @@ print(hyperparameters)
 
 
 
-def dataset_map_fold(input_dataset, target_dataset, outer_splits):
+#def dataset_map_fold(input_dataset, target_dataset, outer_splits):
 
-    df = load_data(input_dataset, target_dataset)
-    X = df.drop(columns = ['residual', 'Age']).values
-    y = df['residual'].values
-
-    outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
-    list_folds = [elem[1] for elem in outer_cv.split(X, y)]
-    index = df.index
-
-    index_splits = [index[list_folds[elem]].values for elem in range(outer_splits)]
-    index_split_matching = [np.array( [fold]*len(index_splits[fold])) for fold in range(outer_splits) ]
-
-    map_eid_to_fold = dict(zip(np.concatenate(index_splits), np.concatenate(index_split_matching)))
-    return map_eid_to_fold
+#    df = load_data(input_dataset, target_dataset)
+#    X = df.drop(columns = ['residual', 'Age']).values
+#    y = df['residual'].values
+#
+#    outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
+#    list_folds = [elem[1] for elem in outer_cv.split(X, y)]
+#    index = df.index
+#
+#    index_splits = [index[list_folds[elem]].values for elem in range(outer_splits)]
+#    index_split_matching = [np.array( [fold]*len(index_splits[fold])) for fold in range(outer_splits) ]
+#
+#    map_eid_to_fold = dict(zip(np.concatenate(index_splits), np.concatenate(index_split_matching)))
+#    return map_eid_to_fold
 
 
 dataset = '_' + input_dataset + '_' + target_dataset + '_'
@@ -60,8 +60,8 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     # Avg df_val
     df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
     #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
-    map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
-    df_val['fold'] = df_val.index.map(map_eid_to_fold)
+    #map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
+    #df_val['fold'] = df_val.index.map(map_eid_to_fold)
     #df_train['fold'] = df_train.index.map(map_eid_to_fold)
 
     ## Save datasets :
