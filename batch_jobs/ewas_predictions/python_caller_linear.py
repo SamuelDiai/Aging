@@ -60,4 +60,4 @@ for column in cols_except_age_sex_residual:
     corr, p_val = pearsonr(res_residual, res_feature)
     d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr}, ignore_index = True)
 
-d.to_csv('/n/groups/patel/samuel/EWAS/linear_output/linear_correlations_%s_%s' % (input_dataset, target_dataset), index=False)
+d.to_csv('/n/groups/patel/samuel/EWAS/linear_output/linear_correlations_%s_%s.csv' % (input_dataset, target_dataset), index=False)
