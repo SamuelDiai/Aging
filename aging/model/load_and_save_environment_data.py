@@ -33,7 +33,9 @@ target_dataset_to_field = {'AbdominalComposition' : 149,
                     'Anthropometry' : 100008,
                     'ArterialStiffness' : 100007,
                     'ArterialAndBloodPressure' : 'Custom',
-                    'SpiroAndArterialAndBp' : 'Custom'
+                    'SpiroAndArterialAndBp' : 'Custom',
+                    'LiverImages' : -1,
+                    'HeartImages' = -2
                     }
 
 env_dataset_to_field = { 'InfectiousDiseaseAntigens' : 1307,

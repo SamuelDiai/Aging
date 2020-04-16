@@ -67,6 +67,7 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
+    df_val['fold'] = np.nan
     df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
     df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
     df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))

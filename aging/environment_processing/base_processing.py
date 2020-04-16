@@ -32,7 +32,7 @@ def read_data(cols_categorical, cols_features, instance, **kwargs):
     #print("PATH DATA : ", path_data)
     temp = pd.read_csv(path_data, usecols = ['eid'] + cols_features + cols_categorical, nrows = nrows)
     for col in cols_categorical:
-        temp[col] = temp[col].astype('int')
+        temp[col] = temp[col].astype('Int64')
     temp.set_index('eid', inplace = True)
 
     features_index = temp.columns
