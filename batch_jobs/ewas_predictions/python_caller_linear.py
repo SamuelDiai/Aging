@@ -50,14 +50,14 @@ cols_except_age_sex_residual = df_rescaled.drop(columns = ['residual', 'Age', 'S
 
 
 d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value'])
-for column in cols_except_age_sex_residual:
-    lin_residual = LinearRegression()
-    lin_residual.fit(df_rescaled[['Age', 'Sex']].values, df_rescaled['residual'].values)
-    res_residual = lin_residual.predict(df[['Age', 'Sex']].values) - df_rescaled['residual'].values
+lin_residual = LinearRegression()
+lin_residual.fit(df_rescaled[['Age', 'Sex']].values, df_rescaled['residual'].values)
+res_residual = df_rescaled['residual'].values - lin_residual.predict(df[['Age', 'Sex']].values)
 
+for column in cols_except_age_sex_residual:
     lin_feature = LinearRegression()
     lin_feature.fit(df_rescaled[['Age', 'Sex']].values, df_rescaled[column].values)
-    res_feature = lin_feature.predict(df_rescaled[['Age', 'Sex']].values) - df_rescaled[column].values
+    res_feature = df_rescaled[column].values - lin_feature.predict(df_rescaled[['Age', 'Sex']].values)
 
     corr, p_val = pearsonr(res_residual, res_feature)
     d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr}, ignore_index = True)
