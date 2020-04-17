@@ -3,15 +3,18 @@ from .base_processing import path_data, path_dictionary
 
 
 
-def read_diet_data(**kwargs):
-
-    cols_continuous = ['1289-0.0','1299-0.0','1309-0.0','1319-0.0','1329-0.0','1339-0.0','1349-0.0','1359-0.0','1369-0.0','1379-0.0','1389-0.0','1408-0.0','1438-0.0','1458-0.0','1478-0.0','1488-0.0',
-                           '1518-0.0','1528-0.0','1548-0.0']
-
-    cols_categorical= [ '1418-0.0','1428-0.0']
+def read_diet_data(instance = 0, **kwargs):
 
 
-    temp = pd.read_csv(path_data, usecols = ['eid'] + cols_continuous + cols_categorical, nrows = 10000).set_index('eid')
+    cols_continuous = ['1289','1299','1309','1319','1329','1339','1349','1359','1369','1379','1389','1408','1438','1458','1478','1488',
+                           '1518','1528','1548']
+    cols_continuous = [elem + '-%s.0' % instance for elem in cols_continuous]
+
+    cols_categorical= [ '1418','1428']
+    cols_categorical = [elem + '-%s.0' % instance for elem in cols_categorical]
+
+
+    temp = pd.read_csv(path_data, usecols = ['eid'] + cols_continuous + cols_categorical).set_index('eid')
     temp[cols_continuous] = temp[cols_continuous].replace(-10, 0)
     temp = temp[temp >= 0]
     temp = temp.dropna(how = 'any')

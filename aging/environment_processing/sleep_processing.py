@@ -9,11 +9,12 @@ Features used :
     Missing :
 """
 
-def read_sleep_data(**kwargs):
+def read_sleep_data(instance = 0, **kwargs):
 
-    cols_categorical = ['1170-0.0','1180-0.0','1190-0.0',
-            '1200-0.0','1210-0.0','1220-0.0']
-    cols_features = ['1160-0.0']
+    cols_categorical = ['1170','1180','1190',
+            '1200','1210','1220']
+    cols_categorical = [elem + '-%s.0' % instance for elem in cols_categorical]
+    cols_features = ['1160-%s.0' % instance]
     instance = 0
     d = read_data(cols_categorical, cols_features, instance, **kwargs)
     #print(d)

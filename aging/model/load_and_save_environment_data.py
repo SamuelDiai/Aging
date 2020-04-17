@@ -35,11 +35,15 @@ target_dataset_to_field = {'AbdominalComposition' : 149,
                     'ArterialAndBloodPressure' : 'Custom',
                     'SpiroAndArterialAndBp' : 'Custom',
                     'LiverImages' : -1,
-                    'HeartImages' = -2
+                    'HeartImages' : -2
                     }
 
 env_dataset_to_field = { 'InfectiousDiseaseAntigens' : 1307,
-                         'InfectiousDiseases' : 51428
+                         'InfectiousDiseases' : 51428,
+                         'Diet2' : 100052,
+                         'Alcohol2' : 100051,
+                         'Sleep2' : 100057,
+                         'PhysicalActivity2' : 100054
 
 }
 
