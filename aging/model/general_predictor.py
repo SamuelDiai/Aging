@@ -80,7 +80,7 @@ class BaseModel():
                     'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
                     'alpha': np.geomspace(1e-5, 1e-1, 30),
                     'hidden_layer_sizes': [(100, 50), (30, 10)],
-                    'batch_size': [8, 32],
+                    'batch_size': [1000, 500],
                     'activation': ['tanh', 'relu']
             }
 
