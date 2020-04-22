@@ -1,3 +1,5 @@
 *.csv
 *.pyc
 *.DS_Store
+*.err
+*.out
