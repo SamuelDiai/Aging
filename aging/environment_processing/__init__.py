@@ -2,7 +2,7 @@ from . import alcohol_processing
 from . import base_processing
 from . import diet_processing
 from . import disease_processing
-from . import education_procsessing
+from . import education_processing
 from . import electronic_devices_processing
 from . import employment_processing
 from . import household_processing
