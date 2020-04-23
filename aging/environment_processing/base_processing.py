@@ -14,7 +14,7 @@ elif sys.platform == 'darwin':
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
 	path_features = "/Users/samuel/Desktop/EWAS/feature_importances/"
 	path_predictions = "/Users/samuel/Desktop/EWAS/predictions/"
-	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs/"
+	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs_/"
 	path_target_residuals = "/n/groups/patel/samuel/residuals/"
 
 
