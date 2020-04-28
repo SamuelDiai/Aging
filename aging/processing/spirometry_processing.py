@@ -1,5 +1,5 @@
 from .base_processing import path_data, path_dictionary
-from pandas import concatenate
+import pandas as pd
 
 """
 Features used :
@@ -58,4 +58,4 @@ def read_spirometry_data(**kwargs):
 		df.index = df.index.astype('str') + '_' + str(instance)
 		list_df.append(df)
 
-	return concatenate(list_df)
+	return pd.concatenate(list_df)
