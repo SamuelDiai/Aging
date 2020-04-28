@@ -48,14 +48,14 @@ class GeneralPredictor(BaseModel):
 
     def optimize_hyperparameters_fold(self, df):
         if self.target == 'Sex':
-            X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
-            y = df['Sex'].values
+            X = df.drop(columns = ['Sex', 'Age when attended assessment centre'])
+            y = df[['Sex', 'eid']]
         elif self.target == 'Age':
-            X = df.drop(columns = ['Age when attended assessment centre']).values
-            y = df['Age when attended assessment centre'].values
+            X = df.drop(columns = ['Age when attended assessment centre'])
+            y = df[['Age when attended assessment centre', 'eid']]
         else :
             raise ValueError('GeneralPredictor not instancied')
-        return self.optimize_hyperparameters_fold_(X, y, df.index, self.scoring, self.fold)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold)
 
 
     def feature_importance(self, df):
