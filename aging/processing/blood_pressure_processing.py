@@ -22,7 +22,7 @@ Features used :
 def read_blood_pressure_data(**kwargs):
 	nrows = None
 	if 'nrows' in kwargs.keys():
-	    nrows = kwargs['nrows']
+		nrows = kwargs['nrows']
 
 	df_features = pd.read_csv(path_dictionary, usecols = ["FieldID", "Field"])
 	df_features.set_index('FieldID', inplace = True)
@@ -45,10 +45,10 @@ def read_blood_pressure_data(**kwargs):
 		features_index = temp.columns
 		features = []
 		for elem in features_index:
-		    if elem != age_col and elem != '31-0.0':
-		        features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
-		    else:
-		        features.append(feature_id_to_name[int(elem.split('-')[0])])
+			if elem != age_col and elem != '31-0.0':
+				features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
+			else:
+				features.append(feature_id_to_name[int(elem.split('-')[0])])
 
 		df = temp.dropna(how = 'any')
 
@@ -57,8 +57,8 @@ def read_blood_pressure_data(**kwargs):
 		df.index = df.index.astype('str') + '_' + str(instance)
 
 		for elem in pd.Series([elem.split('.')[0] for elem in df.columns.values if 'Age' not in elem and 'Sex' not in elem]).drop_duplicates():
-		    df[elem + '.0'] = (df[elem + '.0'] + df[elem + '.1'])/2
+			df[elem + '.0'] = (df[elem + '.0'] + df[elem + '.1'])/2
 		df = df[[elem for elem in df.columns if '.1' not in elem]]
-    list_df.append(df)
+		list_df.append(df)
 
 	return pd.concatenate(list_df)
