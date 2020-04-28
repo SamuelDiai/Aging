@@ -62,7 +62,7 @@ def read_eye_autorefraction_data(**kwargs):
 		## read all the data
 
 		temp = pd.read_csv(path_data,
-		                   usecols = [elem + '-%s.' % instance + str(int_) for elem in r3 + l3 + r6 + l6 for int_ in range(6)]
+		 		usecols = [elem + '-%s.' % instance + str(int_) for elem in r3 + l3 + r6 + l6 for int_ in range(6)]
 		                             + [elem + '-%s.' % instance + str(int_) for elem in  lg + rg for int_ in range(10)]
 		                             + [index_l3, index_r3, index_l6, index_r6, index_lg, index_rg]
 		                             + ['eid', '21003-%s.0' % instance, '31-0.0']
@@ -70,22 +70,21 @@ def read_eye_autorefraction_data(**kwargs):
 		temp = temp[~temp[[index_r3, index_l3, index_r6, index_l6, index_lg, index_rg]].isna().any(axis = 1)]
 
 		def apply_custom(row, instance):
-	    #print(row)
-		    index_l3 = int(row['5237-%s.0' % instance])
-		    index_r3 = int(row['5292-%s.0' % instance])
-		    index_l6 = int(row['5306-%s.0' % instance])
-		    index_r6 = int(row['5251-%s.0' % instance])
-		    index_lg = int(row['5276-%s.0' % instance])
-		    index_rg = int(row['5221-%s.0' % instance])
+			index_l3 = int(row['5237-%s.0' % instance])
+			index_r3 = int(row['5292-%s.0' % instance])
+			index_l6 = int(row['5306-%s.0' % instance])
+			index_r6 = int(row['5251-%s.0' % instance])
+			index_lg = int(row['5276-%s.0' % instance])
+			index_rg = int(row['5221-%s.0' % instance])
 
 			instance_prefix = '-%s.' % instance
-		    arr_l3 = [str(elem) + instance_prefix + str(index_l3) for elem in l3]
-		    arr_r3 = [str(elem) + instance_prefix + str(index_r3) for elem in r3]
-		    arr_l6 = [str(elem) + instance_prefix + str(index_l6) for elem in l6]
-		    arr_r6 = [str(elem) + instance_prefix + str(index_r6) for elem in r6]
-		    arr_lg = [str(elem) + instance_prefix + str(index_lg) for elem in lg]
-		    arr_rg = [str(elem) + instance_prefix + str(index_rg) for elem in rg]
-		    return pd.Series(row[sorted(arr_l3 + arr_r3 + arr_l6 + arr_r6 + arr_lg + arr_rg + ['21003-%s.0' % instance, '31-0.0'])].values)
+			arr_l3 = [str(elem) + instance_prefix + str(index_l3) for elem in l3]
+			arr_r3 = [str(elem) + instance_prefix + str(index_r3) for elem in r3]
+			arr_l6 = [str(elem) + instance_prefix + str(index_l6) for elem in l6]
+			arr_r6 = [str(elem) + instance_prefix + str(index_r6) for elem in r6]
+			arr_lg = [str(elem) + instance_prefix + str(index_lg) for elem in lg]
+			arr_rg = [str(elem) + instance_prefix + str(index_rg) for elem in rg]
+			return pd.Series(row[sorted(arr_l3 + arr_r3 + arr_l6 + arr_r6 + arr_lg + arr_rg + ['21003-%s.0' % instance, '31-0.0'])].values)
 
 		temp = temp.apply(lambda row : apply_custom(row, instance = instance), axis = 1)
 		temp.columns = sorted([elem + '-%s.0'% instance for elem in l3 + r3 + l6 + r6 + lg + rg] + ['21003-%s.0' % instance, '31-0.0'])
@@ -97,16 +96,12 @@ def read_eye_autorefraction_data(**kwargs):
 		features_index = temp.columns
 		features = []
 		for elem in features_index:
-		    if elem != '21003-%s.0'% instance and elem != '31-0.0':
-		        features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
-		    else:
-		        features.append(feature_id_to_name[int(elem.split('-')[0])])
+			if elem != '21003-%s.0'% instance and elem != '31-0.0':
+				features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
+			else:
+				features.append(feature_id_to_name[int(elem.split('-')[0])])
 		df.columns =  features
 		df['eid'] = df.index
-        df.index = df.index.astype('str') + '_' + str(instance)
-
-
-
-
+		df.index = df.index.astype('str') + '_' + str(instance)
 		list_df.append(df)
 	return pd.concatenate(list_df)
