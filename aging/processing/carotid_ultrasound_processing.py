@@ -22,6 +22,6 @@ Datafields :
 
 def read_carotid_ultrasound_data(**kwargs):
     cols_features = list(range(22670, 22681 + 1))
-	cols_filter = [ ]
-	instance = [2, 3]
-	return read_data(cols_features, cols_filter, instance, **kwargs)
+    cols_filter = [ ]
+    instance = [2, 3]
+    return read_data(cols_features, cols_filter, instance, **kwargs)
