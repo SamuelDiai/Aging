@@ -76,7 +76,7 @@ class GeneralPredictor(BaseModel):
     def normalise_dataset(self, df):
         # Save old data
         df_without_sex_and_eid = df.drop(columns = ['Sex', 'eid'])
-        sex_and_eid_columns = df['Sex']
+        sex_and_eid_columns = df[['Sex', 'eid']]
         cols = df_without_sex_and_eid.columns
         indexes = df_without_sex_and_eid.index
 
