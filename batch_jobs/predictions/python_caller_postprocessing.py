@@ -26,25 +26,25 @@ hyperparameters['outer_splits'] = outer_splits
 print(hyperparameters)
 
 
-def dataset_map_fold(dataset, target, outer_splits):
-    dataset = dataset.replace('_', '')
-    df = load_data(dataset)
-    if target == 'Sex':
-        X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
-        y = df['Sex'].values
-    elif target == 'Age':
-        X = df.drop(columns = ['Age when attended assessment centre']).values
-        y = df['Age when attended assessment centre'].values
-
-    outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
-    list_folds = [elem[1] for elem in outer_cv.split(X, y)]
-    index = df.index
-
-    index_splits = [index[list_folds[elem]].values for elem in range(outer_splits)]
-    index_split_matching = [np.array( [fold]*len(index_splits[fold])) for fold in range(outer_splits) ]
-
-    map_eid_to_fold = dict(zip(np.concatenate(index_splits), np.concatenate(index_split_matching)))
-    return map_eid_to_fold
+# def dataset_map_fold(dataset, target, outer_splits):
+#     dataset = dataset.replace('_', '')
+#     df = load_data(dataset)
+#     if target == 'Sex':
+#         X = df.drop(columns = ['Sex', 'Age when attended assessment centre']).values
+#         y = df['Sex'].values
+#     elif target == 'Age':
+#         X = df.drop(columns = ['Age when attended assessment centre']).values
+#         y = df['Age when attended assessment centre'].values
+#
+#     outer_cv = KFold(n_splits = outer_splits, shuffle = False, random_state = 0)
+#     list_folds = [elem[1] for elem in outer_cv.split(X, y)]
+#     index = df.index
+#
+#     index_splits = [index[list_folds[elem]].values for elem in range(outer_splits)]
+#     index_split_matching = [np.array( [fold]*len(index_splits[fold])) for fold in range(outer_splits) ]
+#
+#     map_eid_to_fold = dict(zip(np.concatenate(index_splits), np.concatenate(index_split_matching)))
+#     return map_eid_to_fold
 
 
 dataset = '_' + dataset + '_'
@@ -56,16 +56,15 @@ list_val = [elem for elem in list_files if 'val' in elem]
 
 if len(list_train) == outer_splits and len(list_test) == outer_splits and len(list_val) == outer_splits :
 
-    df_train = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_train])
-    df_test = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_test])
-    df_val = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_val])
+    df_train = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_train])
+    df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
+    df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
     # Avg df_val
-    df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
-    #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
-    map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
-    df_val['fold'] = df_val.index.map(map_eid_to_fold)
-    #df_train['fold'] = df_train['outer_fold']
+    df_val = df_val.groupby('id').agg({'predictions' : 'mean'})
+
+    #map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
+    #df_val['fold'] = df_val.index.map(map_eid_to_fold)
 
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv

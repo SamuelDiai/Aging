@@ -3,12 +3,12 @@ from .base_processing import read_data
 """
 Features used :
 	104 - ECG at rest
-	Errors features : '12657-2.0'
+	Errors features : '12657'
 	Missing : None
 """
 
 def read_ecg_at_rest_data(**kwargs):
-	cols_features =  ['12336-2.0', '12338-2.0', '12340-2.0', '22330-2.0', '22331-2.0', '22332-2.0', '22333-2.0', '22334-2.0', '22335-2.0', '22336-2.0', '22337-2.0', '22338-2.0']
-	cols_filter = ['12657-2.0']
-	instance = 2
+	cols_features =  ['12336', '12338', '12340', '22330', '22331', '22332', '22333', '22334', '22335', '22336', '22337', '22338']
+	cols_filter = ['12657']
+	instance = [2, 3]
 	return read_data(cols_features, cols_filter, instance, **kwargs)

@@ -14,6 +14,7 @@ from ..processing.spirometry_processing import read_spirometry_data
 from ..processing.blood_pressure_processing import read_blood_pressure_data
 from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
 from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data
+from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
 
 
 
@@ -44,7 +45,8 @@ dataset_to_field = {'AbdominalComposition' : 149,
                     'Anthropometry' : 100008,
                     'ArterialStiffness' : 100007,
                     'ArterialAndBloodPressure' : 'Custom',
-                    'SpiroAndArterialAndBp' : 'Custom'
+                    'SpiroAndArterialAndBp' : 'Custom',
+                    'CarotidUltrasound' : 101
                     }
 
 def load_data_(dataset, **kwargs):
@@ -110,6 +112,9 @@ def load_data_(dataset, **kwargs):
             df = read_arterial_and_bp_data(**kwargs)
         elif dataset == 'SpiroAndArterialAndBp':
             df = read_spiro_and_arterial_and_bp_data(**kwargs)
+        elif dataset == 'CarotidUltrasound':
+            df = read_carotid_ultrasound_data(**kwargs)
+
         return df
 
 

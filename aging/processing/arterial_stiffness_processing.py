@@ -8,8 +8,8 @@ Features used :
 """
 
 def read_arterial_stiffness_data(**kwargs):
-    cols_features =  ['4194-0.0', '4195-0.0',  '4196-0.0', '4198-0.0', '4199-0.0',
-                        '4200-0.0',  '4204-0.0', '21021-0.0']
-    instance = 0
+    cols_features =  ['4194', '4195',  '4196', '4198', '4199',
+                        '4200',  '4204', '21021']
+    instance = [0, 1, 2, 3]
     cols_filter = []
     return read_data(cols_features, cols_filter, instance, **kwargs)
