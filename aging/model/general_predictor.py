@@ -6,7 +6,7 @@ import pandas as pd
 import copy
 
 from sklearn.linear_model import ElasticNet
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, RandomForestClassifier, GradientBoostingClassifier, PredefinedSplit
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import StandardScaler
@@ -14,7 +14,7 @@ from sklearn.utils.validation import check_is_fitted
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
 
-from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, StratifiedKFold, RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit
 import numpy as np
 import scipy.stats as stat
 
