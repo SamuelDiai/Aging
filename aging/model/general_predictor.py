@@ -193,7 +193,6 @@ class BaseModel():
         best_estim = clf.best_estimator_
 
         if self.model_name == 'ElasticNet':
-
             self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
         elif self.model_name == 'RandomForest':
             self.features_imp = best_estim.feature_importances_
