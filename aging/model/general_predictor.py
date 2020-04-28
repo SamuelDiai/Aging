@@ -116,8 +116,8 @@ class BaseModel():
         #
         index_train, index_test = list_train_fold_id, list_test_folds_id[fold]
         list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
-        X = X.drop('eid')
-        y = y.drop('eid')
+        X = X.drop(columns = ['eid'])
+        y = y.drop(columns =['eid'])
         X_train, X_test, y_train, y_test = X.loc[index_train], X.loc[index_test], y.loc[index_train], y.loc[index_test]
 
         list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
