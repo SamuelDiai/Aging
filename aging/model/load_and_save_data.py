@@ -126,7 +126,7 @@ def load_data(dataset, **kwargs):
         if 'nrows' in kwargs.keys():
             nrows = kwargs['nrows']
         print("Load Existing Data")
-        df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('eid')
+        df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
         return df
     else :
         print("Error")
@@ -143,4 +143,4 @@ def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
     filename = 'Predictions_' + target + '_' + dataset + '_' + str(dataset_to_field[dataset]) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
-    predicts_df.set_index('eid').to_csv(path_predictions + '/' + filename)
+    predicts_df.set_index('id').to_csv(path_predictions + '/' + filename)
