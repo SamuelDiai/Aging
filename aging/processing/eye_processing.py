@@ -9,16 +9,16 @@ Features used :
 def read_eye_data(**kwargs):
 	cols_features =  ['20261', '5208', '5201'] + ['5264', '5256', '5265', '5257', '5262', '5254', '5263', '5255']
 	cols_filter = []
-	instance = [0, 1]
+	instance = [0]
 	a = read_data(cols_features, cols_filter, instance, **kwargs)
 	b = read_eye_autorefraction_data(**kwargs)
 	return a.join(b, rsuffix = '_del', lsuffix = '', how = 'inner').drop(columns = ['Age when attended assessment centre_del', 'Sex_del'])
 
 
 def read_eye_acuity_data(**kwargs):
-	cols_features =  ['20261', '5208', '5201']
+	cols_features =  ['20261', '5208', '5201', '5206', '5199']
 	cols_filter = []
-	instance = [0, 1]
+	instance = [0]
 	return read_data(cols_features, cols_filter, instance, **kwargs)
 
 def read_eye_intraocular_pressure_data(**kwargs):
