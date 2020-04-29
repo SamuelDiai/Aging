@@ -65,7 +65,8 @@ def read_eye_autorefraction_data(**kwargs):
 		 		usecols = [elem + '-%s.' % instance + str(int_) for elem in r3 + l3 + r6 + l6 for int_ in range(6)]
 		                             + [elem + '-%s.' % instance + str(int_) for elem in  lg + rg for int_ in range(10)]
 		                             + [index_l3, index_r3, index_l6, index_r6, index_lg, index_rg]
-		                             + ['eid', '21003-%s.0' % instance, '31-0.0']
+		                             + ['eid', '21003-%s.0' % instance, '31-0.0'],
+				nrows = nrows
 		                  ).set_index('eid')
 		temp = temp[~temp[[index_r3, index_l3, index_r6, index_l6, index_lg, index_rg]].isna().any(axis = 1)]
 
