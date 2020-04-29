@@ -29,7 +29,7 @@ def read_blood_pressure_data(**kwargs):
 	feature_id_to_name = df_features.to_dict()['Field']
 
 
-	instances : [0, 1, 2, 3]
+	instances = [0, 1, 2, 3]
 	list_df = []
 	for instance in instances :
 		age_col = '21003-' + str(instance) + '.0'
