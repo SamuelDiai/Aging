@@ -10,5 +10,5 @@ Features used :
 def read_ecg_at_rest_data(**kwargs):
 	cols_features =  ['12336', '12338', '12340', '22330', '22331', '22332', '22333', '22334', '22335', '22336', '22337', '22338']
 	cols_filter = ['12657']
-	instance = [2, 3]
+	instance = [2]
 	return read_data(cols_features, cols_filter, instance, **kwargs)
