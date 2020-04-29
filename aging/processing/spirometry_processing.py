@@ -40,7 +40,7 @@ def read_spirometry_data(**kwargs):
 
 		cols = ['3064-%s.' % instance, '3062-%s.' % instance, '3063-%s.' % instance, '3061-%s.' % instance]
 		temp = pd.read_csv(path_data,  nrows = nrows, usecols =  [elem + str(int_) for elem in cols for int_ in range(3)] +  ['eid', '21003-%s.0'% instance, '31-0.0']).set_index('eid')
-
+		temp.index = temp.index.rename('id')
 		temp = temp.apply(lambda row : custom_apply(row, instance = instance), axis = 1)
 		df = temp[~temp.isna().any(axis = 1)]
 		df.columns = ['3064-%s.0'% instance, '3062-%s.0'% instance, '3063-%s.0'% instance] +  ['21003-%s.0'% instance, '31-0.0']

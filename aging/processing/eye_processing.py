@@ -12,7 +12,7 @@ def read_eye_data(**kwargs):
 	instance = [0]
 	a = read_data(cols_features, cols_filter, instance, **kwargs)
 	b = read_eye_autorefraction_data(**kwargs)
-	return a.join(b, rsuffix = '_del', lsuffix = '', how = 'inner').drop(columns = ['Age when attended assessment centre_del', 'Sex_del'])
+	return a.join(b, rsuffix = '_del', lsuffix = '', how = 'inner').drop(columns = ['Age when attended assessment centre_del', 'Sex_del', 'eid_del'])
 
 
 def read_eye_acuity_data(**kwargs):
@@ -68,6 +68,7 @@ def read_eye_autorefraction_data(**kwargs):
 		                             + ['eid', '21003-%s.0' % instance, '31-0.0'],
 				nrows = nrows
 		                  ).set_index('eid')
+		temp.index = temp.index.rename('id')
 		temp = temp[~temp[[index_r3, index_l3, index_r6, index_l6, index_lg, index_rg]].isna().any(axis = 1)]
 
 		def apply_custom(row, instance):

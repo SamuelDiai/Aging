@@ -85,6 +85,7 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 		    dict_data[str(elem) + '-2.0'] = big_df[[str(elem) + '-%s.' % instance_ + str(int_) for int_ in range(timesteps)]].mean(axis = 1).values
 
 		temp = pd.DataFrame(data = dict_data).set_index('eid')
+		temp.index = temp.index.rename('id')
 		features_index = temp.columns
 		features = []
 		for elem in features_index:
