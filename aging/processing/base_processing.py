@@ -98,4 +98,4 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 		df['eid'] = df.index
 		df.index = df.index.astype('str') + '_' + str(instance_)
 		list_df.append(df)
-	return pd.concatenate(list_df)
+	return pd.concat(list_df)

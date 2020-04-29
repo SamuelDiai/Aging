@@ -58,4 +58,4 @@ def read_spirometry_data(**kwargs):
 		df.index = df.index.astype('str') + '_' + str(instance)
 		list_df.append(df)
 
-	return pd.concatenate(list_df)
+	return pd.concat(list_df)

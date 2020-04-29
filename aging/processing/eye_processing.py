@@ -104,4 +104,4 @@ def read_eye_autorefraction_data(**kwargs):
 		df['eid'] = df.index
 		df.index = df.index.astype('str') + '_' + str(instance)
 		list_df.append(df)
-	return pd.concatenate(list_df)
+	return pd.concat(list_df)

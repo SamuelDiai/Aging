@@ -61,4 +61,4 @@ def read_blood_pressure_data(**kwargs):
 		df = df[[elem for elem in df.columns if '.1' not in elem]]
 		list_df.append(df)
 
-	return pd.concatenate(list_df)
+	return pd.concat(list_df)
