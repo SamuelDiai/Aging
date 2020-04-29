@@ -9,7 +9,7 @@ Features used :
 def read_heart_data(**kwargs):
 	a = read_heart_size_data(**kwargs)
 	b = read_heart_PWA_data(**kwargs)
-	return a.join(b, rsuffix = '_del', lsuffix = '', how = 'inner').drop(columns = ['Age when attended assessment centre_del', 'Sex_del'])
+	return a.join(b, rsuffix = '_del', lsuffix = '', how = 'inner').drop(columns = ['Age when attended assessment centre_del', 'Sex_del', 'eid_del'])
 
 def read_heart_size_data(**kwargs):
 	cols_features = [22420, 22421, 22422, 22423, 22424, 22425, 22426, 22427]
