@@ -53,12 +53,13 @@ def read_blood_pressure_data(**kwargs):
 		df = temp.dropna(how = 'any')
 
 		df.columns = features
-		df['eid'] = df.index
-		df.index = df.index.astype('str') + '_' + str(instance)
+
 
 		for elem in pd.Series([elem.split('.')[0] for elem in df.columns.values if 'Age' not in elem and 'Sex' not in elem]).drop_duplicates():
 			df[elem + '.0'] = (df[elem + '.0'] + df[elem + '.1'])/2
 		df = df[[elem for elem in df.columns if '.1' not in elem]]
+		df['eid'] = df.index
+		df.index = df.index.astype('str') + '_' + str(instance)
 		list_df.append(df)
 
 	return pd.concat(list_df)
