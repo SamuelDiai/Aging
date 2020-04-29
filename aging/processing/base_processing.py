@@ -59,7 +59,7 @@ def read_data(cols_features, cols_filter, instances, **kwargs):
         df['eid'] = df.index
         df.index = df.index.astype('str') + '_' + str(instance)
         list_df.append(df)
-        print(df)
+        #print(df)
     return pd.concat(list_df)
 
 def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  **kwargs):
@@ -72,16 +72,16 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 	feature_id_to_name = df_features.to_dict()['Field']
 	list_df = []
 	for instance_ in instance:
-		age_col = '21003-' + str(instance) + '.0'
+		age_col = '21003-' + str(instance_) + '.0'
 
-		multi_cols = [str(elem) + '-%s.' % instance + str(int_) for elem in cols_features for int_ in range(timesteps)] + ['eid', age_col, '31-0.0']
+		multi_cols = [str(elem) + '-%s.' % instance_ + str(int_) for elem in cols_features for int_ in range(timesteps)] + ['eid', age_col, '31-0.0']
 		big_df = pd.read_csv(path_data, usecols = multi_cols)
 		dict_data = {}
 		dict_data['eid'] = big_df['eid']
 		dict_data[age_col] = big_df[age_col]
 		dict_data['31-0.0'] = big_df['31-0.0']
 		for elem in cols_features :
-		    dict_data[str(elem) + '-2.0'] = big_df[[str(elem) + '-%s.' % instance + str(int_) for int_ in range(timesteps)]].mean(axis = 1).values
+		    dict_data[str(elem) + '-2.0'] = big_df[[str(elem) + '-%s.' % instance_ + str(int_) for int_ in range(timesteps)]].mean(axis = 1).values
 
 		temp = pd.DataFrame(data = dict_data).set_index('eid')
 		features_index = temp.columns
@@ -96,6 +96,6 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 		df.columns = features
 
 		df['eid'] = df.index
-		df.index = df.index.astype('str') + '_' + str(instance)
+		df.index = df.index.astype('str') + '_' + str(instance_)
 		list_df.append(df)
 	return pd.concatenate(list_df)
