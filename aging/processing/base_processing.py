@@ -75,7 +75,7 @@ def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  *
 		age_col = '21003-' + str(instance_) + '.0'
 
 		multi_cols = [str(elem) + '-%s.' % instance_ + str(int_) for elem in cols_features for int_ in range(timesteps)] + ['eid', age_col, '31-0.0']
-		big_df = pd.read_csv(path_data, usecols = multi_cols)
+		big_df = pd.read_csv(path_data, usecols = multi_cols, nrows = nrows)
 		dict_data = {}
 		dict_data['eid'] = big_df['eid']
 		dict_data[age_col] = big_df[age_col]
