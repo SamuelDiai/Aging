@@ -18,6 +18,50 @@ elif sys.platform == 'darwin':
 	path_inputs = "/Users/samuel/Desktop/Aging/inputs/"
 
 
+def read_ethnicity_data(**kwargs):
+    dict_ethnicity_codes = {'1': 'White', '1001': 'British', '1002': 'Irish',
+                                '1003': 'White_Other',
+                                '2': 'Mixed', '2001': 'White_and_Black_Caribbean', '2002': 'White_and_Black_African',
+                                '2003': 'White_and_Asian', '2004': 'Mixed_Other',
+                                '3': 'Asian', '3001': 'Indian', '3002': 'Pakistani', '3003': 'Bangladeshi',
+                                '3004': 'Asian_Other',
+                                '4': 'Black', '4001': 'Caribbean', '4002': 'African', '4003': 'Black_Other',
+                                '5': 'Chinese',
+                                '6': 'Other_ethnicity',
+                                '-1': 'Do_not_know',
+                                '-3': 'Prefer_not_to_answer',
+                                '-5': 'NA'}
+    df = pd.read_csv(path_data, usecols = ['21000-0.0', '21000-1.0', '21000-2.0', 'eid'], **kwargs).set_index('eid')
+    df.columns = ['Ethnicity', 'Ethnicity_1', 'Ethnicity_2']
+
+    eids_missing_ethnicity = df.index[df['Ethnicity'].isna()]
+    #print(eids_missing_ethnicity)
+    for eid in eids_missing_ethnicity:
+        sample = df.loc[eid, :]
+        if not pd.isna(sample['Ethnicity_1']):
+            df.loc[eid, 'Ethnicity'] = df.loc[eid, 'Ethnicity_1']
+        elif not pd.isna(sample['Ethnicity_2']):
+            df.loc[eid, 'Ethnicity'] = df.loc[eid, 'Ethnicity_2']
+    df.drop(['Ethnicity_1', 'Ethnicity_2'], axis=1, inplace=True)
+    df['Ethnicity'] = df['Ethnicity'].fillna(-5).astype(int).astype(str)
+
+    #display(df)
+    ethnicities = pd.get_dummies(df['Ethnicity'])
+    ethnicities.rename(columns=dict_ethnicity_codes, inplace=True)
+    ethnicities['White'] = ethnicities['White'] + ethnicities['British'] + ethnicities['Irish'] + ethnicities['White_Other']
+    ethnicities['Mixed'] = ethnicities['Mixed'] + ethnicities['White_and_Black_Caribbean'] + ethnicities['White_and_Black_African'] + ethnicities['White_and_Asian'] + \
+                            ethnicities['Mixed_Other']
+    ethnicities['Asian'] = ethnicities['Asian'] + ethnicities['Indian'] + ethnicities['Pakistani'] + \
+                           ethnicities['Bangladeshi'] + ethnicities['Asian_Other']
+    ethnicities['Black'] = ethnicities['Black'] + ethnicities['Caribbean'] + ethnicities['African'] + \
+                           ethnicities['Black_Other']
+    ethnicities['Other'] = ethnicities['Other_ethnicity'] + ethnicities['Do_not_know'] + \
+                           + ethnicities['Prefer_not_to_answer'] + ethnicities['NA']
+    return ethnicities
+
+
+
+
 def read_data(cols_features, cols_filter, instances, **kwargs):
     nrows = None
     if 'nrows' in kwargs.keys():

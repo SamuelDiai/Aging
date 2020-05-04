@@ -1,6 +1,6 @@
 import pandas as pd
 import glob
-from ..processing.base_processing import path_features , path_predictions, path_inputs
+from ..processing.base_processing import path_features , path_predictions, path_inputs, read_ethnicity_data
 from ..processing.abdominal_composition_processing import read_abdominal_data
 from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_data, read_brain_dMRI_weighted_means_data
 from ..processing.heart_processing import read_heart_data, read_heart_size_data, read_heart_PWA_data
