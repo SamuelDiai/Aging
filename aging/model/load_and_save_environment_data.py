@@ -1,7 +1,7 @@
 import pandas as pd
 import glob
 
-from ..processing import read_ethnicity_data
+from ..processing.base_processing import read_ethnicity_data
 from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 from ..environment_processing.FamilyHistory import read_family_history_data
