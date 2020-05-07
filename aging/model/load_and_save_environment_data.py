@@ -7,7 +7,7 @@ from ..environment_processing.disease_processing import read_infectious_diseases
 from ..environment_processing.FamilyHistory import read_family_history_data
 from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data, \
                                                              read_general_health_data, read_general_pain_data, read_hearing_data, read_medication_data, read_mouth_teeth_data
-from ..environment_processing.LifestyleAndEnvironment import read_alcohol_data, read_diet_data, read_electronic_device_data, read_physical_activity_data, read_sexual_factors_data,\
+from ..environment_processing.LifestyleAndEnvironment import read_alcohol_data, read_diet_data, read_electronic_devices_data, read_physical_activity_data, read_sexual_factors_data,\
                                                              read_sleep_data, read_sun_exposure_data
 from ..environment_processing.PsychosocialFactors import read_mental_health_data, read_social_support_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
@@ -93,7 +93,7 @@ def load_data_env_(env_dataset, **kwargs):
         elif dataset == 'Education':
             df = read_education_data(**kwargs)
         elif dataset == 'ElectronicDevices':
-            df = read_electronic_device_data(**kwargs)
+            df = read_electronic_devices_data(**kwargs)
         elif dataset == 'Employment':
             df = read_employment_data(**kwargs)
         elif dataset == 'FamilyHistory':
