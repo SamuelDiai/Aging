@@ -1,8 +1,8 @@
 
-from . import alcohol_processing
-from . import diet_processing
-from . import electronic_devices_processing
-from . import physical_activity_processing
-from . import sexual_factors_processing
-from . import sleep_processing
-from . import sun_exposure_processing
+from .alcohol_processing import read_alcohol_data
+from .diet_processing import read_diet_data
+from .electronic_devices_processing import read_electronic_device_data
+from .physical_activity_processing import read_physical_activity_data
+from .sexual_factors_processing import read_sexual_factors_data
+from .sleep_processing import read_sleep_data
+from .sun_exposure_processing import read_sun_exposure_data

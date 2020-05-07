@@ -1,4 +1,4 @@
-from .base_processing import read_complex_data
+from ..base_processing import read_complex_data
 
     """
     1289	Cooked vegetable intake

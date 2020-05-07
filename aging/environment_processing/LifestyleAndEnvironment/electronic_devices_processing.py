@@ -1,4 +1,4 @@
-from .base_processing import read_complex_data
+from ..base_processing import read_complex_data
 """
 1110	Length of mobile phone use
 1120	Weekly usage of mobile phone in last 3 months
@@ -16,7 +16,7 @@ def read_electronic_devices_data(instances = [0, 1, 2, 3], **kwargs):
     cols_continuous = ['1120', '1130', '1140', '2237']
 
     dict_onehot = {'1150' : {1 : 'Left', 2 :'Right', 3: 'Equally left and right', -3 : 'Prefer not to answer', -1 : 'Do not know'}}
-    cols_numb_onehot= {'1150' : 1}
+    cols_numb_onehot = {'1150' : 1}
 
 
     df = read_complex_data(instances = instances,

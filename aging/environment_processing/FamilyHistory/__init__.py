@@ -1,1 +1,1 @@
-from . import family_history_processing
+from .family_history_processing import read_family_history_data

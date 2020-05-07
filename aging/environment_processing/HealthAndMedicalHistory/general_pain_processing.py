@@ -1,4 +1,4 @@
-from .base_processing import read_complex_data
+from ..base_processing import read_complex_data
 
 def read_general_pain_data(instances = [0, 1, 2, 3], **kwargs):
     """

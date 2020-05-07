@@ -1,4 +1,4 @@
-from .base_processing import read_complex_data #, path_data, path_dictionary
+from ..base_processing import read_complex_data
 
     """
     20117	Alcohol drinker status

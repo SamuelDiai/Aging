@@ -1,1 +1,1 @@
-from . import medical_diagnoses_processing
+from .medical_diagnoses_processing import read_medical_diagnoses_data
