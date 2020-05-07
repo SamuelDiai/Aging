@@ -93,7 +93,7 @@ def load_data_env_(env_dataset, **kwargs):
         elif dataset == 'Education':
             df = read_education_data(**kwargs)
         elif dataset == 'ElectronicDevices':
-            df read_electronic_device_data(**kwargs)
+            df = read_electronic_device_data(**kwargs)
         elif dataset == 'Employment':
             df = read_employment_data(**kwargs)
         elif dataset == 'FamilyHistory':
