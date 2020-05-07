@@ -1,11 +1,13 @@
 from ..base_processing import read_complex_data
 
+""" 2178	Overall health rating
+    2188	Long-standing illness, disability or infirmity
+    2296	Falls in the last year
+    2306	Weight change compared with 1 year ago
+"""
+
 def read_general_health_data(instances = [0, 1, 2, 3], **kwargs):
-    """ 2178	Overall health rating
-        2188	Long-standing illness, disability or infirmity
-        2296	Falls in the last year
-        2306	Weight change compared with 1 year ago
-    """
+
 
     dict_onehot = {'2306' : {0 : 'No - weigh about the same', 2 : 'Yes - gained weight', 3 : 'Yes - lost weight',
                              -1 : 'Do not know', -3 : 'Prefer not to answer'}}

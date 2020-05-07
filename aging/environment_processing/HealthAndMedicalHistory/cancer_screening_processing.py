@@ -1,13 +1,13 @@
 from ..base_processing import read_complex_data
 
-def read_cancer_screening_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    2345	Ever had bowel cancer screening
-    2355	Most recent bowel cancer screening
-    2365	Ever had prostate specific antigen (PSA) test
-    3809	Time since last prostate specific antigen (PSA) test
-    """
+"""
+2345	Ever had bowel cancer screening
+2355	Most recent bowel cancer screening
+2365	Ever had prostate specific antigen (PSA) test
+3809	Time since last prostate specific antigen (PSA) test
+"""
 
+def read_cancer_screening_data(instances = [0, 1, 2, 3], **kwargs):
     dict_onehot = {}
     cols_numb_onehot = {}
     cols_ordinal = ['2345', '2365']

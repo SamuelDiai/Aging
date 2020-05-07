@@ -1,11 +1,11 @@
 from ..base_processing import read_complex_data
 
-def read_breathing_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    2316	Wheeze or whistling in the chest in last year
-    4717	Shortness of breath walking on level ground
+"""
+2316	Wheeze or whistling in the chest in last year
+4717	Shortness of breath walking on level ground
 
-    """
+"""
+def read_breathing_data(instances = [0, 1, 2, 3], **kwargs):
 
     dict_onehot = {}
 

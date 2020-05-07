@@ -1,13 +1,15 @@
 from ..base_processing import read_complex_data
 
+"""
+6177	Medication for cholesterol, blood pressure or diabetes
+6153	Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones
+6154	Medication for pain relief, constipation, heartburn
+6155	Vitamin and mineral supplements
+6179	Mineral and other dietary supplements
+"""
+
 def read_medication_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    6177	Medication for cholesterol, blood pressure or diabetes
-    6153	Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones
-    6154	Medication for pain relief, constipation, heartburn
-    6155	Vitamin and mineral supplements
-    6179	Mineral and other dietary supplements
-    """
+
 
     dict_onehot = {'6177' : {1 : 'Cholesterol lowering medication', 2 : 'Blood pressure medication', 3 : 'Insulin',
                              -7 : 'None of the above', -1 : 'Do not know', -3 : 'Prefer not to answer'},

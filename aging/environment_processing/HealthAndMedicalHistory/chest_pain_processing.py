@@ -1,14 +1,14 @@
 from ..base_processing import read_complex_data
 
+"""
+2335	Chest pain or discomfort
+3606	Chest pain or discomfort walking normally
+3616	Chest pain due to walking ceases when standing still
+3751	Chest pain or discomfort when walking uphill or hurrying
+
+"""
+
 def read_chest_pain_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    2335	Chest pain or discomfort
-    3606	Chest pain or discomfort walking normally
-    3616	Chest pain due to walking ceases when standing still
-    3751	Chest pain or discomfort when walking uphill or hurrying
-
-    """
-
     dict_onehot = {}
     cols_numb_onehot = {}
     cols_ordinal = ['2335', '3606', '3616', '3751']

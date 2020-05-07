@@ -1,9 +1,9 @@
 from ..base_processing import read_complex_data
 
-    """
-        6146	Attendance/disability/mobility allowance
-        4674	Private healthcare
-    """
+"""
+    6146	Attendance/disability/mobility allowance
+    4674	Private healthcare
+"""
 
 def read_other_sociodemographics_data(instances = [0, 1, 2, 3], **kwargs):
     dict_onehot = {'6146'  : {1 : 'Attendance allowance', 2 :  'Disability living allowance', 3 : 'Blue badge', -7 :'None of the above',

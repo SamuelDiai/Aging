@@ -1,22 +1,24 @@
 from ..base_processing import read_complex_data
 
-def read_hearing_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    2247	Hearing difficulty/problems
-    2257	Hearing difficulty/problems with background noise
-    3393	Hearing aid user
-    4792	Cochlear implant
-    4803	Tinnitus
-    4814	Tinnitus severity/nuisance => Modify encoding
-    4825	Noisy workplace => modify encoding
-    4836	Loud music exposure frequency => modify encoding
-    ## Remove deaf ppl
+"""
+2247	Hearing difficulty/problems
+2257	Hearing difficulty/problems with background noise
+3393	Hearing aid user
+4792	Cochlear implant
+4803	Tinnitus
+4814	Tinnitus severity/nuisance => Modify encoding
+4825	Noisy workplace => modify encoding
+4836	Loud music exposure frequency => modify encoding
+## Remove deaf ppl
 
-    NEW ENCODING :
-    13 -> 1
-    12 -> 2
-    11 -> 3
-    """
+NEW ENCODING :
+13 -> 1
+12 -> 2
+11 -> 3
+"""
+
+def read_hearing_data(instances = [0, 1, 2, 3], **kwargs):
+
 
     dict_onehot = {'4803' : {11 : 'Yes, now most or all of the time', 12 : 'Yes, now a lot of the time', 13 : 'Yes, now some of the time',
                              14 : 'Yes, but not now, but have in the past', 0 :'No, never', -1 : 'Do not know', -3 : 'Prefer not to answer'},

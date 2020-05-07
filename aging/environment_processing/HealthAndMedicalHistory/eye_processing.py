@@ -1,35 +1,38 @@
 from ..base_processing import read_complex_data
 
+"""
+EYE :
+
+2207	Wears glasses or contact lenses
+2217	Age started wearing glasses or contact lenses
+6147	Reason for glasses/contact lenses => 6
+5843	Which eye(s) affected by myopia (short sight)
+5832	Which eye(s) affected by hypermetropia (long sight)
+5610	Which eye(s) affected by presbyopia
+5855	Which eye(s) affected by astigmatism
+6205	Which eye(s) affected by strabismus (squint)
+5408	Which eye(s) affected by amblyopia (lazy eye)
+5877	Which eye(s) affected by other eye condition
+5934	Which eye(s) affected by other serious eye condition
+2227	Other eye problems
+6148	Eye problems/disorders => 5
+5890	Which eye(s) affected by diabetes-related eye disease
+6119	Which eye(s) affected by glaucoma
+5419	Which eye(s) affected by injury or trauma resulting in loss of vision
+5441	Which eye(s) are affected by cataract
+5912	Which eye(s) affected by macular degeneration
+5901	Age when diabetes-related eye disease diagnosed
+4689	Age glaucoma diagnosed
+5430	Age when loss of vision due to injury or trauma diagnosed
+4700	Age cataract diagnosed
+5923	Age macular degeneration diagnosed
+5945	Age other serious eye condition diagnosed
+
+"""
+
+
 def read_eye_history_data(instances = [0, 1, 2, 3], **kwargs):
-    """
-    EYE :
 
-    2207	Wears glasses or contact lenses
-    2217	Age started wearing glasses or contact lenses
-    6147	Reason for glasses/contact lenses => 6
-    5843	Which eye(s) affected by myopia (short sight)
-    5832	Which eye(s) affected by hypermetropia (long sight)
-    5610	Which eye(s) affected by presbyopia
-    5855	Which eye(s) affected by astigmatism
-    6205	Which eye(s) affected by strabismus (squint)
-    5408	Which eye(s) affected by amblyopia (lazy eye)
-    5877	Which eye(s) affected by other eye condition
-    5934	Which eye(s) affected by other serious eye condition
-    2227	Other eye problems
-    6148	Eye problems/disorders => 5
-    5890	Which eye(s) affected by diabetes-related eye disease
-    6119	Which eye(s) affected by glaucoma
-    5419	Which eye(s) affected by injury or trauma resulting in loss of vision
-    5441	Which eye(s) are affected by cataract
-    5912	Which eye(s) affected by macular degeneration
-    5901	Age when diabetes-related eye disease diagnosed
-    4689	Age glaucoma diagnosed
-    5430	Age when loss of vision due to injury or trauma diagnosed
-    4700	Age cataract diagnosed
-    5923	Age macular degeneration diagnosed
-    5945	Age other serious eye condition diagnosed
-
-    """
     dict_onehot = {'6148' : {1: 'Diabetes related eye disease',
                              2: 'Glaucoma',
                              3: 'Injury or trauma resulting in loss of vision',

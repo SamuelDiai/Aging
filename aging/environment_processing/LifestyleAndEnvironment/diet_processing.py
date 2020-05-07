@@ -1,6 +1,6 @@
 from ..base_processing import read_complex_data
 
-    """
+"""
     1289	Cooked vegetable intake
     1299	Salad / raw vegetable intake
     1309	Fresh fruit intake
@@ -32,8 +32,7 @@ from ..base_processing import read_complex_data
     1508	Coffee type
     1538	Major dietary changes in the last 5 years
 
-
-    """
+"""
 
 def read_diet_data(instances = [0, 1, 2, 3], **kwargs):
 
