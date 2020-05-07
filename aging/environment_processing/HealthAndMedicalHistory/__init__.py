@@ -2,7 +2,7 @@ from .breathing_processing import read_breathing_data
 from .cancer_screening_processing import read_cancer_screening_data
 from .chest_pain_processing import read_chest_pain_data
 from .claudification_processing import read_claudication_data
-from .eye_processing import read_claudication_data
+from .eye_processing import read_eye_history_data
 from .general_health_processing import read_general_health_data
 from .general_pain_processing import read_general_pain_data
 from .hearing_processing import read_hearing_data
