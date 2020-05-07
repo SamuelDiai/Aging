@@ -100,7 +100,7 @@ class BaseModel():
         #
         outer_cv = KFold(n_splits = 10, shuffle = False, random_state = 0)
         #
-        #         # if outer_splits = 10, split 1/10 for testing and 9/10 for training
+        #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
         #         # test_fold contain all test list_test_folds
         #         # train_fold contain all the input dataset except the test fold
         #
@@ -155,7 +155,7 @@ class BaseModel():
 
             y_predict_train_val_fold = model_.predict(X_train_val)
 
-            df_train_val = pd.DataFrame(data = {'id' : index_train_val, 'fold' : np.nan, 'predictions' : y_predict_train_val_fold })
+            df_train_val = pd.DataFrame(data = {'id' : index_train_val, 'outer_fold' : np.nan, 'pred' : y_predict_train_val_fold })
             list_train_val.append(df_train_val)
 
 
@@ -163,8 +163,8 @@ class BaseModel():
 
         y_predict_test = best_estim.predict(X_test)
         y_predict_train = best_estim.predict(X_train)
-        df_test = pd.DataFrame(data = {'id' : index_test, 'fold' : fold, 'predictions' : y_predict_test} )
-        df_train = pd.DataFrame(data = {'id' : index_train, 'fold' : fold, 'predictions' : y_predict_train })
+        df_test = pd.DataFrame(data = {'id' : index_test, 'outer_fold' : fold, 'pred' : y_predict_test} )
+        df_train = pd.DataFrame(data = {'id' : index_train, 'outer_fold' : fold, 'pred' : y_predict_train })
 
 
         best_params_flat = []
@@ -175,8 +175,6 @@ class BaseModel():
     	    else:
                 best_params_flat.append(elem)
         self.best_params = best_params_flat
-
-
 
         return df_test, df_val, df_train
 

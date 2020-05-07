@@ -58,7 +58,7 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     df_val = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_val])
 
     # Avg df_val
-    df_val = df_val.groupby('eid').agg({'predictions' : 'mean'})
+    df_val = df_val.groupby('eid').agg({'pred' : 'mean'})
     #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
     #map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
     #df_val['fold'] = df_val.index.map(map_eid_to_fold)
@@ -68,9 +68,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
     df_val['fold'] = np.nan
-    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
-    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
-    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))
+    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
+    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
+    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")

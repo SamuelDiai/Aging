@@ -1,8 +1,16 @@
 import pandas as pd
 import glob
+
+from ..processing import read_ethnicity_data
 from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
-
+from ..environment_processing.FamilyHistory import read_family_history_data
+from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data,
+                                                             read_general_health_data, read_general_pain_data, read_hearing_data, read_medication_data, read_mouth_teeth_data
+from ..environment_processing.LifestyleAndEnvironment import read_alcohol_data, read_diet_data, read_electronic_device_data, read_physical_activity_data, read_sexual_factors_data,
+                                                             read_sleep_data, read_sun_exposure_data
+from ..environment_processing.PsychosocialFactors import read_mental_health_data, read_social_support_data
+from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
 
 
 
@@ -38,13 +46,33 @@ target_dataset_to_field = {'AbdominalComposition' : 149,
                     'HeartImages' : -2
                     }
 
-env_dataset_to_field = { 'InfectiousDiseaseAntigens' : 1307,
-                         'InfectiousDiseases' : 51428,
-                         'Diet2' : 100052,
-                         'Alcohol2' : 100051,
-                         'Sleep2' : 100057,
-                         'PhysicalActivity2' : 100054
-
+env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
+                         #'InfectiousDiseases' : 51428,
+                         'Alcohol' : 100051,
+                         'Diet' : 100052,
+                         'Education' : 100063,
+                         'ElectronicDevices' : 100053,
+                         'Employment' : 100064,
+                         'FamilyHistory' : 100034,
+                         'Eyesight' : 100041,
+                         'Mouth' : 100046,
+                         'GeneralHealth' : 100042,
+                         'Breathing' : 100037,
+                         'Claudification' : 100038,
+                         'GeneralPain' : 100048,
+                         'ChestPain' :100039,
+                         'CancerScreening' : 100040,
+                         'Medication': 100045,
+                         'Hearing' : 100043,
+                         'Household' : 100066,
+                         'MentalHealth' : 100060,
+                         'OtherSociodemographics' : 100067,
+                         'PhysicalActivity' : 100054,
+                         'SexualFactors' : 100056,
+                         'Sleep' : 100057,
+                         'SocialSupport' : 100061,
+                         'SunExposure' : 100055,
+                         'MedicalDiagnoses' : 41270,
 }
 
 
@@ -58,22 +86,89 @@ def load_data_env_(env_dataset, **kwargs):
             df = read_infectious_disease_antigens_data(**kwargs)
         elif dataset == 'InfectiousDiseases':
             df = read_infectious_diseases_data(**kwargs)
+        elif dataset == 'Alcohol':
+            df = read_alcohol_data(**kwargs)
+        elif dataset == 'Diet':
+            df = read_diet_data(**kwargs)
+        elif dataset == 'Education':
+            df = read_education_data(**kwargs)
+        elif dataset == 'ElectronicDevices':
+            df read_electronic_device_data(**kwargs)
+        elif dataset == 'Employment':
+            df = read_employment_data(**kwargs)
+        elif dataset == 'FamilyHistory':
+            df = read_family_history_data(**kwargs)
+        elif dataset == 'Eyesight':
+            df = read_eye_history_data(**kwargs)
+        elif dataset == 'Mouth':
+            df = read_mouth_teeth_data(**kwargs)
+        elif dataset == 'GeneralHealth':
+            df = read_general_health_data(**kwargs)
+        elif dataset == 'Breathing':
+            df = read_breathing_data(**kwargs)
+        elif dataset == 'Claudification':
+            df = read_claudication_data(**kwargs)
+        elif dataset == 'GeneralPain':
+            df = read_general_pain_data(**kwargs)
+        elif dataset == 'ChestPain':
+            df = read_chest_pain_data(**kwargs)
+        elif dataset == 'CancerScreening':
+            df = read_cancer_screening_data(**kwargs)
+        elif dataset == 'Medication':
+            df = read_medication_data(**kwargs)
+        elif dataset == 'Hearing':
+            df = read_hearing_data(**kwargs)
+        elif dataset == 'Household':
+            df = read_household_data(**kwargs)
+        elif dataset == 'MentalHealth':
+            df = read_mental_health_data(**kwargs)
+        elif dataset == 'OtherSociodemographics':
+            df = read_other_sociodemographics_data(**kwargs)
+        elif dataset == 'PhysicalActivity':
+            df = read_physical_activity_data(**kwargs)
+        elif dataset == 'SexualFactors':
+            df = read_sexual_factors_data(**kwargs)
+        elif dataset == 'Sleep':
+            df = read_sleep_data(**kwargs)
+        elif dataset == 'SocialSupport':
+            df = read_social_support_data(**kwargs)
+        elif dataset == 'SunExposure':
+            df = read_sun_exposure_data(**kwargs)
+        elif 'MedicalDiagnoses' in dataset :
+            letter = dataset.split('MedicalDiagnoses')[1]
+            df = read_medical_diagnoses_data(letter, **kwargs)
         return df
+
+
+def load_ethnicity(**kwargs):
+    """
+    Load ethnicity data : must have eid as index
+    """
+    selected_inputs = glob.glob(path_inputs_env + 'ethnicities.csv')
+    if len(selected_inputs) == 0:
+        print("Load New Ethnicity Data")
+        df_ethnicities = load_ethnicity_data(**kwargs)
+        df_ethnicities.to_csv(path_inputs_env + 'ethnicities.csv')
+        return df_ethnicities
+    elif len(selected_inputs) == 1 :
+        print("Load Existing Ethnicity Data")
+        df_ethnicities = pd.read_csv(selected_inputs[0], **kwargs).set_index('eid')
+        return df_ethnicities
+    else :
+        print("Error")
+        raise ValueError('Too many input file for the Ethnicity dataset')
+
 
 def load_data_env(env_dataset, **kwargs):
     selected_inputs = glob.glob(path_inputs_env + '%s.csv' % env_dataset)
-    print(selected_inputs)
     if len(selected_inputs) == 0:
         print("Load New Data")
         df = load_data_env_(env_dataset, **kwargs)
         df.to_csv(path_inputs_env + dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
-        nrows = None
-        if 'nrows' in kwargs.keys():
-            nrows = kwargs['nrows']
         print("Load Existing Data")
-        df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('eid')
+        df = pd.read_csv(selected_inputs[0], **kwargs).set_index('id')
         return df
     else :
         print("Error")
@@ -87,19 +182,45 @@ def load_target_residuals(target_dataset, **kwargs):
 
     ## Select best model :
     if len(list_files) == 1 :
-        df_organ = pd.read_csv(list_files[0]).set_index('eid')
+        df_organ = pd.read_csv(list_files[0]).set_index('id')
     else :
         raise ValueError('')
-    return df_organ[['residual', 'Sex', 'Age']]
+    return df_organ[['residual', 'Sex', 'Age', 'eid']]
 
 
 ## Load FULL DATA
 
 def load_data(env_dataset, target_dataset, **kwargs):
+    """
 
+    return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
+
+    """
+    ## Join on id by default
     df_env = load_data_env(env_dataset, **kwargs)
     df_target = load_target_residuals(target_dataset, **kwargs)
-    df = df_env.join(df_target, how = 'inner')
+    df_ethnicities = load_ethnicity(**kwargs)
+
+    ## Try intersection
+    df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
+    columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+    df = df[columns_not_dup]
+
+    ## If empty intersection join on eid
+    if df.shape[0] == 0:
+        ## Change index :
+        df_env = df_env.reset_index().set_index('eid')
+        df_target = df_target.reset_index().set_index('eid')
+        ## Join
+        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
+        ## Remove duplicates including id
+        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+        df = df[columns_not_dup]
+        ## Recreate id
+        df['id'] = df.index
+        df = df[columns_not_dup].reset_index().set_index('id')
+
+    df = df.merge(df_ethnicities, on = 'eid', right_index = True)
     return df
 
 
