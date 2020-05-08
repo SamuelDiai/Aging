@@ -243,6 +243,7 @@ def load_data(env_dataset, target_dataset, **kwargs):
     df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
     columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
     df = df[columns_not_dup]
+    print(df.head())
 
     ## If empty intersection join on eid
     if df.shape[0] == 0:
