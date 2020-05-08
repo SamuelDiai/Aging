@@ -2,6 +2,7 @@
 from ..base_processing import path_data, path_inputs_env
 import glob
 import pandas as pd
+import copy
 
 
 
@@ -23,7 +24,7 @@ def read_medical_diagnoses_data(letter, **kwargs):
             df_all_cols = pd.read_csv(list_files_all[0], nrows = 1).set_index('eid').columns
             cols_letter = df_all_cols[df_all_cols.str.contains('^%s' % letter)]
             ### Read corresponding columns + eid
-            df_letter = pd.read_csv(list_files_all[0], usecols = ['eid'] + cols_letter , **kwargs).set_index('eid')
+            df_letter = pd.read_csv(list_files_all[0], usecols = ['eid'] + list(cols_letter) , **kwargs).set_index('eid')
 
 
         elif len(list_files_all) == 0:
@@ -41,9 +42,14 @@ def read_medical_diagnoses_data(letter, **kwargs):
 
         ## Add eid column and create new index : id
         df_letter['eid'] = df_letter.index
-        df_letter.index = (df_letter.index.astype('str') + '_0').rename('id')
-        df_letter.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter)
-        return df_letter
+        list_df = []
+        for instance in range(4):
+            df_letter_instance = copy.deepcopy(df_letter)
+            df_letter_instance.index = (df_letter_instance.index.astype('str') + '_%s' % instance).rename('id')
+            list_df.append(df_letter_instance)
+        df_letter_final = pd.concat(list_df)
+        df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter)
+        return df_letter_final
 
 
 
