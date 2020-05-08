@@ -167,7 +167,7 @@ def load_data_env(env_dataset, **kwargs):
     if len(selected_inputs) == 0:
         print("Load New Data")
         df = load_data_env_(env_dataset, **kwargs)
-        df.to_csv(path_inputs_env + dataset + '.csv')
+        df.to_csv(path_inputs_env + env_dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
         print("Load Existing Data")
