@@ -1,7 +1,7 @@
 import pandas as pd
 import sys
 from copy import deepcopy
-
+import numpy as np
 # To edit for dev
 if sys.platform == 'linux':
 	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
