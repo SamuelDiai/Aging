@@ -49,7 +49,7 @@ def read_medical_diagnoses_data(letter, **kwargs):
             list_df.append(df_letter_instance)
         df_letter_final = pd.concat(list_df)
         df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter)
-        return df_letter_final
+        return df_letter_final.astype('int8')
 
 
 
