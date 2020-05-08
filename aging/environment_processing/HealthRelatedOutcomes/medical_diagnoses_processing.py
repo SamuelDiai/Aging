@@ -47,9 +47,9 @@ def read_medical_diagnoses_data(letter, **kwargs):
             df_letter_instance = copy.deepcopy(df_letter)
             df_letter_instance.index = (df_letter_instance.index.astype('str') + '_%s' % instance).rename('id')
             list_df.append(df_letter_instance)
-        df_letter_final = pd.concat(list_df)
-        df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter)
-        return df_letter_final.astype('int8')
+        df_letter_final = pd.concat(list_df).astype('int8')
+        df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter, chunksize = 20000)
+        return df_letter_final
 
 
 
