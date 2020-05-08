@@ -42,12 +42,13 @@ def read_medical_diagnoses_data(letter, **kwargs):
 
         ## Add eid column and create new index : id
         df_letter['eid'] = df_letter.index
+        df_letter = df_letter.astype('int8')
         list_df = []
         for instance in range(4):
             df_letter_instance = copy.deepcopy(df_letter)
             df_letter_instance.index = (df_letter_instance.index.astype('str') + '_%s' % instance).rename('id')
             list_df.append(df_letter_instance)
-        df_letter_final = pd.concat(list_df).astype('int8')
+        df_letter_final = pd.concat(list_df)
         df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter, chunksize = 20000)
         return df_letter_final
 
