@@ -76,7 +76,7 @@ env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
                          'SunExposure' : 100055,
 }
 
-medical_diagnoses_dict = dict(zip(['MedicalDiagnoses%s' % letter for letter in ascii_uppercase], [41270 for letter in ascii_uppercase]))
+medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [41270 for letter in ascii_uppercase]))
 env_dataset_to_field = {**env_dataset_to_field, **medical_diagnoses_dict}
 
 
@@ -138,8 +138,8 @@ def load_data_env_(env_dataset, **kwargs):
             df = read_social_support_data(**kwargs)
         elif env_dataset == 'SunExposure':
             df = read_sun_exposure_data(**kwargs)
-        elif 'MedicalDiagnoses' in env_dataset :
-            letter = env_dataset.split('MedicalDiagnoses')[1]
+        elif 'medical_diagnoses_' in env_dataset :
+            letter = env_dataset.split('medical_diagnoses_')[1]
             df = read_medical_diagnoses_data(letter, **kwargs)
         return df
 
