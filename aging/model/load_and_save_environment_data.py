@@ -85,60 +85,60 @@ def load_data_env_(env_dataset, **kwargs):
     if env_dataset not in env_dataset_to_field.keys():
         raise ValueError('Wrong dataset name ! ')
     else :
-        if dataset == 'InfectiousDiseaseAntigens':
+        if env_dataset == 'InfectiousDiseaseAntigens':
             df = read_infectious_disease_antigens_data(**kwargs)
-        elif dataset == 'InfectiousDiseases':
+        elif env_dataset == 'InfectiousDiseases':
             df = read_infectious_diseases_data(**kwargs)
-        elif dataset == 'Alcohol':
+        elif env_dataset == 'Alcohol':
             df = read_alcohol_data(**kwargs)
-        elif dataset == 'Diet':
+        elif env_dataset == 'Diet':
             df = read_diet_data(**kwargs)
-        elif dataset == 'Education':
+        elif env_dataset == 'Education':
             df = read_education_data(**kwargs)
-        elif dataset == 'ElectronicDevices':
+        elif env_dataset == 'ElectronicDevices':
             df = read_electronic_devices_data(**kwargs)
-        elif dataset == 'Employment':
+        elif env_dataset == 'Employment':
             df = read_employment_data(**kwargs)
-        elif dataset == 'FamilyHistory':
+        elif env_dataset == 'FamilyHistory':
             df = read_family_history_data(**kwargs)
-        elif dataset == 'Eyesight':
+        elif env_dataset == 'Eyesight':
             df = read_eye_history_data(**kwargs)
-        elif dataset == 'Mouth':
+        elif env_dataset == 'Mouth':
             df = read_mouth_teeth_data(**kwargs)
-        elif dataset == 'GeneralHealth':
+        elif env_dataset == 'GeneralHealth':
             df = read_general_health_data(**kwargs)
-        elif dataset == 'Breathing':
+        elif env_dataset == 'Breathing':
             df = read_breathing_data(**kwargs)
-        elif dataset == 'Claudification':
+        elif env_dataset == 'Claudification':
             df = read_claudication_data(**kwargs)
-        elif dataset == 'GeneralPain':
+        elif env_dataset == 'GeneralPain':
             df = read_general_pain_data(**kwargs)
-        elif dataset == 'ChestPain':
+        elif env_dataset == 'ChestPain':
             df = read_chest_pain_data(**kwargs)
-        elif dataset == 'CancerScreening':
+        elif env_dataset == 'CancerScreening':
             df = read_cancer_screening_data(**kwargs)
-        elif dataset == 'Medication':
+        elif env_dataset == 'Medication':
             df = read_medication_data(**kwargs)
-        elif dataset == 'Hearing':
+        elif env_dataset == 'Hearing':
             df = read_hearing_data(**kwargs)
-        elif dataset == 'Household':
+        elif env_dataset == 'Household':
             df = read_household_data(**kwargs)
-        elif dataset == 'MentalHealth':
+        elif env_dataset == 'MentalHealth':
             df = read_mental_health_data(**kwargs)
-        elif dataset == 'OtherSociodemographics':
+        elif env_dataset == 'OtherSociodemographics':
             df = read_other_sociodemographics_data(**kwargs)
-        elif dataset == 'PhysicalActivity':
+        elif env_dataset == 'PhysicalActivity':
             df = read_physical_activity_data(**kwargs)
-        elif dataset == 'SexualFactors':
+        elif env_dataset == 'SexualFactors':
             df = read_sexual_factors_data(**kwargs)
-        elif dataset == 'Sleep':
+        elif env_dataset == 'Sleep':
             df = read_sleep_data(**kwargs)
-        elif dataset == 'SocialSupport':
+        elif env_dataset == 'SocialSupport':
             df = read_social_support_data(**kwargs)
-        elif dataset == 'SunExposure':
+        elif env_dataset == 'SunExposure':
             df = read_sun_exposure_data(**kwargs)
-        elif 'MedicalDiagnoses' in dataset :
-            letter = dataset.split('MedicalDiagnoses')[1]
+        elif 'MedicalDiagnoses' in env_dataset :
+            letter = env_dataset.split('MedicalDiagnoses')[1]
             df = read_medical_diagnoses_data(letter, **kwargs)
         return df
 
