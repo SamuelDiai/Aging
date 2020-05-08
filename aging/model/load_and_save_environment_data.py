@@ -233,9 +233,11 @@ def load_data(env_dataset, target_dataset, **kwargs):
     """
     ## Join on id by default
     df_env = load_data_env(env_dataset, **kwargs)
+    print(df_env.head())
     df_target = load_target_residuals(target_dataset, **kwargs)
     print(df_target.head())
     df_ethnicities = load_ethnicity(**kwargs)
+    print(df_ethnicities.head())
 
     ## Try intersection
     df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
