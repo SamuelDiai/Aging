@@ -24,7 +24,7 @@ def read_medical_diagnoses_data(letter, **kwargs):
             df_all_cols = pd.read_csv(list_files_all[0], nrows = 1).set_index('eid').columns
             cols_letter = df_all_cols[df_all_cols.str.contains('^%s' % letter)]
             ### Read corresponding columns + eid
-            df_letter = pd.read_csv(list_files_all[0], usecols = ['eid'] + list(cols_letter) , **kwargs).set_index('eid')
+            df_letter = pd.read_csv(list_files_all[0], usecols = ['eid'] + list(cols_letter) ,chunksize = 20000,  **kwargs).set_index('eid')
 
 
         elif len(list_files_all) == 0:
