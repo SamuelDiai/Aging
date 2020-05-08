@@ -12,6 +12,7 @@ from ..environment_processing.LifestyleAndEnvironment import read_alcohol_data, 
                                                              read_sleep_data, read_sun_exposure_data
 from ..environment_processing.PsychosocialFactors import read_mental_health_data, read_social_support_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
+from ..environment_processing.HealthRelatedOutcomes import read_medical_diagnoses_data
 
 
 
