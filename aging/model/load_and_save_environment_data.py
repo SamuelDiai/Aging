@@ -14,7 +14,32 @@ from ..environment_processing.PsychosocialFactors import read_mental_health_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
 from ..environment_processing.HealthRelatedOutcomes import read_medical_diagnoses_data
 
-
+dict_target_to_instance = {"Brain" : 2,
+                           "UrineAndBlood" : 0,
+                           "HeartPWA" : 2,
+                           "Heart" : 2,
+                           "Eye" :0,
+                           "EyeIntraoculaPressure" :0,
+                           "AnthropometryImpedance" :0,
+                           "BrainGreyMatterVolumes" : 2,
+                           "AnthropometryBodySize" : 0,
+                           "UrineBiochemestry" :0,
+                           "ArterialAndBloodPressure" :0,
+                           "Spirometry" : 0,
+                           "ECGAtRest" :2,
+                           "EyeAutorefraction" :0,
+                           "ArterialStiffness" : 0,
+                           "BloodCount" : 0,
+                           "BrainSubcorticalVolumes" :2,
+                           "EyeAcuity" : 0,
+                           "HeartSize" :2,
+                           "BloodPressure" :0,
+                           "SpiroAndArterialAndBp" :0,
+                           "HeartImages" :2,
+                           "BloodBiochemestry" : 0,
+                           "Blood" : 0,
+                           "Anthropometry" : 0,
+                           "LiverImages" : 2}
 
 target_dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -186,7 +211,13 @@ def load_target_residuals(target_dataset, **kwargs):
 
     ## Select best model :
     if len(list_files) == 1 :
-        df_organ = pd.read_csv(list_files[0]).set_index('id')
+
+        df_organ = pd.read_csv(list_files[0])
+        if 'id' in df_organ.columns :
+            df_organ = df_organ.set_index('id')
+        elif 'id' not in  df_organ.columns and 'eid' in df_organ.columns :
+            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(target_dataset_to_field[target_dataset])
+            df_organ = df_organ.set_index('id')
     else :
         raise ValueError('')
     return df_organ[['residual', 'Sex', 'Age', 'eid']]
