@@ -72,8 +72,10 @@ env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
                          'Sleep' : 100057,
                          'SocialSupport' : 100061,
                          'SunExposure' : 100055,
-                         'MedicalDiagnoses' : 41270,
 }
+
+medical_diagnoses_dict = dict(zip(['MedicalDiagnoses%s' % letter for letter in ascii_uppercase], [41270 for letter in ascii_uppercase]))
+env_dataset_to_field = {**env_dataset_to_field, **medical_diagnoses_dict}
 
 
 ## Load ENV data
