@@ -1,5 +1,6 @@
 import pandas as pd
 import glob
+from string import ascii_uppercase
 
 from ..processing.base_processing import read_ethnicity_data
 from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
