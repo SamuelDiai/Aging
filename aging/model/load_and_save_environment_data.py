@@ -216,7 +216,7 @@ def load_target_residuals(target_dataset, **kwargs):
         if 'id' in df_organ.columns :
             df_organ = df_organ.set_index('id')
         elif 'id' not in  df_organ.columns and 'eid' in df_organ.columns :
-            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(target_dataset_to_field[target_dataset])
+            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(dict_target_to_instance[target_dataset])
             df_organ = df_organ.set_index('id')
     else :
         raise ValueError('')
