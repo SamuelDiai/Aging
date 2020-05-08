@@ -3,6 +3,7 @@ from ..base_processing import path_data, path_inputs_env
 import glob
 import pandas as pd
 import copy
+import sys
 
 
 
@@ -26,6 +27,7 @@ def read_medical_diagnoses_data(letter, **kwargs):
             ### Read corresponding columns + eid
             df_letter = pd.read_csv(list_files_all[0], usecols = ['eid'] + list(cols_letter) ,chunksize = 20000,  **kwargs).set_index('eid')
 
+            print("SIZE RAW LETTER :", sys.getsizeof(df_letter))
 
         elif len(list_files_all) == 0:
             ### Read all dataframe + saving it
@@ -43,12 +45,14 @@ def read_medical_diagnoses_data(letter, **kwargs):
         ## Add eid column and create new index : id
         df_letter['eid'] = df_letter.index
         df_letter = df_letter.astype('int8')
+        print("SIZE INT8 LETTER :", sys.getsizeof(df_letter))
         list_df = []
         for instance in range(4):
             df_letter_instance = copy.deepcopy(df_letter)
             df_letter_instance.index = (df_letter_instance.index.astype('str') + '_%s' % instance).rename('id')
             list_df.append(df_letter_instance)
         df_letter_final = pd.concat(list_df)
+        print("SIZE CONCAT :", sys.getsizeof(df_letter_final))
         df_letter_final.to_csv(path_inputs_env + 'medical_diagnoses_%s.csv' % letter, chunksize = 20000)
         return df_letter_final
 
