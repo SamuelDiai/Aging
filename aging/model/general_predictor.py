@@ -98,7 +98,7 @@ class BaseModel():
         X_eid = X.drop_duplicates('eid')
         y_eid = y.drop_duplicates('eid')
         #
-        outer_cv = KFold(n_splits = 10, shuffle = False, random_state = 0)
+        outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
         #
         #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
         #         # test_fold contain all test list_test_folds

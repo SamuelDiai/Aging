@@ -10,6 +10,7 @@ if sys.platform == 'linux':
 	path_predictions = "/n/groups/patel/samuel/EWAS/predictions/"
 	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs_v2/"
 	path_target_residuals = "/n/groups/patel/samuel/residuals/"
+	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_v2/"
 elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
