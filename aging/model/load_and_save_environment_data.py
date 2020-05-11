@@ -1,9 +1,10 @@
 import pandas as pd
 import glob
 from string import ascii_uppercase
+from functools import partial
 
 from ..processing.base_processing import read_ethnicity_data
-from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
+from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 from ..environment_processing.FamilyHistory import read_family_history_data
 from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data, \
@@ -14,64 +15,34 @@ from ..environment_processing.PsychosocialFactors import read_mental_health_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
 from ..environment_processing.HealthRelatedOutcomes import read_medical_diagnoses_data
 
-dict_target_to_instance = {"Brain" : 2,
-                           "UrineAndBlood" : 0,
-                           "HeartPWA" : 2,
-                           "Heart" : 2,
-                           "Eye" :0,
-                           "EyeIntraoculaPressure" :0,
-                           "AnthropometryImpedance" :0,
-                           "BrainGreyMatterVolumes" : 2,
-                           "AnthropometryBodySize" : 0,
-                           "UrineBiochemestry" :0,
-                           "ArterialAndBloodPressure" :0,
-                           "Spirometry" : 0,
-                           "ECGAtRest" :2,
-                           "EyeAutorefraction" :0,
-                           "ArterialStiffness" : 0,
-                           "BloodCount" : 0,
-                           "BrainSubcorticalVolumes" :2,
-                           "EyeAcuity" : 0,
-                           "HeartSize" :2,
-                           "BloodPressure" :0,
-                           "SpiroAndArterialAndBp" :0,
-                           "HeartImages" :2,
-                           "BloodBiochemestry" : 0,
-                           "Blood" : 0,
-                           "Anthropometry" : 0,
-                           "LiverImages" : 2}
+dict_target_to_instance_and_id = {"Brain" : (2, 100),
+                           "UrineAndBlood" : (0, 'Custom'),
+                           "HeartPWA" : (2, 128),
+                           "Heart" : (2, 102),
+                           "Eye" : (0, 100013),
+                           "EyeIntraoculaPressure" : (0, 100015),
+                           "AnthropometryImpedance" : (0, 100008),
+                           "BrainGreyMatterVolumes" : (2, 1101),
+                           "AnthropometryBodySize" : (0, 100010),
+                           "UrineBiochemestry" : (0, 100083),
+                           "ArterialAndBloodPressure" : (0, 'Custom'),
+                           "Spirometry" : (0, 100020),
+                           "ECGAtRest" : (2, 12657),
+                           "EyeAutorefraction" : (0, 100014),
+                           "ArterialStiffness" : (0, 100007),
+                           "BloodCount" : (0, 100081),
+                           "BrainSubcorticalVolumes" : (2, 1102),
+                           "EyeAcuity" : (0, 100017),
+                           "HeartSize" : (2, 133),
+                           "BloodPressure" : (0, 100011),
+                           "SpiroAndArterialAndBp" : (0, 'Custom'),
+                           "HeartImages" : (2, 'Alan'),
+                           "BloodBiochemestry" : (0, 17518),
+                           "Blood" : (0, 100080),
+                           "Anthropometry" : (0, 100008),
+                           "LiverImages" : (2, 'Alan')
+                           }
 
-target_dataset_to_field = {'AbdominalComposition' : 149,
-                    'BrainGreyMatterVolumes' : 1101,
-                    'BrainSubcorticalVolumes': 1102,
-                    'Brain' : 100,
-                    'Heart' : 102,
-                    'HeartSize' : 133,
-                    'HeartPWA' : 128,
-                    'BodyComposition' : 124,
-                    'BoneComposition' : 125,
-                    'ECGAtRest' : 12657,
-                    'AnthropometryImpedance' : 100008,
-                    'UrineBiochemestry' : 100083,
-                    'BloodBiochemestry' : 17518,
-                    'BloodCount' : 100081, # Need to do blood infection
-                    'Blood' : 100080,
-                    'UrineAndBlood' : 'Custom',
-                    'EyeAutorefraction' : 100014,
-                    'EyeAcuity' : 100017,
-                    'EyeIntraoculaPressure' : 100015,
-                    'Eye' : 100013,
-                    'BraindMRIWeightedMeans' : 135,
-                    'Spirometry' :  100020,
-                    'BloodPressure' : 100011,
-                    'AnthropometryBodySize' : 100010,
-                    'Anthropometry' : 100008,
-                    'ArterialStiffness' : 100007,
-                    'ArterialAndBloodPressure' : 'Custom',
-                    'SpiroAndArterialAndBp' : 'Custom',
-                    'LiverImages' : -1,
-                    'HeartImages' : -2
-                    }
 
 
 map_envdataset_to_dataloader_and_field = {
@@ -159,7 +130,8 @@ def load_target_residuals(target_dataset, **kwargs):
         if 'id' in df_organ.columns :
             df_organ = df_organ.set_index('id')
         elif 'id' not in  df_organ.columns and 'eid' in df_organ.columns :
-            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(dict_target_to_instance[target_dataset])
+            instance, field = dict_target_to_instance_and_id[target_dataset]
+            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(instance)
             df_organ = df_organ.set_index('id')
     else :
         raise ValueError('')
@@ -168,44 +140,10 @@ def load_target_residuals(target_dataset, **kwargs):
 
 ## FINAL LOAD
 
-def load_data(env_dataset, target_dataset, **kwargs):
-    """
 
-    return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
 
-    """
-    ## Join on id by default
-    df_env = load_data_env(env_dataset, **kwargs)
-    print("ENV : ", df_env)
 
-    df_target = load_target_residuals(target_dataset, **kwargs)
-    print("TARGET  :", df_target)
-
-    df_ethnicities = load_ethnicity(**kwargs)
-    print("ETHNICITY  :", df_ethnicities)
-
-    ## Try intersection
-    df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
-    columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-    df = df[columns_not_dup]
-
-    ## If empty intersection join on eid
-    if df.shape[0] == 0:
-        ## Change index :
-        df_env = df_env.reset_index().set_index('eid')
-        df_target = df_target.reset_index().set_index('eid')
-        ## Join
-        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
-        ## Remove duplicates including id
-        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-        df = df[columns_not_dup]
-        ## Recreate id
-        df['id'] = df.index
-        df = df[columns_not_dup].reset_index().set_index('id')
-
-    df = df.merge(df_ethnicities, on = 'eid', right_index = True)
-    return df
-
+## NEED TO MOVE THIS !!
 
 ## Saving
 def save_features_to_csv(cols, features_imp, organ_target, dataset_env, model_name):
