@@ -73,102 +73,38 @@ target_dataset_to_field = {'AbdominalComposition' : 149,
                     'HeartImages' : -2
                     }
 
-env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
-                         #'InfectiousDiseases' : 51428,
-                         'Alcohol' : 100051,
-                         'Diet' : 100052,
-                         'Education' : 100063,
-                         'ElectronicDevices' : 100053,
-                         'Employment' : 100064,
-                         'FamilyHistory' : 100034,
-                         'Eyesight' : 100041,
-                         'Mouth' : 100046,
-                         'GeneralHealth' : 100042,
-                         'Breathing' : 100037,
-                         'Claudification' : 100038,
-                         'GeneralPain' : 100048,
-                         'ChestPain' :100039,
-                         'CancerScreening' : 100040,
-                         'Medication': 100045,
-                         'Hearing' : 100043,
-                         'Household' : 100066,
-                         'MentalHealth' : 100060,
-                         'OtherSociodemographics' : 100067,
-                         'PhysicalActivity' : 100054,
-                         'SexualFactors' : 100056,
-                         'Sleep' : 100057,
-                         'SocialSupport' : 100061,
-                         'SunExposure' : 100055,
+
+map_envdataset_to_dataloader_and_field = {
+    'Alcohol' : (read_alcohol_data, 100051),
+    'Diet' : (read_diet_data, 100052),
+    'Education' : (read_education_data, 100063),
+    'ElectronicDevices' : (read_electronic_devices_data, 100053),
+    'Employment' : (read_employment_data, 100064),
+    'FamilyHistory' : (read_family_history_data, 100034),
+    'Eyesight' : (read_eye_history_data, 100041),
+    'Mouth' : (read_mouth_teeth_data, 100046),
+    'GeneralHealth' : (read_general_health_data, 100042),
+    'Breathing' : (read_breathing_data, 100037),
+    'Claudification' : (read_claudication_data, 100038),
+    'GeneralPain' : (read_general_pain_data, 100048),
+    'ChestPain' : (read_chest_pain_data, 100039),
+    'CancerScreening' : (read_cancer_screening_data, 100040),
+    'Medication': (read_medication_data, 100045),
+    'Hearing' : (read_hearing_data, 100043),
+    'Household' : (read_household_data, 100066),
+    'MentalHealth' : (read_mental_health_data, 100060),
+    'OtherSociodemographics' : (read_other_sociodemographics_data, 100067),
+    'PhysicalActivity' : (read_physical_activity_data, 100054),
+    'SexualFactors' : (read_sexual_factors_data, 100056),
+    'Sleep' : (read_sleep_data, 100057),
+    'SocialSupport' : (read_social_support_data, 100061),
+    'SunExposure' : (read_sun_exposure_data, 100055)
 }
 
-medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [41270 for letter in ascii_uppercase]))
-env_dataset_to_field = {**env_dataset_to_field, **medical_diagnoses_dict}
+medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [(partial(read_medical_diagnoses_data, letter = letter), 41270) for letter in ascii_uppercase]))
+map_envdataset_to_dataloader_and_field = {**map_envdataset_to_dataloader_and_field, **medical_diagnoses_dict}
 
-
-## Load ENV data
-
-def load_data_env_(env_dataset, **kwargs):
-    if env_dataset not in env_dataset_to_field.keys():
-        raise ValueError('Wrong dataset name ! ')
-    else :
-        if env_dataset == 'InfectiousDiseaseAntigens':
-            df = read_infectious_disease_antigens_data(**kwargs)
-        elif env_dataset == 'InfectiousDiseases':
-            df = read_infectious_diseases_data(**kwargs)
-        elif env_dataset == 'Alcohol':
-            df = read_alcohol_data(**kwargs)
-        elif env_dataset == 'Diet':
-            df = read_diet_data(**kwargs)
-        elif env_dataset == 'Education':
-            df = read_education_data(**kwargs)
-        elif env_dataset == 'ElectronicDevices':
-            df = read_electronic_devices_data(**kwargs)
-        elif env_dataset == 'Employment':
-            df = read_employment_data(**kwargs)
-        elif env_dataset == 'FamilyHistory':
-            df = read_family_history_data(**kwargs)
-        elif env_dataset == 'Eyesight':
-            df = read_eye_history_data(**kwargs)
-        elif env_dataset == 'Mouth':
-            df = read_mouth_teeth_data(**kwargs)
-        elif env_dataset == 'GeneralHealth':
-            df = read_general_health_data(**kwargs)
-        elif env_dataset == 'Breathing':
-            df = read_breathing_data(**kwargs)
-        elif env_dataset == 'Claudification':
-            df = read_claudication_data(**kwargs)
-        elif env_dataset == 'GeneralPain':
-            df = read_general_pain_data(**kwargs)
-        elif env_dataset == 'ChestPain':
-            df = read_chest_pain_data(**kwargs)
-        elif env_dataset == 'CancerScreening':
-            df = read_cancer_screening_data(**kwargs)
-        elif env_dataset == 'Medication':
-            df = read_medication_data(**kwargs)
-        elif env_dataset == 'Hearing':
-            df = read_hearing_data(**kwargs)
-        elif env_dataset == 'Household':
-            df = read_household_data(**kwargs)
-        elif env_dataset == 'MentalHealth':
-            df = read_mental_health_data(**kwargs)
-        elif env_dataset == 'OtherSociodemographics':
-            df = read_other_sociodemographics_data(**kwargs)
-        elif env_dataset == 'PhysicalActivity':
-            df = read_physical_activity_data(**kwargs)
-        elif env_dataset == 'SexualFactors':
-            df = read_sexual_factors_data(**kwargs)
-        elif env_dataset == 'Sleep':
-            df = read_sleep_data(**kwargs)
-        elif env_dataset == 'SocialSupport':
-            df = read_social_support_data(**kwargs)
-        elif env_dataset == 'SunExposure':
-            df = read_sun_exposure_data(**kwargs)
-        elif 'medical_diagnoses_' in env_dataset :
-            letter = env_dataset.split('medical_diagnoses_')[1]
-            df = read_medical_diagnoses_data(letter, **kwargs)
-        return df
-
-
+## SUB LOADS : ETHNICITY, TARGET RESIDUALS, ENV DATA
 def load_ethnicity(**kwargs):
     """
     Load ethnicity data : must have eid as index
@@ -192,7 +128,14 @@ def load_data_env(env_dataset, **kwargs):
     selected_inputs = glob.glob(path_inputs_env + '%s.csv' % env_dataset)
     if len(selected_inputs) == 0:
         print("Load New Data")
-        df = load_data_env_(env_dataset, **kwargs)
+        #df = load_data_env_(env_dataset, **kwargs)
+
+        if env_dataset not in map_envdataset_to_dataloader_and_field.keys():
+            raise ValueError('Wrong dataset name ! ')
+        else :
+            dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
+            df = dataloader(**kwargs)
+
         df.to_csv(path_inputs_env + env_dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
@@ -223,7 +166,7 @@ def load_target_residuals(target_dataset, **kwargs):
     return df_organ[['residual', 'Sex', 'Age', 'eid']]
 
 
-## Load FULL DATA
+## FINAL LOAD
 
 def load_data(env_dataset, target_dataset, **kwargs):
     """
