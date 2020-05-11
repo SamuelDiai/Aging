@@ -1,9 +1,10 @@
 import pandas as pd
 import glob
 from string import ascii_uppercase
+from functools import partial
 
 from ..processing.base_processing import read_ethnicity_data
-from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals
+from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 from ..environment_processing.FamilyHistory import read_family_history_data
 from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data, \
@@ -14,32 +15,33 @@ from ..environment_processing.PsychosocialFactors import read_mental_health_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
 from ..environment_processing.HealthRelatedOutcomes import read_medical_diagnoses_data
 
-dict_target_to_instance = {"Brain" : 2,
-                           "UrineAndBlood" : 0,
-                           "HeartPWA" : 2,
-                           "Heart" : 2,
-                           "Eye" :0,
-                           "EyeIntraoculaPressure" :0,
-                           "AnthropometryImpedance" :0,
-                           "BrainGreyMatterVolumes" : 2,
-                           "AnthropometryBodySize" : 0,
-                           "UrineBiochemestry" :0,
-                           "ArterialAndBloodPressure" :0,
-                           "Spirometry" : 0,
-                           "ECGAtRest" :2,
-                           "EyeAutorefraction" :0,
-                           "ArterialStiffness" : 0,
-                           "BloodCount" : 0,
-                           "BrainSubcorticalVolumes" :2,
-                           "EyeAcuity" : 0,
-                           "HeartSize" :2,
-                           "BloodPressure" :0,
-                           "SpiroAndArterialAndBp" :0,
-                           "HeartImages" :2,
-                           "BloodBiochemestry" : 0,
-                           "Blood" : 0,
-                           "Anthropometry" : 0,
-                           "LiverImages" : 2}
+dict_target_to_instance_and_id = {"Brain" : (2, 100),
+                           "UrineAndBlood" : (0, 'Custom'),
+                           "HeartPWA" : (2, 128),
+                           "Heart" : (2, 102),
+                           "Eye" : (0, 100013),
+                           "EyeIntraoculaPressure" : (0, 100015),
+                           "AnthropometryImpedance" : (0, 100008),
+                           "BrainGreyMatterVolumes" : (2, 1101),
+                           "AnthropometryBodySize" : (0, 100010),
+                           "UrineBiochemestry" : (0, 100083),
+                           "ArterialAndBloodPressure" : (0, 'Custom'),
+                           "Spirometry" : (0, 100020),
+                           "ECGAtRest" : (2, 12657),
+                           "EyeAutorefraction" : (0, 100014),
+                           "ArterialStiffness" : (0, 100007),
+                           "BloodCount" : (0, 100081),
+                           "BrainSubcorticalVolumes" : (2, 1102),
+                           "EyeAcuity" : (0, 100017),
+                           "HeartSize" : (2, 133),
+                           "BloodPressure" : (0, 100011),
+                           "SpiroAndArterialAndBp" : (0, 'Custom'),
+                           "HeartImages" : (2, 'Alan'),
+                           "BloodBiochemestry" : (0, 17518),
+                           "Blood" : (0, 100080),
+                           "Anthropometry" : (0, 100008),
+                           "LiverImages" : (2, 'Alan')
+                           }
 
 target_dataset_to_field = {'AbdominalComposition' : 149,
                     'BrainGreyMatterVolumes' : 1101,
@@ -73,6 +75,38 @@ target_dataset_to_field = {'AbdominalComposition' : 149,
                     'HeartImages' : -2
                     }
 
+map_envdataset_to_dataloader_and_id = {
+    'Alcohol' : (read_alcohol_data, 100051),
+    'Diet' : (read_diet_data, 100052),
+    'Education' : (read_education_data, 100063),
+    'ElectronicDevices' : (read_electronic_devices_data, 100053),
+    'Employment' : (read_employment_data, 100064),
+    'FamilyHistory' : (read_family_history_data, 100034),
+    'Eyesight' : (read_eye_history_data, 100041),
+    'Mouth' : (read_mouth_teeth_data, 100046),
+    'GeneralHealth' : (read_general_health_data, 100042),
+    'Breathing' : (read_breathing_data, 100037),
+    'Claudification' : (read_claudication_data, 100038),
+    'GeneralPain' : (read_general_pain_data, 100048),
+    'ChestPain' : (read_chest_pain_data, 100039),
+    'CancerScreening' : (read_cancer_screening_data, 100040),
+    'Medication': (read_medication_data, 100045),
+    'Hearing' : (read_hearing_data, 100043),
+    'Household' : (read_household_data, 100066),
+    'MentalHealth' : (read_mental_health_data, 100060),
+    'OtherSociodemographics' : (read_other_sociodemographics_data, 100067),
+    'PhysicalActivity' : (read_physical_activity_data, 100054),
+    'SexualFactors' : (read_sexual_factors_data, 100056),
+    'Sleep' : (read_sleep_data, 100057),
+    'SocialSupport' : (read_social_support_data, 100061),
+    'SunExposure' : (read_sun_exposure_data, 100055)
+}
+
+medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [(partial(read_medical_diagnoses_data, letter = letter), 41270) for letter in ascii_uppercase]))
+map_envdataset_to_dataloader_and_id = {**map_envdataset_to_dataloader_and_id, **medical_diagnoses_dict}
+
+
+## To del :
 env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
                          #'InfectiousDiseases' : 51428,
                          'Alcohol' : 100051,
@@ -100,73 +134,119 @@ env_dataset_to_field = { #'InfectiousDiseaseAntigens' : 1307,
                          'SocialSupport' : 100061,
                          'SunExposure' : 100055,
 }
-
-medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [41270 for letter in ascii_uppercase]))
-env_dataset_to_field = {**env_dataset_to_field, **medical_diagnoses_dict}
+## End to del
 
 
-## Load ENV data
+class EnvironmentalDataLoader():
+    def __init__(self, input_dataset, target_dataset, **kwargs):
+        self.ETHNICTY_COLS = ETHNICTY_COLS
+        self.input_dataset = input_dataset
+        self.target_dataset = target_dataset
+        self.df = None
 
-def load_data_env_(env_dataset, **kwargs):
-    if env_dataset not in env_dataset_to_field.keys():
-        raise ValueError('Wrong dataset name ! ')
-    else :
-        if env_dataset == 'InfectiousDiseaseAntigens':
-            df = read_infectious_disease_antigens_data(**kwargs)
-        elif env_dataset == 'InfectiousDiseases':
-            df = read_infectious_diseases_data(**kwargs)
-        elif env_dataset == 'Alcohol':
-            df = read_alcohol_data(**kwargs)
-        elif env_dataset == 'Diet':
-            df = read_diet_data(**kwargs)
-        elif env_dataset == 'Education':
-            df = read_education_data(**kwargs)
-        elif env_dataset == 'ElectronicDevices':
-            df = read_electronic_devices_data(**kwargs)
-        elif env_dataset == 'Employment':
-            df = read_employment_data(**kwargs)
-        elif env_dataset == 'FamilyHistory':
-            df = read_family_history_data(**kwargs)
-        elif env_dataset == 'Eyesight':
-            df = read_eye_history_data(**kwargs)
-        elif env_dataset == 'Mouth':
-            df = read_mouth_teeth_data(**kwargs)
-        elif env_dataset == 'GeneralHealth':
-            df = read_general_health_data(**kwargs)
-        elif env_dataset == 'Breathing':
-            df = read_breathing_data(**kwargs)
-        elif env_dataset == 'Claudification':
-            df = read_claudication_data(**kwargs)
-        elif env_dataset == 'GeneralPain':
-            df = read_general_pain_data(**kwargs)
-        elif env_dataset == 'ChestPain':
-            df = read_chest_pain_data(**kwargs)
-        elif env_dataset == 'CancerScreening':
-            df = read_cancer_screening_data(**kwargs)
-        elif env_dataset == 'Medication':
-            df = read_medication_data(**kwargs)
-        elif env_dataset == 'Hearing':
-            df = read_hearing_data(**kwargs)
-        elif env_dataset == 'Household':
-            df = read_household_data(**kwargs)
-        elif env_dataset == 'MentalHealth':
-            df = read_mental_health_data(**kwargs)
-        elif env_dataset == 'OtherSociodemographics':
-            df = read_other_sociodemographics_data(**kwargs)
-        elif env_dataset == 'PhysicalActivity':
-            df = read_physical_activity_data(**kwargs)
-        elif env_dataset == 'SexualFactors':
-            df = read_sexual_factors_data(**kwargs)
-        elif env_dataset == 'Sleep':
-            df = read_sleep_data(**kwargs)
-        elif env_dataset == 'SocialSupport':
-            df = read_social_support_data(**kwargs)
-        elif env_dataset == 'SunExposure':
-            df = read_sun_exposure_data(**kwargs)
-        elif 'medical_diagnoses_' in env_dataset :
-            letter = env_dataset.split('medical_diagnoses_')[1]
-            df = read_medical_diagnoses_data(letter, **kwargs)
-        return df
+
+    def load_data(self, **kwargs):
+        input_dataset = self.input_dataset
+        target_dataset = self.target_dataset
+        """
+
+        return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
+
+        """
+        ## Join on id by default
+        df_env = load_data_env(input_dataset, **kwargs)
+        print("ENV : ", df_env)
+
+        df_target = load_target_residuals(target_dataset, **kwargs)
+        print("TARGET  :", df_target)
+
+        df_ethnicities = load_ethnicity(**kwargs)
+        print("ETHNICITY  :", df_ethnicities)
+
+        ## Try intersection
+        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
+        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+        df = df[columns_not_dup]
+
+        ## If empty intersection join on eid
+        if df.shape[0] == 0:
+            ## Change index :
+            df_env = df_env.reset_index().set_index('eid')
+            df_target = df_target.reset_index().set_index('eid')
+            ## Join
+            df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
+            ## Remove duplicates including id
+            columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+            df = df[columns_not_dup]
+            ## Recreate id
+            df['id'] = df.index
+            df = df[columns_not_dup].reset_index().set_index('id')
+
+        df = df.merge(df_ethnicities, on = 'eid', right_index = True)
+        self.df = df
+
+# def load_data_env_(env_dataset, **kwargs):
+#     if env_dataset not in map_envdataset_to_dataloader_and_id.keys():
+#         raise ValueError('Wrong dataset name ! ')
+#     else :
+#         func, id_dataset = map_envdataset_to_dataloader_and_id[env_dataset]
+#         return func(**kwargs)
+        # if env_dataset == 'InfectiousDiseaseAntigens':
+        #     df = read_infectious_disease_antigens_data(**kwargs)
+        # elif env_dataset == 'InfectiousDiseases':
+        #     df = read_infectious_diseases_data(**kwargs)
+        # elif env_dataset == 'Alcohol':
+        #     df = read_alcohol_data(**kwargs)
+        # elif env_dataset == 'Diet':
+        #     df = read_diet_data(**kwargs)
+        # elif env_dataset == 'Education':
+        #     df = read_education_data(**kwargs)
+        # elif env_dataset == 'ElectronicDevices':
+        #     df = read_electronic_devices_data(**kwargs)
+        # elif env_dataset == 'Employment':
+        #     df = read_employment_data(**kwargs)
+        # elif env_dataset == 'FamilyHistory':
+        #     df = read_family_history_data(**kwargs)
+        # elif env_dataset == 'Eyesight':
+        #     df = read_eye_history_data(**kwargs)
+        # elif env_dataset == 'Mouth':
+        #     df = read_mouth_teeth_data(**kwargs)
+        # elif env_dataset == 'GeneralHealth':
+        #     df = read_general_health_data(**kwargs)
+        # elif env_dataset == 'Breathing':
+        #     df = read_breathing_data(**kwargs)
+        # elif env_dataset == 'Claudification':
+        #     df = read_claudication_data(**kwargs)
+        # elif env_dataset == 'GeneralPain':
+        #     df = read_general_pain_data(**kwargs)
+        # elif env_dataset == 'ChestPain':
+        #     df = read_chest_pain_data(**kwargs)
+        # elif env_dataset == 'CancerScreening':
+        #     df = read_cancer_screening_data(**kwargs)
+        # elif env_dataset == 'Medication':
+        #     df = read_medication_data(**kwargs)
+        # elif env_dataset == 'Hearing':
+        #     df = read_hearing_data(**kwargs)
+        # elif env_dataset == 'Household':
+        #     df = read_household_data(**kwargs)
+        # elif env_dataset == 'MentalHealth':
+        #     df = read_mental_health_data(**kwargs)
+        # elif env_dataset == 'OtherSociodemographics':
+        #     df = read_other_sociodemographics_data(**kwargs)
+        # elif env_dataset == 'PhysicalActivity':
+        #     df = read_physical_activity_data(**kwargs)
+        # elif env_dataset == 'SexualFactors':
+        #     df = read_sexual_factors_data(**kwargs)
+        # elif env_dataset == 'Sleep':
+        #     df = read_sleep_data(**kwargs)
+        # elif env_dataset == 'SocialSupport':
+        #     df = read_social_support_data(**kwargs)
+        # elif env_dataset == 'SunExposure':
+        #     df = read_sun_exposure_data(**kwargs)
+        # elif 'medical_diagnoses_' in env_dataset :
+        #     letter = env_dataset.split('medical_diagnoses_')[1]
+        #     df = read_medical_diagnoses_data(letter, **kwargs)
+        # return df
 
 
 def load_ethnicity(**kwargs):
@@ -192,7 +272,11 @@ def load_data_env(env_dataset, **kwargs):
     selected_inputs = glob.glob(path_inputs_env + '%s.csv' % env_dataset)
     if len(selected_inputs) == 0:
         print("Load New Data")
-        df = load_data_env_(env_dataset, **kwargs)
+        if env_dataset not in map_envdataset_to_dataloader_and_id.keys():
+            raise ValueError('Wrong dataset name ! ')
+        else :
+            func, id_dataset = map_envdataset_to_dataloader_and_id[env_dataset]
+            df = func(**kwargs)
         df.to_csv(path_inputs_env + env_dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
@@ -225,44 +309,10 @@ def load_target_residuals(target_dataset, **kwargs):
 
 ## Load FULL DATA
 
-def load_data(env_dataset, target_dataset, **kwargs):
-    """
 
-    return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
 
-    """
-    ## Join on id by default
-    df_env = load_data_env(env_dataset, **kwargs)
-    print("ENV : ", df_env)
 
-    df_target = load_target_residuals(target_dataset, **kwargs)
-    print("TARGET  :", df_target)
-
-    df_ethnicities = load_ethnicity(**kwargs)
-    print("ETHNICITY  :", df_ethnicities)
-
-    ## Try intersection
-    df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
-    columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-    df = df[columns_not_dup]
-
-    ## If empty intersection join on eid
-    if df.shape[0] == 0:
-        ## Change index :
-        df_env = df_env.reset_index().set_index('eid')
-        df_target = df_target.reset_index().set_index('eid')
-        ## Join
-        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
-        ## Remove duplicates including id
-        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-        df = df[columns_not_dup]
-        ## Recreate id
-        df['id'] = df.index
-        df = df[columns_not_dup].reset_index().set_index('id')
-
-    df = df.merge(df_ethnicities, on = 'eid', right_index = True)
-    return df
-
+## NEED TO MOVE THIS !!
 
 ## Saving
 def save_features_to_csv(cols, features_imp, organ_target, dataset_env, model_name):

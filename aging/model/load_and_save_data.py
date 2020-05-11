@@ -18,124 +18,141 @@ from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_d
 
 
 
-dataset_to_field = {'AbdominalComposition' : 149,
-                    'BrainGreyMatterVolumes' : 1101,
-                    'BrainSubcorticalVolumes': 1102,
-                    'Brain' : 100,
-                    'Heart' : 102,
-                    'HeartSize' : 133,
-                    'HeartPWA' : 128,
-                    'BodyComposition' : 124,
-                    'BoneComposition' : 125,
-                    'ECGAtRest' : 12657,
-                    'AnthropometryImpedance' : 100008,
-                    'UrineBiochemestry' : 100083,
-                    'BloodBiochemestry' : 17518,
-                    'BloodCount' : 100081, # Need to do blood infection
-                    'Blood' : 100080,
-                    'UrineAndBlood' : 'Custom',
-                    'EyeAutorefraction' : 100014,
-                    'EyeAcuity' : 100017,
-                    'EyeIntraoculaPressure' : 100015,
-                    'Eye' : 100013,
-                    'BraindMRIWeightedMeans' : 135,
-                    'Spirometry' :  100020,
-                    'BloodPressure' : 100011,
-                    'AnthropometryBodySize' : 100010,
-                    'Anthropometry' : 100008,
-                    'ArterialStiffness' : 100007,
-                    'ArterialAndBloodPressure' : 'Custom',
-                    'SpiroAndArterialAndBp' : 'Custom',
-                    'CarotidUltrasound' : 101
+map_dataset_to_field_and_dataloader = {
+                    'AbdominalComposition' : (149, read_abdominal_data),
+                    'BrainGreyMatterVolumes' : (1101, read_grey_matter_volumes_data),
+                    'BrainSubcorticalVolumes': (1102, read_subcortical_volumes_data),
+                    'Brain' : (100, read_brain_data),
+                    'Heart' : (102, read_heart_data),
+                    'HeartSize' : (133, read_heart_size_data),
+                    'HeartPWA' : (128, read_heart_PWA_data),
+                    'BodyComposition' : (124, read_body_composition_data),
+                    'BoneComposition' : (125, read_bone_composition_data),
+                    'ECGAtRest' : (12657, read_ecg_at_rest_data),
+                    'AnthropometryImpedance' : (100008, read_anthropometry_data),
+                    'UrineBiochemestry' : (100083, read_urine_biomarkers_data),
+                    'BloodBiochemestry' : (17518, read_blood_biomarkers_data),
+                    'BloodCount' : (100081, read_blood_count_data),  # Need to do blood infection
+                    'Blood' : (100080, read_blood_data),
+                    'UrineAndBlood' : ('Custom', read_urine_and_blood_data),
+                    'EyeAutorefraction' : (100014, read_eye_autorefraction_data),
+                    'EyeAcuity' : (100017, read_eye_acuity_data),
+                    'EyeIntraoculaPressure' : (100015, read_eye_intraocular_pressure_data),
+                    'Eye' : (100013, read_eye_data),
+                    'BraindMRIWeightedMeans' : (135, read_brain_dMRI_weighted_means_data),
+                    'Spirometry' :  (100020, read_spirometry_data),
+                    'BloodPressure' : (100011, read_blood_pressure_data),
+                    'AnthropometryBodySize' : (100010, read_anthropometry_body_size_data),
+                    'Anthropometry' : (100008, read_anthropometry_data),
+                    'ArterialStiffness' : (100007, read_arterial_stiffness_data),
+                    'ArterialAndBloodPressure' : ('Custom', read_arterial_and_bp_data),
+                    'SpiroAndArterialAndBp' : ('Custom', read_spiro_and_arterial_and_bp_data),
+                    'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
                     }
 
-def load_data_(dataset, **kwargs):
-    nrows = None
-    if 'nrows' in kwargs.keys():
-        nrows = kwargs['nrows']
-    if dataset not in dataset_to_field.keys():
-        raise ValueError('Wrong dataset name ! ')
-    else :
-        if dataset == 'AbdominalComposition':
-            df = read_abdominal_data(**kwargs)
-        elif dataset == 'Brain':
-            df = read_brain_data(**kwargs)
-        elif dataset == 'BrainGreyMatterVolumes':
-            df = read_grey_matter_volumes_data(**kwargs)
-        elif dataset == 'BrainSubcorticalVolumes':
-            df = read_subcortical_volumes_data(**kwargs)
-        elif dataset == 'Heart':
-            df = read_heart_data(**kwargs)
-        elif dataset == 'HeartSize':
-            df = read_heart_size_data(**kwargs)
-        elif dataset == 'HeartPWA':
-            df = read_heart_PWA_data(**kwargs)
-        elif dataset == 'BoneComposition':
-            df = read_bone_composition_data(**kwargs)
-        elif dataset == 'BodyComposition':
-            df = read_body_composition_data(**kwargs)
-        elif dataset == 'ECGAtRest':
-            df = read_ecg_at_rest_data(**kwargs)
-        elif dataset == 'AnthropometryImpedance':
-            df = read_anthropometry_impedance_data(**kwargs)
-        elif dataset == 'UrineBiochemestry':
-            df = read_urine_biomarkers_data(**kwargs)
-        elif dataset == 'BloodBiochemestry':
-            df = read_blood_biomarkers_data(**kwargs)
-        elif dataset == 'BloodCount':
-            df = read_blood_count_data(**kwargs)
-        elif dataset == 'Blood':
-            df = read_blood_data(**kwargs)
-        elif dataset == 'UrineAndBlood':
-            df = read_urine_and_blood_data(**kwargs)
-        elif dataset == 'EyeAutorefraction':
-            df = read_eye_autorefraction_data(**kwargs)
-        elif dataset == 'EyeIntraoculaPressure':
-            df = read_eye_intraocular_pressure_data(**kwargs)
-        elif dataset == 'EyeAcuity':
-            df = read_eye_acuity_data(**kwargs)
-        elif dataset == 'Eye':
-            df = read_eye_data(**kwargs)
-        elif dataset == 'BraindMRIWeightedMeans':
-            df = read_brain_dMRI_weighted_means_data(**kwargs)
-        elif dataset == 'BloodPressure':
-            df = read_blood_pressure_data(**kwargs)
-        elif dataset == 'Spirometry':
-            df = read_spirometry_data(**kwargs)
-        elif dataset == 'AnthropometryBodySize':
-            df = read_anthropometry_body_size_data(**kwargs)
-        elif dataset == 'Anthropometry':
-            df = read_anthropometry_data(**kwargs)
-        elif dataset == 'ArterialStiffness':
-            df = read_arterial_stiffness_data(**kwargs)
-        elif dataset == 'ArterialAndBloodPressure':
-            df = read_arterial_and_bp_data(**kwargs)
-        elif dataset == 'SpiroAndArterialAndBp':
-            df = read_spiro_and_arterial_and_bp_data(**kwargs)
-        elif dataset == 'CarotidUltrasound':
-            df = read_carotid_ultrasound_data(**kwargs)
+class DataLoader():
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.df = None
+        self.path_inputs = path_inputs
 
-        return df
+    def load_data(self, **kwargs):
+        selected_inputs = glob.glob(self.path_inputs + '%s.csv' % self.dataset)
+        print(selected_inputs)
+        if len(selected_inputs) == 0:
+            print("Load New Data")
+            #df = load_data_(self.dataset, **kwargs)
+
+            if self.dataset not in map_dataset_to_field_and_dataloader.keys():
+                raise ValueError('Wrong dataset name ! ')
+            else :
+                field, dataloader = map_dataset_to_field_and_dataloader[self.dataset]
+                df = dataloader(**kwargs)
+            df.to_csv(self.path_inputs + self.dataset + '.csv')
+            self.df = df
+        elif len(selected_inputs) == 1 :
+            nrows = None
+            if 'nrows' in kwargs.keys():
+                nrows = kwargs['nrows']
+            print("Load Existing Data")
+            df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
+            self.df = df
+        else :
+            print("Error")
+            raise ValueError('Too many Input file for the selected dataset')
 
 
-def load_data(dataset, **kwargs):
-    selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
-    print(selected_inputs)
-    if len(selected_inputs) == 0:
-        print("Load New Data")
-        df = load_data_(dataset, **kwargs)
-        df.to_csv(path_inputs + dataset + '.csv')
-        return df
-    elif len(selected_inputs) == 1 :
-        nrows = None
-        if 'nrows' in kwargs.keys():
-            nrows = kwargs['nrows']
-        print("Load Existing Data")
-        df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
-        return df
-    else :
-        print("Error")
-        raise ValueError('Too many Input file for the selected dataset')
+    # def load_data_(self, **kwargs):
+    #     nrows = None
+    #     dataset = self.dataset
+    #     if 'nrows' in kwargs.keys():
+    #         nrows = kwargs['nrows']
+    #     if dataset not in dataset_to_field.keys():
+    #         raise ValueError('Wrong dataset name ! ')
+    #     else :
+    #         if dataset == 'AbdominalComposition':
+    #             df = read_abdominal_data(**kwargs)
+    #         elif dataset == 'Brain':
+    #             df = read_brain_data(**kwargs)
+    #         elif dataset == 'BrainGreyMatterVolumes':
+    #             df = read_grey_matter_volumes_data(**kwargs)
+    #         elif dataset == 'BrainSubcorticalVolumes':
+    #             df = read_subcortical_volumes_data(**kwargs)
+    #         elif dataset == 'Heart':
+    #             df = read_heart_data(**kwargs)
+    #         elif dataset == 'HeartSize':
+    #             df = read_heart_size_data(**kwargs)
+    #         elif dataset == 'HeartPWA':
+    #             df = read_heart_PWA_data(**kwargs)
+    #         elif dataset == 'BoneComposition':
+    #             df = read_bone_composition_data(**kwargs)
+    #         elif dataset == 'BodyComposition':
+    #             df = read_body_composition_data(**kwargs)
+    #         elif dataset == 'ECGAtRest':
+    #             df = read_ecg_at_rest_data(**kwargs)
+    #         elif dataset == 'AnthropometryImpedance':
+    #             df = read_anthropometry_impedance_data(**kwargs)
+    #         elif dataset == 'UrineBiochemestry':
+    #             df = read_urine_biomarkers_data(**kwargs)
+    #         elif dataset == 'BloodBiochemestry':
+    #             df = read_blood_biomarkers_data(**kwargs)
+    #         elif dataset == 'BloodCount':
+    #             df = read_blood_count_data(**kwargs)
+    #         elif dataset == 'Blood':
+    #             df = read_blood_data(**kwargs)
+    #         elif dataset == 'UrineAndBlood':
+    #             df = read_urine_and_blood_data(**kwargs)
+    #         elif dataset == 'EyeAutorefraction':
+    #             df = read_eye_autorefraction_data(**kwargs)
+    #         elif dataset == 'EyeIntraoculaPressure':
+    #             df = read_eye_intraocular_pressure_data(**kwargs)
+    #         elif dataset == 'EyeAcuity':
+    #             df = read_eye_acuity_data(**kwargs)
+    #         elif dataset == 'Eye':
+    #             df = read_eye_data(**kwargs)
+    #         elif dataset == 'BraindMRIWeightedMeans':
+    #             df = read_brain_dMRI_weighted_means_data(**kwargs)
+    #         elif dataset == 'BloodPressure':
+    #             df = read_blood_pressure_data(**kwargs)
+    #         elif dataset == 'Spirometry':
+    #             df = read_spirometry_data(**kwargs)
+    #         elif dataset == 'AnthropometryBodySize':
+    #             df = read_anthropometry_body_size_data(**kwargs)
+    #         elif dataset == 'Anthropometry':
+    #             df = read_anthropometry_data(**kwargs)
+    #         elif dataset == 'ArterialStiffness':
+    #             df = read_arterial_stiffness_data(**kwargs)
+    #         elif dataset == 'ArterialAndBloodPressure':
+    #             df = read_arterial_and_bp_data(**kwargs)
+    #         elif dataset == 'SpiroAndArterialAndBp':
+    #             df = read_spiro_and_arterial_and_bp_data(**kwargs)
+    #         elif dataset == 'CarotidUltrasound':
+    #             df = read_carotid_ultrasound_data(**kwargs)
+    #
+    #         return df
+
+
+
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
     final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})
