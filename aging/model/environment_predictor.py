@@ -32,20 +32,25 @@ class EnvironmentPredictor(BaseModel):
     def optimize_hyperparameters_fold(self, df):
         X = df.drop(columns = ['residual'])
         y = df[['residual', 'eid']]
-
-        #X = df.drop(columns = ['Age', 'residual']).values
-        #y = df['residual'].values
+        print(X.index, X.columns)
         return self.optimize_hyperparameters_fold_(X, y, 'r2', self.fold)
 
 
     def feature_importance(self, df):
-        X = df.drop(columns = ['Age', 'residual']).values
+        X = df.drop(columns = ['eid', 'residual']).values
         y = df['residual'].values
         self.features_importance_(X, y, 'r2')
-        return df.drop(columns = ['Age', 'residual']).columns
+        return df.drop(columns = ['eid', 'residual']).columns
 
 
     def normalise_dataset(self, df):
+
+        if self.model_name in ['ElasticNet', 'NeuralNetwork', 'GradientBoosting', 'RandomForest'] :
+            old_size = df.shape[0]
+            df = df.dropna(how = 'any')
+            new_size = df.shape[0]
+            print("removing NaNs, sample size before dropping %s, after dropping" % (old_size, new_size))
+
 
         scaler_residual = StandardScaler()
         scaler_residual.fit(df['residual'].values.reshape(-1, 1))
