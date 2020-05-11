@@ -50,7 +50,7 @@ ethnicity_cols = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British
 #
 #     return df_rescaled, scaler_residual
 
-df = load_data(input_dataset, target_dataset, nrows = 20000).drop(columns = ['eid'])
+df = load_data(input_dataset, target_dataset).drop(columns = ['eid'])
 #df_rescaled, scaler_residual = normalise_dataset(df)
 columns_age_sex_ethnicity = ['Age', 'Sex'] + ethnicity_cols
 cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residual', 'Age', 'Sex'] + ethnicity_cols).columns
