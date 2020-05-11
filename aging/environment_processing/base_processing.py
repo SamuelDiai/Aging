@@ -19,6 +19,13 @@ elif sys.platform == 'darwin':
 	path_target_residuals = "/n/groups/patel/samuel/residuals/"
 
 
+ETHNICITY_COLS = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
+       'Irish', 'White_Other', 'Mixed', 'White_and_Black_Caribbean',
+       'White_and_Black_African', 'White_and_Asian', 'Mixed_Other', 'Asian',
+       'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
+       'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
+       'Other']
+
 def read_data(cols_categorical, cols_features, instance, **kwargs):
     nrows = None
     if 'nrows' in kwargs.keys():
