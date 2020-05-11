@@ -49,7 +49,7 @@ class EnvironmentPredictor(BaseModel):
             old_size = df.shape[0]
             df = df.dropna(how = 'any')
             new_size = df.shape[0]
-            print("removing NaNs, sample size before dropping %s, after dropping" % (old_size, new_size))
+            print("removing NaNs, sample size before dropping %s, after dropping %s " % (old_size, new_size))
 
 
         scaler_residual = StandardScaler()
