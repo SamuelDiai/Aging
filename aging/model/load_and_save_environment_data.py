@@ -140,10 +140,43 @@ def load_target_residuals(target_dataset, **kwargs):
 
 ## FINAL LOAD
 
+def load_data(env_dataset, target_dataset, **kwargs):
+    """
 
+    return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
 
+    """
+    ## Join on id by default
+    df_env = load_data_env(env_dataset, **kwargs)
+    print("ENV : ", df_env)
 
-## NEED TO MOVE THIS !!
+    df_target = load_target_residuals(target_dataset, **kwargs)
+    print("TARGET  :", df_target)
+
+    df_ethnicities = load_ethnicity(**kwargs)
+    print("ETHNICITY  :", df_ethnicities)
+
+    ## Try intersection
+    df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
+    columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+    df = df[columns_not_dup]
+
+    ## If empty intersection join on eid
+    if df.shape[0] == 0:
+        ## Change index :
+        df_env = df_env.reset_index().set_index('eid')
+        df_target = df_target.reset_index().set_index('eid')
+        ## Join
+        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
+        ## Remove duplicates including id
+        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+        df = df[columns_not_dup]
+        ## Recreate id
+        df['id'] = df.index
+        df = df[columns_not_dup].reset_index().set_index('id')
+
+    df = df.merge(df_ethnicities, on = 'eid', right_index = True)
+    return df
 
 ## Saving
 def save_features_to_csv(cols, features_imp, organ_target, dataset_env, model_name):

@@ -61,9 +61,6 @@ def load_data(dataset, **kwargs):
         else :
             field, dataloader = map_dataset_to_field_and_dataloader[dataset]
             df = dataloader(**kwargs)
-
-
-
         df.to_csv(path_inputs + dataset + '.csv')
         return df
     elif len(selected_inputs) == 1 :
