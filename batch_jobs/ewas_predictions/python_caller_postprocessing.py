@@ -54,12 +54,12 @@ list_val = [elem for elem in list_files if 'val' in elem]
 
 if len(list_train) == outer_splits and len(list_test) == outer_splits and len(list_val) == outer_splits :
 
-    df_train = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_train])
-    df_test = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_test])
-    df_val = pd.concat([pd.read_csv(elem).set_index('eid') for elem in list_val])
+    df_train = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_train])
+    df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
+    df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
     # Avg df_val
-    df_val = df_val.groupby('eid').agg({'pred' : 'mean'})
+    df_val = df_val.groupby('id').agg({'pred' : 'mean'})
     #df_train = df_train.groupby('eid').agg({'predictions' : 'mean'})
     #map_eid_to_fold = dataset_map_fold(input_dataset, target_dataset, outer_splits)
     #df_val['fold'] = df_val.index.map(map_eid_to_fold)

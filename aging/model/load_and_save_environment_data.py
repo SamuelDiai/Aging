@@ -190,4 +190,4 @@ def save_predictions_to_csv(predicts_df, step, organ_target, dataset_env, model_
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
     filename = 'Predictions_' + dataset_env + '_' + organ_target + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
-    predicts_df.set_index('eid').to_csv(path_predictions + '/' + filename)
+    predicts_df.set_index('id').to_csv(path_predictions + '/' + filename)
