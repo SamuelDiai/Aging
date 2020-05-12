@@ -83,7 +83,7 @@ class EnvironmentPredictor(BaseModel):
 
     def inverse_normalise_dataset(self, df_rescaled):
         if hasattr(self, 'scaler'):
-            df_rescaled['predictions'] = self.scaler.inverse_transform(df_rescaled['predictions'].values.reshape(-1, 1))
+            df_rescaled['pred'] = self.scaler.inverse_transform(df_rescaled['pred'].values.reshape(-1, 1))
             return df_rescaled
         else :
             raise ValueError('dataframe is not rescaled')
