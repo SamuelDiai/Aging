@@ -111,7 +111,13 @@ def load_data_env(env_dataset, **kwargs):
         return df
     elif len(selected_inputs) == 1 :
         print("Load Existing Data")
-        df = pd.read_csv(selected_inputs[0], **kwargs).set_index('id')
+
+        cols = pd.read_csv(selected_inputs[0], nrows = 1).set_index('id').columns
+        map_feature_to_type = dict(zip(cols, ['int8' for elem in range(len(cols))]))
+        map_feature_to_type['id'] = 'str'
+
+        df = pd.read_csv(selected_inputs[0], dtype = map_feature_to_type, index_col = 'id', **kwargs)
+        ##df = pd.read_csv(selected_inputs[0], **kwargs).set_index('id')
         return df
     else :
         print("Error")
