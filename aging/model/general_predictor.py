@@ -129,7 +129,7 @@ class BaseModel():
         inner_cv = PredefinedSplit(test_fold = test_folds)
         #
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = True)
-        clf.fit(X_train, y_train)
+        clf.fit(X_train.values(), y_train.values())
 
         best_estim = copy.deepcopy(clf.best_estimator_)
         best_params = copy.deepcopy(clf.best_params_)
@@ -152,9 +152,9 @@ class BaseModel():
                     setattr(model_, key, value)
                 else :
                     continue
-            model_.fit(X_train_train, y_train_train)
+            model_.fit(X_train_train.values(), y_train_train.values())
 
-            y_predict_train_val_fold = model_.predict(X_train_val)
+            y_predict_train_val_fold = model_.predict(X_train_val.values())
 
             df_train_val = pd.DataFrame(data = {'id' : index_train_val, 'outer_fold' : np.nan, 'pred' : y_predict_train_val_fold })
             list_train_val.append(df_train_val)
