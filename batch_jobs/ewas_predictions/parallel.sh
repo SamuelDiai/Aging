@@ -1,10 +1,10 @@
 #!/bin/bash
 #models=( "ElasticNet" )
-models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
+models=( "LightGbm" )
 target_datasets=( "HeartImages" "LiverImages" )
 #target_datasets=( "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "Heart" "HeartSize" "HeartPWA" "AnthropometryImpedance" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" "EyeAutorefraction" "EyeAcuity" "EyeIntraoculaPressure" "Eye" "Spirometry" "BloodPressure" "AnthropometryBodySize" "Anthropometry" "ArterialStiffness" "ArterialAndBloodPressure" "SpiroAndArterialAndBp" )
 #input_datasets=( "Education" "medical_diagnoses_I" )
-input_datasets=( "Medication" "Alcohol" "Diet" "Education" "ElectronicDevices" "Employment" "FamilyHistory" "Eyesight" "Mouth" "GeneralHealth" "Breathing" "Claudification" "GeneralPain" "ChestPain" "CancerScreening" "Hearing" "Household" "MentalHealth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SunExposure" "medical_diagnoses_A" "medical_diagnoses_B" "medical_diagnoses_C" "medical_diagnoses_D" "medical_diagnoses_E" "medical_diagnoses_F" "medical_diagnoses_G" "medical_diagnoses_H" "medical_diagnoses_I" "medical_diagnoses_J" "medical_diagnoses_K" "medical_diagnoses_L" "medical_diagnoses_M" "medical_diagnoses_N" "medical_diagnoses_O" "medical_diagnoses_P" "medical_diagnoses_Q" "medical_diagnoses_R" "medical_diagnoses_S" "medical_diagnoses_T" "medical_diagnoses_U" "medical_diagnoses_V" "medical_diagnoses_W" "medical_diagnoses_X" "medical_diagnoses_Y" "medical_diagnoses_Z" )
+input_datasets=( "Medication" "Diet" "Education" "Eyesight" "GeneralHealth" "Claudification" "Hearing" "Household" "MentalHealth" "PhysicalActivity" "SunExposure" )
 #input_datasets=( "Medication" )
 
 outer_splits=5
