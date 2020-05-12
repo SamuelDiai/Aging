@@ -10,7 +10,8 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-#from aging.model.load_and_save_environment_data import load_data
+from aging.environment_processing.base_processing import path_predictions, path_final_preds
+
 
 model = sys.argv[1]
 target_dataset = sys.argv[2]
@@ -45,7 +46,7 @@ print(hyperparameters)
 
 
 dataset = '_' + input_dataset + '_' + target_dataset + '_'
-list_files = glob.glob('/n/groups/patel/samuel/EWAS/predictions/*%s*%s*.csv' % (dataset, model))
+list_files = glob.glob(path_predictions + '*%s*%s*.csv' % (dataset, model))
 
 list_train = [elem for elem in list_files if 'train' in elem]
 list_test = [elem for elem in list_files if 'test' in elem]
@@ -68,9 +69,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
     df_val['fold'] = np.nan
-    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
-    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
-    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/EWAS/preds/Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))
+    df_train[['pred', 'outer_fold']].to_csv(path_final_preds + 'redictions_%s_%s_%s_train.csv' % ( input_dataset, target_dataset,  model))
+    df_test[['pred', 'outer_fold']].to_csv(path_final_preds + 'Predictions_%s_%s_%s_test.csv' % ( input_dataset, target_dataset,  model))
+    df_val[['pred', 'outer_fold']].to_csv(path_final_preds + 'Predictions_%s_%s_%s_val.csv' % ( input_dataset, target_dataset,  model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
