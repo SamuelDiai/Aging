@@ -118,6 +118,7 @@ class BaseModel():
         list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
+        print(X.columns, y.columns)
         X_train, X_test, y_train, y_test = X.loc[index_train], X.loc[index_test], y.loc[index_train], y.loc[index_test]
 
         list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
@@ -128,7 +129,7 @@ class BaseModel():
         inner_cv = PredefinedSplit(test_fold = test_folds)
         #
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter)
-        clf.fit(X_train, y_train)
+        clf.fit(X_train, y_train.values[:, np.newaxis])
 
         best_estim = copy.deepcopy(clf.best_estimator_)
         best_params = copy.deepcopy(clf.best_params_)
