@@ -3,6 +3,7 @@ import glob
 from string import ascii_uppercase
 from functools import partial
 
+## Environmental Variables + Medical condition
 from ..processing.base_processing import read_ethnicity_data
 from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
@@ -15,8 +16,24 @@ from ..environment_processing.PsychosocialFactors import read_mental_health_data
 from ..environment_processing.SocioDemographics import read_education_data, read_employment_data, read_household_data, read_other_sociodemographics_data
 from ..environment_processing.HealthRelatedOutcomes import read_medical_diagnoses_data
 
+## Biomarkers as environmental predictors
+from ..processing.anthropometry_processing import read_anthropometry_impedance_data, read_anthropometry_body_size_data, read_anthropometry_data
+from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
+from ..processing.biochemestry_processing import read_blood_biomarkers_data, read_urine_biomarkers_data, read_blood_count_data, read_urine_and_blood_data, read_blood_data
+from ..processing.blood_pressure_processing import read_blood_pressure_data
+#from ..processing.body_composition_processing import read_body_composition_data
+#from ..processing.bone_composition_processing import read_bone_composition_data
+from ..processing.brain_processing import read_grey_matter_volumes_data, read_subcortical_volumes_data, read_brain_dMRI_weighted_means_data, read_brain_data
+from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
+from ..processing.ecg_processing import read_ecg_at_rest_data
+from ..processing.eye_processing import read_eye_data, read_eye_acuity_data, read_eye_autorefraction_data, read_eye_intraocular_pressure_data
+from ..processing.heart_processing import read_heart_data, read_heart_PWA_data, read_heart_size_data
+from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data, read_cardiac_data
+from ..processing.spirometry_processing import read_spirometry_data
+
+
 dict_target_to_instance_and_id = {"Brain" : (2, 100),
-                           "UrineAndBlood" : (0, 'Custom'),
+                           "UrineAndBlood" : (0, 100079),
                            "HeartPWA" : (2, 128),
                            "Heart" : (2, 102),
                            "Eye" : (0, 100013),
@@ -46,6 +63,7 @@ dict_target_to_instance_and_id = {"Brain" : (2, 100),
 
 
 map_envdataset_to_dataloader_and_field = {
+    ## Environmental
     'Alcohol' : (read_alcohol_data, 100051),
     'Diet' : (read_diet_data, 100052),
     'Education' : (read_education_data, 100063),
@@ -69,9 +87,49 @@ map_envdataset_to_dataloader_and_field = {
     'SexualFactors' : (read_sexual_factors_data, 100056),
     'Sleep' : (read_sleep_data, 100057),
     'SocialSupport' : (read_social_support_data, 100061),
-    'SunExposure' : (read_sun_exposure_data, 100055)
+    'SunExposure' : (read_sun_exposure_data, 100055),
+    ## Biomarkers
+    # Anthropometry
+    'AnthropometryImpedance' : (read_anthropometry_data, 100008),
+    'AnthropometryBodySize' : (read_anthropometry_body_size_data, 100010),
+    'Anthropometry' : (read_anthropometry_data, 100008),
+    # Arterial Stiffness
+    'ArterialStiffness' : (read_arterial_stiffness_data, 100007),
+    # Urine And Blood
+    'BloodBiochemestry' : (read_blood_biomarkers_data, 17518),
+    'Blood' : (read_blood_data, 100080),
+    'BloodCount' : (read_blood_count_data, 100081),
+    'UrineAndBlood' : (read_urine_and_blood_data, 100079),
+    'UrineBiochemestry' : (read_urine_biomarkers_data, 100083),
+    # BloodPressure
+    'BloodPressure' : (read_blood_pressure_data, 100011),
+    # Brain
+    'Brain' : (read_brain_data, 100),
+    'BrainGreyMatterVolumes' : (read_grey_matter_volumes_data, 1101),
+    'BrainSubcorticalVolumes' : (read_subcortical_volumes_data, 1102),
+    'BraindMRIWeightedMeans' : (read_brain_dMRI_weighted_means_data, 135),
+    # carotid_ultrasound
+    'CarotidUltrasound' : (read_carotid_ultrasound_data, 101),
+    # ECG
+    'ECGAtRest' : (read_ecg_at_rest_data, 12657),
+    # Eye
+    'EyeAcuity' : (read_eye_acuity_data, 100017),
+    'EyeAutorefraction' : (read_eye_autorefraction_data, 100014),
+    'EyeIntraoculaPressure' : (read_eye_intraocular_pressure_data, 100015),
+    'Eye' : (read_eye_data, 100013),
+    # Heart
+    'Heart' : (read_heart_data, 102),
+    'HeartPWA' : (read_heart_PWA_data, 128),
+    'HeartSize' : (read_heart_size_data, 133),
+    # Mix
+    'ArterialAndBloodPressure' : (read_arterial_and_bp_data, 'Custom'),
+    'SpiroAndArterialAndBp' : (read_spiro_and_arterial_and_bp_data, 'Custom'),
+    # Spirometry
+    'Spirometry' : (read_spirometry_data, 100020),
+
 }
 
+## Medical
 medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [(partial(read_medical_diagnoses_data, letter = letter), 41270) for letter in ascii_uppercase]))
 map_envdataset_to_dataloader_and_field = {**map_envdataset_to_dataloader_and_field, **medical_diagnoses_dict}
 
