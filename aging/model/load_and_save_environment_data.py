@@ -234,7 +234,7 @@ def load_data(env_dataset, target_dataset, **kwargs):
         df_env = df_env.reset_index().set_index('eid')
         df_target = df_target.reset_index().set_index('eid')
         ## Join
-        df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='_dup')
+        df = df_env.join(df_target, how = 'inner', lsuffix='', rsuffix='_dup')
         ## Remove duplicates including id
         columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
         df = df[columns_not_dup]
