@@ -1,10 +1,10 @@
 #!/bin/bash
 #models=( "ElasticNet" )
-models=( "LightGbm" )
+models=( "Xgboost" "RandomForest" "GradientBoosting" "LightGbm" "NeuralNetwork" "ElasticNet" )
 target_datasets=( "HeartImages" "LiverImages" )
 #target_datasets=( "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "Heart" "HeartSize" "HeartPWA" "AnthropometryImpedance" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" "EyeAutorefraction" "EyeAcuity" "EyeIntraoculaPressure" "Eye" "Spirometry" "BloodPressure" "AnthropometryBodySize" "Anthropometry" "ArterialStiffness" "ArterialAndBloodPressure" "SpiroAndArterialAndBp" )
 #input_datasets=( "Education" "medical_diagnoses_I" )
-input_datasets=( "Medication" "Diet" "Education" "Eyesight" "GeneralHealth" "Claudification" "Hearing" "Household" "MentalHealth" "PhysicalActivity" "SunExposure" )
+input_datasets=( "Brain" "Eye" "Heart" "Blood" "UrineAndBlood" "ECGAtRest" "Anthropometry" "SpiroAndArterialAndBp" "CarotidUltrasound" )
 #input_datasets=( "Medication" )
 
 outer_splits=5
