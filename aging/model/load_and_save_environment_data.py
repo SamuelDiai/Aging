@@ -164,6 +164,8 @@ def load_data_env(env_dataset, **kwargs):
         else :
             dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
             df = dataloader(**kwargs)
+            if 'Age when attended assessment centre' in df.columns:
+                df = df.drop(columns = ['Age when attended assessment centre'])
 
         df.to_csv(path_inputs_env + env_dataset + '.csv')
         return df
