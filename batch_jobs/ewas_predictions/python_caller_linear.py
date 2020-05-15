@@ -73,14 +73,18 @@ print(hyperparameters)
 
 
 ## Compute dissimilarity :
-df_env = load_data_env(input_dataset).drop(columns = ['eid'])
-df_target = load_data_env(target_dataset).drop(columns = ['eid'])
-large_join = df_env.join(df_target, how = 'outer', lsuffix = '_l', rsuffix = '_r')
-del df_env
-del df_target
-large_join_shape = large_join.shape[0]
-tiny_join = large_join.dropna()
-tiny_join_shape = tiny_join.shape[0]
+if input_dataset != target_dataset:
+    df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
+    df_target = load_data_env(target_dataset).drop(columns = ['eid']).dropna()
+    large_join = df_env.join(df_target, how = 'outer', lsuffix = '_l', rsuffix = '_r')
+    tiny_join = df_env.join(df_target, how = 'inner', lsuffix = '_l', rsuffix = '_r')
+
+    large_join_shape = large_join.shape[0]
+    tiny_join_shape = tiny_join.shape[0]
+else :
+    df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
+    large_join_shape = df_env.shape[0]
+    tiny_join_shape = df_env.shape[0]
 
 
 if large_join_shape == 0:
@@ -90,4 +94,4 @@ else :
 
 
 df_res = pd.DataFrame({'Target Dataset': [target_dataset],  'Environmental Dataset' : [input_dataset], 'Intersection' : [tiny_join_shape], 'Union' : [large_join_shape], 'Dissimilartiy': [quotient]})
-df_res.to_csv('/n/groups/patel/samuel/EWAS/SampleSizes.csv', mode = 'a', index = False)
+df_res.to_csv('/n/groups/patel/samuel/EWAS/SampleSizes3.csv', mode = 'a', index = False)
