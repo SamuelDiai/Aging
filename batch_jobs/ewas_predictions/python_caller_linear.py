@@ -22,34 +22,34 @@ hyperparameters['input_dataset'] = input_dataset
 print(hyperparameters)
 
 
-# df = load_data(input_dataset, target_dataset).drop(columns = ['eid'])
-#
-#
-#
-# ## Linear EWAS :
-# #df_rescaled, scaler_residual = normalise_dataset(df)
-# columns_age_sex_ethnicity = ['Age', 'Sex'] + ETHNICITY_COLS
-# cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residual', 'Age', 'Sex'] + ETHNICITY_COLS).columns
-#
-#
-# d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value', 'size_na_dropped'])
-# for column in cols_except_age_sex_residual_ethnicty:
-#     df_col = df[[column, 'residual'] + columns_age_sex_ethnicity]
-#     df_col = df_col.dropna()
-#
-#     lin_residual = LinearRegression()
-#     lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residual'].values)
-#     res_residual = df_col['residual'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
-#
-#     lin_feature = LinearRegression()
-#     lin_feature.fit(df_col[columns_age_sex_ethnicity].values, df_col[column].values)
-#     res_feature = df_col[column].values - lin_feature.predict(df_col[columns_age_sex_ethnicity].values)
-#
-#     corr, p_val = pearsonr(res_residual, res_feature)
-#     d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr, 'size_na_dropped' : df_col.shape[0]}, ignore_index = True)
-# d.to_csv(path_output_linear_study + 'linear_correlations_%s_%s.csv' % (input_dataset, target_dataset), index=False)
-#
-#
+df = load_data(input_dataset, target_dataset).drop(columns = ['eid'])
+
+
+
+## Linear EWAS :
+#df_rescaled, scaler_residual = normalise_dataset(df)
+columns_age_sex_ethnicity = ['Age', 'Sex'] + ETHNICITY_COLS
+cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residual', 'Age', 'Sex'] + ETHNICITY_COLS).columns
+
+
+d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value', 'size_na_dropped'])
+for column in cols_except_age_sex_residual_ethnicty:
+    df_col = df[[column, 'residual'] + columns_age_sex_ethnicity]
+    df_col = df_col.dropna()
+
+    lin_residual = LinearRegression()
+    lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residual'].values)
+    res_residual = df_col['residual'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
+
+    lin_feature = LinearRegression()
+    lin_feature.fit(df_col[columns_age_sex_ethnicity].values, df_col[column].values)
+    res_feature = df_col[column].values - lin_feature.predict(df_col[columns_age_sex_ethnicity].values)
+
+    corr, p_val = pearsonr(res_residual, res_feature)
+    d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr, 'size_na_dropped' : df_col.shape[0]}, ignore_index = True)
+d.to_csv(path_output_linear_study + 'linear_correlations_%s_%s.csv' % (input_dataset, target_dataset), index=False)
+
+
 # ## See effect of Age per feature
 # d2 = pd.DataFrame(columns = ['target_dataset_name', 'env_feature_name', 'p_val', 'r_val', 'cslope'])
 #
@@ -73,25 +73,25 @@ print(hyperparameters)
 
 
 ## Compute dissimilarity :
-if input_dataset != target_dataset:
-    df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
-    df_target = load_data_env(target_dataset).drop(columns = ['eid']).dropna()
-    large_join = df_env.join(df_target, how = 'outer', lsuffix = '_l', rsuffix = '_r')
-    tiny_join = df_env.join(df_target, how = 'inner', lsuffix = '_l', rsuffix = '_r')
-
-    large_join_shape = large_join.shape[0]
-    tiny_join_shape = tiny_join.shape[0]
-else :
-    df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
-    large_join_shape = df_env.shape[0]
-    tiny_join_shape = df_env.shape[0]
-
-
-if large_join_shape == 0:
-    quotient = 0
-else :
-    quotient =  tiny_join_shape / large_join_shape
-
-
-df_res = pd.DataFrame({'Target Dataset': [target_dataset],  'Environmental Dataset' : [input_dataset], 'Intersection' : [tiny_join_shape], 'Union' : [large_join_shape], 'Dissimilartiy': [quotient]})
-df_res.to_csv('/n/groups/patel/samuel/EWAS/SampleSizes3.csv', mode = 'a', index = False)
+# if input_dataset != target_dataset:
+#     df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
+#     df_target = load_data_env(target_dataset).drop(columns = ['eid']).dropna()
+#     large_join = df_env.join(df_target, how = 'outer', lsuffix = '_l', rsuffix = '_r')
+#     tiny_join = df_env.join(df_target, how = 'inner', lsuffix = '_l', rsuffix = '_r')
+#
+#     large_join_shape = large_join.shape[0]
+#     tiny_join_shape = tiny_join.shape[0]
+# else :
+#     df_env = load_data_env(input_dataset).drop(columns = ['eid']).dropna()
+#     large_join_shape = df_env.shape[0]
+#     tiny_join_shape = df_env.shape[0]
+#
+#
+# if large_join_shape == 0:
+#     quotient = 0
+# else :
+#     quotient =  tiny_join_shape / large_join_shape
+#
+#
+# df_res = pd.DataFrame({'Target Dataset': [target_dataset],  'Environmental Dataset' : [input_dataset], 'Intersection' : [tiny_join_shape], 'Union' : [large_join_shape], 'Dissimilartiy': [quotient]})
+# df_res.to_csv('/n/groups/patel/samuel/EWAS/SampleSizes3.csv', mode = 'a', index = False)
