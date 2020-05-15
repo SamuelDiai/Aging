@@ -85,7 +85,7 @@ tiny_join_shape = tiny_join.shape[0]
 if large_join_shape == 0:
     quotient = 0
 else :
-    quotient = large_join_shape / tiny_join_shape
+    quotient =  tiny_join_shape / large_join_shape
 
 
 df_res = pd.DataFrame({'Target Dataset': [target_dataset],  'Environmental Dataset' : [input_dataset], 'Intersection' : [tiny_join_shape], 'Union' : [large_join_shape], 'Dissimilartiy': [quotient]})
