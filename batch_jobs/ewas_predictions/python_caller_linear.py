@@ -73,10 +73,14 @@ d2.to_csv('/n/groups/patel/samuel/EWAS/LinearAge/' +  'linear_age_%s_%s.csv' % (
 
 
 ## Compute dissimilarity :
-
+del df
+del d
+del d2
 df_env = load_data_env(input_dataset).drop(columns = ['eid'])
 df_target = load_data_env(target_dataset).drop(columns = ['eid'])
 large_join = df_env.join(df_target, how = 'outer', lsuffix = '_l', rsuffix = '_r')
+del df_env
+del df_target
 large_join_shape = large_join.shape[0]
 tiny_join = large_join.dropna()
 tiny_join_shape = tiny_join.shape[0]
