@@ -226,8 +226,3 @@ class BaseModel():
                     score = f1_score(y, estimator.predict(X_copy.values))
                 list_scores.append(score_max - score)
             self.features_imp = list_scores
-
-
-
-
-            raise ValueError('No feature_importances for NN')
