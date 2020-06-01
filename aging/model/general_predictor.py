@@ -211,7 +211,7 @@ class BaseModel():
             estimator = self.get_model()
             for index, value in get_init_hyper.items():
                 setattr(estimator, index, value)
-            estimator.fit(X.values, y.values)
+            estimator.fit(X.values, y)
             if scoring == 'r2':
                 score_max = r2_score(y, estimator.predict(X.values))
             else :
