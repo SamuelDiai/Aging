@@ -37,8 +37,8 @@ class EnvironmentPredictor(BaseModel):
 
 
     def feature_importance(self, df):
-        X = df.drop(columns = ['eid', 'residual']).values
-        y = df['residual'].values
+        X = df.drop(columns = ['eid', 'residual'])
+        y = df['residual']
         self.features_importance_(X, y, 'r2')
         return df.drop(columns = ['eid', 'residual']).columns
 

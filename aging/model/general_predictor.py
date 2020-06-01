@@ -13,10 +13,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
-
+import copy
 from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit
 import numpy as np
 import scipy.stats as stat
+from sklearn.metrics import r2_score, f1_score
 
 
 MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
@@ -182,22 +183,50 @@ class BaseModel():
 
 
     def features_importance_(self, X, y, scoring):
-        cv = KFold(n_splits = self.inner_splits, shuffle = False)
-        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
-        clf.fit(X, y)
-        best_estim = clf.best_estimator_
+        columns = X.columns
+        X = X.values
+        y = y.values
+        if self.model_name != 'NeuralNetwork':
+            cv = KFold(n_splits = self.inner_splits, shuffle = False)
+            clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
+            clf.fit(X, y)
+            best_estim = clf.best_estimator_
 
-        if self.model_name == 'ElasticNet':
-            self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
-        elif self.model_name == 'RandomForest':
-            self.features_imp = best_estim.feature_importances_
-        elif self.model_name == 'GradientBoosting':
-            self.features_imp = best_estim.feature_importances_
-        elif self.model_name == 'Xgboost':
-            self.features_imp = best_estim.feature_importances_
-        elif self.model_name == 'LightGbm':
-            self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-        elif self.model_name == 'NeuralNetwork':
-            raise ValueError('No feature_importances for NN')
+            if self.model_name == 'ElasticNet':
+                self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
+            elif self.model_name == 'RandomForest':
+                self.features_imp = best_estim.feature_importances_
+            elif self.model_name == 'GradientBoosting':
+                self.features_imp = best_estim.feature_importances_
+            elif self.model_name == 'Xgboost':
+                self.features_imp = best_estim.feature_importances_
+            elif self.model_name == 'LightGbm':
+                self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+            else :
+                raise ValueError('Wrong model name')
         else :
-            raise ValueError('Wrong model name')
+            list_scores = []
+            get_init_hyper = self.get_hyper_distribution()
+            estimator = self.get_model()
+            for index, value in get_init_hyper.items():
+                setattr(estimator, index, value)
+            estimator.fit(X, y)
+            if scoring == 'r2':
+                score_max = r2_score(y, estimator.predict(X))
+            else :
+                score_max = f1_score(y, estimator.predict(X))
+            for column in columns :
+                X_copy = copy.deeepcopy(X)
+                X_copy[column] = numpy.random.permutation(X_copy[column])
+                estimator.fit(X_copy, y)
+                if scoring == 'r2':
+                    score = r2_score(y, estimator.predict(X_copy))
+                else :
+                    score = f1_score(y, estimator.predict(X_copy))
+                list_scores.append(score_max - score)
+            self.features_imp = list_scores
+
+
+
+
+            raise ValueError('No feature_importances for NN')
