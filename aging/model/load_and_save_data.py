@@ -15,7 +15,7 @@ from ..processing.blood_pressure_processing import read_blood_pressure_data
 from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
 from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data
 from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
-from ..processing.bone_densitometry import read_bone_densitometry_data
+from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 
 
 
