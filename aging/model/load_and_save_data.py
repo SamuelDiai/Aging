@@ -66,14 +66,14 @@ def load_data(dataset, **kwargs):
             field, dataloader = map_dataset_to_field_and_dataloader[dataset]
             df = dataloader(**kwargs)
         df.to_csv(path_inputs + dataset + '.csv')
-        return df
+        return df.dropna()
     elif len(selected_inputs) == 1 :
         nrows = None
         if 'nrows' in kwargs.keys():
             nrows = kwargs['nrows']
         print("Load Existing Data")
         df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
-        return df
+        return df.dropna()
     else :
         print("Error")
         raise ValueError('Too many Input file for the selected dataset')
