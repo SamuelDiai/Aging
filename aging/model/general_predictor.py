@@ -207,7 +207,7 @@ class BaseModel():
                 raise ValueError('Wrong model name')
         else :
             list_scores = []
-            get_init_hyper = ParameterSampler(self.get_hyper_distribution(), n_iter = 1)
+            get_init_hyper = list(ParameterSampler(self.get_hyper_distribution(), n_iter = 1))[0]
             estimator = self.get_model()
             for index, value in get_init_hyper.items():
                 setattr(estimator, index, value)
