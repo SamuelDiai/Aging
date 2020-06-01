@@ -34,7 +34,7 @@ def read_ecg_at_rest_data(**kwargs):
 	df_2 = read_data(cols_features, cols_filter, instance, **kwargs)
 
 	cols_features =  ['12336', '12338', '12340']
-	cols_filter = ['12657']
+	cols_filter = []
 	instance = [3]
 	df_3 = read_data(cols_features, cols_filter, instance, **kwargs)
 
