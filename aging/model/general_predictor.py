@@ -218,7 +218,7 @@ class BaseModel():
                 score_max = f1_score(y, estimator.predict(X))
             for column in columns :
                 X_copy = copy.deepcopy(X)
-                X_copy[column] = numpy.random.permutation(X_copy[column])
+                X_copy[column] = np.random.permutation(X_copy[column])
                 estimator.fit(X_copy, y)
                 if scoring == 'r2':
                     score = r2_score(y, estimator.predict(X_copy))
