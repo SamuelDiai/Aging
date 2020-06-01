@@ -14,10 +14,11 @@ from sklearn.utils.validation import check_is_fitted
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
 import copy
-from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit
+from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit, ParameterSampler
 import numpy as np
 import scipy.stats as stat
 from sklearn.metrics import r2_score, f1_score
+
 
 
 MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
@@ -206,7 +207,7 @@ class BaseModel():
                 raise ValueError('Wrong model name')
         else :
             list_scores = []
-            get_init_hyper = self.get_hyper_distribution()
+            get_init_hyper = ParameterSampler(self.get_hyper_distribution(), n_iter = 1)
             estimator = self.get_model()
             for index, value in get_init_hyper.items():
                 setattr(estimator, index, value)
