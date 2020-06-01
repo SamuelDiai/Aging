@@ -35,7 +35,7 @@ def read_spirometry_data(**kwargs):
 					if flag_2 == 0 or flag_2 == 32:
 						return pd.Series(row[['3064-%s.2' % instance, '3062-%s.2' % instance, '3063-%s.2'% instance] + ['21003-%s.0'% instance, '31-0.0']].values)
 					else:
-						return  pd.Series([None, None, None] + [None, None])
+						return  pd.Series([None, None, None] + ['21003-%s.0'% instance, '31-0.0'])
 
 
 		cols = ['3064-%s.' % instance, '3062-%s.' % instance, '3063-%s.' % instance, '3061-%s.' % instance]

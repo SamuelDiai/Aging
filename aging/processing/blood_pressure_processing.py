@@ -1,65 +1,60 @@
-from .base_processing import read_data, path_data, path_dictionary
+
 import pandas as pd
+from .base_processing import  path_data
+
 """
-Features used :
-	100011 - Blood Pressure
-	Errors features : None
-	Missing : None
+4081	Method of measuring blood pressure
+
+4079	Diastolic blood pressure, automated reading
+94	Diastolic blood pressure, manual reading
+
+95	Pulse rate (during blood-pressure measurement)
+102	Pulse rate, automated reading
+
+4080	Systolic blood pressure, automated reading
+93	Systolic blood pressure, manual reading
+
 """
-
-# def read_blood_pressure_data(**kwargs):
-#     cols_features = ['102-0.0', '102-0.1', '4079-0.0', '4079-0.1', '4080-0.0', '4080-0.1']
-#     cols_filter = []
-#     instance = 0
-#     temp = read_data(cols_features, cols_filter, instance, **kwargs)
-#     for elem in pd.Series([elem.split('.')[0] for elem in temp.columns.values if 'Age' not in elem and 'Sex' not in elem]).drop_duplicates():
-#         temp[elem + '.0'] = (temp[elem + '.0'] + temp[elem + '.1'])/2
-#     return temp[[elem for elem in temp.columns if '.1' not in elem]]
-
-
-
 
 def read_blood_pressure_data(**kwargs):
-	nrows = None
-	if 'nrows' in kwargs.keys():
-		nrows = kwargs['nrows']
+    list_df = []
 
-	df_features = pd.read_csv(path_dictionary, usecols = ["FieldID", "Field"])
-	df_features.set_index('FieldID', inplace = True)
-	feature_id_to_name = df_features.to_dict()['Field']
+    for instance in range(4):
+        age_col = '21003-' + str(instance) + '.0'
+        cols_age_eid_sex = ['eid', age_col, '31-0.0']
+        cols = ['4081-%s.0' % instance,'4081-%s.1' % instance, '4079-%s.0' % instance, '4079-%s.1' % instance, '94-%s.0' % instance, '94-%s.1' % instance, '95-%s.0' % instance, '95-%s.1' % instance,
+                   '102-%s.0' % instance, '102-%s.1' % instance, '4080-%s.0' % instance, '4080-%s.1' % instance, '93-%s.0' % instance, '93-%s.1' % instance]
+
+        d = pd.read_csv(path_data, usecols = cols_age_eid_sex + cols, **kwargs)
+        d = d[~d[cols].isna().all(axis = 1)]
+
+        def custom_apply(row):
+            method_first = row['4081-%s.0' % instance]
+            method_second = row['4081-%s.1' % instance]
+            if method_first == 1:
+                values1 = row['4079-%s.0' % instance], row['102-%s.0' % instance],  row['4080-%s.0' % instance]
+            elif method_first in [2, 3]:
+                values1 = row['94-%s.0' % instance], row['95-%s.0' % instance], row['93-%s.0' % instance]
+            else :
+                values1 = np.nan, np.nan, np.nan
+
+            if method_second == 1:
+                values2 = row['4079-%s.1' % instance], row['102-%s.1' % instance],  row['4080-%s.1' % instance]
+
+            elif method_second in [2, 3]:
+                values2 = row['94-%s.1' % instance], row['95-%s.1' % instance], row['93-%s.1' % instance]
+            else :
+                values2 = np.nan, np.nan, np.nan
+
+            values1, values2 = list(values1), list(values2)
+            cols_name = ['eid', 'Age when attended assessment centre', 'Sex', 'Diastolic blood pressure_0', 'Pulse rate_0', 'Systolic blood pressure_0',
+                         'Diastolic blood pressure_1', 'Pulse rate_1', 'Systolic blood pressure_1']
+            return pd.Series([str(int(row['eid'])), row[age_col], row['31-0.0']] + values1 + values2, index = cols_name)
 
 
-	instances = [0, 1, 2, 3]
-	list_df = []
-	for instance in instances :
-		age_col = '21003-' + str(instance) + '.0'
-		cols_features_ = ['102-%s.0' % instance, '102-%s.1' % instance, '4079-%s.0' % instance, '4079-%s.1' % instance, '4080-%s.0' % instance, '4080-%s.1' % instance]
-		temp = pd.read_csv(path_data, usecols = ['eid', age_col, '31-0.0'] + cols_features_, nrows = nrows)
-		temp.set_index('eid', inplace = True)
-		temp.index = temp.index.rename('id')
+        df_ = d.apply(custom_apply, axis = 1)
+        df_['id'] = df_['eid'] + '_' + str(instance)
+        df_['eid'] = df_['eid'].astype(int)
+        list_df.append(df_)
 
-		## remove rows which contains any values for features in cols_features and then select only features in cols_abdominal
-		temp = temp[[age_col, '31-0.0'] + cols_features_]
-		## Remove rows which contains ANY Na
-
-		features_index = temp.columns
-		features = []
-		for elem in features_index:
-			if elem != age_col and elem != '31-0.0':
-				features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
-			else:
-				features.append(feature_id_to_name[int(elem.split('-')[0])])
-
-		df = temp.dropna(how = 'any')
-
-		df.columns = features
-
-
-		for elem in pd.Series([elem.split('.')[0] for elem in df.columns.values if 'Age' not in elem and 'Sex' not in elem]).drop_duplicates():
-			df[elem + '.0'] = (df[elem + '.0'] + df[elem + '.1'])/2
-		df = df[[elem for elem in df.columns if '.1' not in elem]]
-		df['eid'] = df.index
-		df.index = df.index.astype('str') + '_' + str(instance)
-		list_df.append(df)
-
-	return pd.concat(list_df)
+    return pd.concat(list_df).set_index('id')

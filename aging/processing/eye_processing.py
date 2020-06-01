@@ -1,5 +1,6 @@
 import pandas as pd
 from .base_processing import path_data, path_dictionary, read_data
+from ..environment_processing.base_processing import read_complex_data
 """
 Features used :
 	100014 - Autorefraction
@@ -20,6 +21,31 @@ def read_eye_acuity_data(**kwargs):
 	cols_filter = []
 	instance = [0]
 	return read_data(cols_features, cols_filter, instance, **kwargs)
+
+def read_eye_acuity_data(instances = [0, 1], **kwargs):
+
+    dict_onehot = {'6075' : {0 : 'none', 1 : 'wearing', 2 : 'elsewhere'},
+                   '6074' : {0 : 'none', 1 : 'wearing', 2 : 'elsewhere'},
+                   '20262' : {2 : 'highly myopic', 1 : 'moderate/low myopia', 0 : 'non-myopic'}}
+
+    cols_numb_onehot = {'6074' : 1, '6075' : 1, '20262' : 1}
+    cols_ordinal = []
+    cols_continuous = ['5208', '5201']
+    cont_fill_na = []
+    cols_half_binary = []
+
+
+    df = read_complex_data(instances = instances,
+                           dict_onehot = dict_onehot,
+                           cols_numb_onehot = cols_numb_onehot,
+                           cols_ordinal_ = cols_ordinal,
+                           cols_continuous_ = cols_continuous,
+                           cont_fill_na_ = cont_fill_na,
+                           cols_half_binary_ = cols_half_binary,
+                           **kwargs)
+    return df
+
+
 
 def read_eye_intraocular_pressure_data(**kwargs):
 	cols_features =  ['5264', '5256', '5265', '5257', '5262', '5254', '5263', '5255']

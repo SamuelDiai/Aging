@@ -98,7 +98,9 @@ def read_data(cols_features, cols_filter, instances, **kwargs):
             else:
                 features.append(feature_id_to_name[int(elem.split('-')[0])])
 
-        df = temp.dropna(how = 'any')
+        df = temp[~temp[cols_features_].isna().all(axis = 1)]
+        #df = temp.dropna(how = 'any')
+
 
         df.columns = features
         df['eid'] = df.index
@@ -108,40 +110,42 @@ def read_data(cols_features, cols_filter, instances, **kwargs):
     return pd.concat(list_df)
 
 def read_data_and_merge_temporal_features(cols_features, timesteps, instance,  **kwargs):
-	nrows = None
-	if 'nrows' in kwargs.keys():
-		nrows = kwargs['nrows']
+    nrows = None
+    if 'nrows' in kwargs.keys():
+        nrows = kwargs['nrows']
 
-	df_features = pd.read_csv(path_dictionary, usecols = ["FieldID", "Field"])
-	df_features.set_index('FieldID', inplace = True)
-	feature_id_to_name = df_features.to_dict()['Field']
-	list_df = []
-	for instance_ in instance:
-		age_col = '21003-' + str(instance_) + '.0'
+    df_features = pd.read_csv(path_dictionary, usecols = ["FieldID", "Field"])
+    df_features.set_index('FieldID', inplace = True)
+    feature_id_to_name = df_features.to_dict()['Field']
+    list_features = []
+    list_df = []
+    for instance_ in instance:
+        age_col = '21003-' + str(instance_) + '.0'
 
-		multi_cols = [str(elem) + '-%s.' % instance_ + str(int_) for elem in cols_features for int_ in range(timesteps)] + ['eid', age_col, '31-0.0']
-		big_df = pd.read_csv(path_data, usecols = multi_cols, nrows = nrows)
-		dict_data = {}
-		dict_data['eid'] = big_df['eid']
-		dict_data[age_col] = big_df[age_col]
-		dict_data['31-0.0'] = big_df['31-0.0']
-		for elem in cols_features :
-		    dict_data[str(elem) + '-2.0'] = big_df[[str(elem) + '-%s.' % instance_ + str(int_) for int_ in range(timesteps)]].mean(axis = 1).values
+        multi_cols = [str(elem) + '-%s.' % instance_ + str(int_) for elem in cols_features for int_ in range(timesteps)] + ['eid', age_col, '31-0.0']
+        big_df = pd.read_csv(path_data, usecols = multi_cols, nrows = nrows)
+        dict_data = {}
+        dict_data['eid'] = big_df['eid']
+        dict_data[age_col] = big_df[age_col]
+        dict_data['31-0.0'] = big_df['31-0.0']
+        for elem in cols_features :
+            dict_data[str(elem) + '-2.0'] = big_df[[str(elem) + '-%s.' % instance_ + str(int_) for int_ in range(timesteps)]].mean(axis = 1).values
+            list_features.append(str(elem) + '-2.0')
+        temp = pd.DataFrame(data = dict_data).set_index('eid')
+        temp.index = temp.index.rename('id')
+        features_index = temp.columns
+        features = []
+        for elem in features_index:
+            if elem != age_col and elem != '31-0.0':
+                features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
+            else:
+                features.append(feature_id_to_name[int(elem.split('-')[0])])
 
-		temp = pd.DataFrame(data = dict_data).set_index('eid')
-		temp.index = temp.index.rename('id')
-		features_index = temp.columns
-		features = []
-		for elem in features_index:
-		    if elem != age_col and elem != '31-0.0':
-		        features.append(feature_id_to_name[int(elem.split('-')[0])] + elem.split('-')[1][-2:])
-		    else:
-		        features.append(feature_id_to_name[int(elem.split('-')[0])])
+        df = temp[~temp[list_features].isna().all(axis = 1)]
+        #df = temp.dropna(how = 'all')
+        df.columns = features
 
-		df = temp.dropna(how = 'any')
-		df.columns = features
-
-		df['eid'] = df.index
-		df.index = df.index.astype('str') + '_' + str(instance_)
-		list_df.append(df)
-	return pd.concat(list_df)
+        df['eid'] = df.index
+        df.index = df.index.astype('str') + '_' + str(instance_)
+        list_df.append(df)
+    return pd.concat(list_df)

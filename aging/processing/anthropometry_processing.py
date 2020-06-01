@@ -9,6 +9,41 @@ Features used :
 """
 
 def read_anthropometry_impedance_data(**kwargs):
+
+	"""
+	23098	Weight
+	23104	Body mass index (BMI)
+	23113	Leg fat-free mass (right)
+	23118	Leg predicted mass (left)
+	23114	Leg predicted mass (right)
+	23123	Arm fat percentage (left)
+	23119	Arm fat percentage (right)
+	23124	Arm fat mass (left)
+	23120	Arm fat mass (right)
+	23121	Arm fat-free mass (right)
+	23125	Arm fat-free mass (left)
+	23126	Arm predicted mass (left)
+	23122	Arm predicted mass (right)
+	23127	Trunk fat percentage
+	23128	Trunk fat mass
+	23129	Trunk fat-free mass
+	23130	Trunk predicted mass
+	# 23105	Basal metabolic rate => Not taken : Function of the Age
+	23099	Body fat percentage
+	23100	Whole body fat mass
+	23101	Whole body fat-free mass
+	23102	Whole body water mass
+	23115	Leg fat percentage (left)
+	23111	Leg fat percentage (right)
+	23116	Leg fat mass (left)
+	23112	Leg fat mass (right)
+	23117	Leg fat-free mass (left)
+	23106	Impedance of whole body
+	23110	Impedance of arm (left)
+	23109	Impedance of arm (right)
+	23108	Impedance of leg (left)
+	23107	Impedance of leg (right)
+	"""
 	cols_features = [
     '23098', '23099', '23100', '23101', '23102', '23104',
     '23106', '23107', '23108', '23109', '23110', '23111',
