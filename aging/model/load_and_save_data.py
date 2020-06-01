@@ -16,6 +16,7 @@ from ..processing.arterial_stiffness_processing import read_arterial_stiffness_d
 from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data
 from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
+from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
 
 
 
@@ -50,7 +51,7 @@ map_dataset_to_field_and_dataloader = {
                     'SpiroAndArterialAndBp' : ('Custom', read_spiro_and_arterial_and_bp_data),
                     'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
                     'BoneDensitometryOfHeel' : (100018, read_bone_densitometry_data),
-                    'HandGripStrenght' : (100019, read_hand_grip_strenght_data)
+                    'HandGripStrenght' : (100019, read_hand_grip_strength_data)
                     }
 
 def load_data(dataset, **kwargs):
