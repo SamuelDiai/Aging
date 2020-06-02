@@ -11,8 +11,6 @@ Features used :
 def read_anthropometry_impedance_data(**kwargs):
 
 	"""
-	23098	Weight
-	23104	Body mass index (BMI)
 	23113	Leg fat-free mass (right)
 	23118	Leg predicted mass (left)
 	23114	Leg predicted mass (right)
@@ -44,8 +42,7 @@ def read_anthropometry_impedance_data(**kwargs):
 	23108	Impedance of leg (left)
 	23107	Impedance of leg (right)
 	"""
-	cols_features = [
-    '23098', '23099', '23100', '23101', '23102', '23104',
+	cols_features = ['23099', '23100', '23101', '23102',
     '23106', '23107', '23108', '23109', '23110', '23111',
     '23112', '23113', '23114', '23115', '23116', '23117',
     '23118', '23119', '23120', '23121', '23122', '23123',
@@ -56,15 +53,23 @@ def read_anthropometry_impedance_data(**kwargs):
 
 
 def read_anthropometry_body_size_data(**kwargs):
-	cols_features = ['48', '21002', '21001', '49', '50', '51', '20015']
+	"""
+
+	48	Waist circumference
+	21002	Weight
+	21001	Body mass index (BMI)
+	49	Hip circumference
+	50	Standing height
+	51	Seated height
+	"""
+	cols_features = ['48', '21002', '21001', '49', '50', '51']
 	cols_filter = []
 	instance = [0, 1, 2, 3]
 	return read_data(cols_features, cols_filter, instance, **kwargs)
 
 def read_anthropometry_data(**kwargs):
-	cols_features_body = ['48', '21002', '21001', '49', '50', '51', '20015']
-	cols_features_imp = [
-    '23098', '23099', '23100', '23101', '23102', '23104',
+	cols_features_body = ['48', '21002', '21001', '49', '50', '51']
+	cols_features_imp = ['23099', '23100', '23101', '23102',
     '23106', '23107', '23108', '23109', '23110', '23111',
     '23112', '23113', '23114', '23115', '23116', '23117',
     '23118', '23119', '23120', '23121', '23122', '23123',
