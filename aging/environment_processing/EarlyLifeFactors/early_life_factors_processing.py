@@ -1,6 +1,7 @@
 from ..base_processing import read_complex_data
 
 def read_early_life_factors_data(**kwargs):
+    instances = [0, 1, 2]
     """
     1647	Country of birth (UK/elsewhere)
     1677	Breastfed as a baby
