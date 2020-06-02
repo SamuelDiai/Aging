@@ -92,7 +92,7 @@ map_envdataset_to_dataloader_and_field = {
     # Anthropometry
     'AnthropometryImpedance' : (read_anthropometry_data, 100008),
     'AnthropometryBodySize' : (read_anthropometry_body_size_data, 100010),
-    'Anthropometry' : (read_anthropometry_data, 100008),
+    'Anthropometry' : (read_anthropometry_impedance_data, 100008),
     # Arterial Stiffness
     'ArterialStiffness' : (read_arterial_stiffness_data, 100007),
     # Urine And Blood
@@ -223,6 +223,8 @@ def load_data(env_dataset, target_dataset, **kwargs):
     df_ethnicities = load_ethnicity(**kwargs)
     print("ETHNICITY  :", df_ethnicities)
 
+
+    df_target = FillNa(df_target)
     ## Try intersection
     df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
     columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
