@@ -51,7 +51,8 @@ map_dataset_to_field_and_dataloader = {
                     'SpiroAndArterialAndBp' : ('Custom', read_spiro_and_arterial_and_bp_data),
                     'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
                     'BoneDensitometryOfHeel' : (100018, read_bone_densitometry_data),
-                    'HandGripStrenght' : (100019, read_hand_grip_strength_data)
+                    'HandGripStrenght' : (100019, read_hand_grip_strength_data),
+                    'HearingTest' : (100049, read_hearing_test_data)
                     }
 
 def load_data(dataset, **kwargs):
