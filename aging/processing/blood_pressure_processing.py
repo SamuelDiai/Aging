@@ -28,6 +28,7 @@ def read_blood_pressure_data(**kwargs):
 
         d = pd.read_csv(path_data, usecols = cols_age_eid_sex + cols, **kwargs)
         d = d[~d[cols].isna().all(axis = 1)]
+        d = d[d['4081-%s.0' % instance].isin([1, 2, 3]) & d['4081-%s.1' % instance].isin([1, 2, 3])]
 
         def custom_apply(row):
             method_first = row['4081-%s.0' % instance]
