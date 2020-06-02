@@ -17,6 +17,7 @@ from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_an
 from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
+from ..processing.hearing_tests_processing import read_hearing_test_data
 
 
 
