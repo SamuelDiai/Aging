@@ -93,7 +93,7 @@ map_envdataset_to_dataloader_and_field = {
     'EarlyLifeFactors' : (read_early_life_factors_data, 100033),
     ## Biomarkers
     # Anthropometry
-    'AnthropometryImpedance' : (read_anthropometry_data, 100008),
+    'AnthropometryImpedance' : (read_anthropometry_impedance_data, 100008),
     'AnthropometryBodySize' : (read_anthropometry_body_size_data, 100010),
     # Arterial Stiffness
     'ArterialStiffness' : (read_arterial_stiffness_data, 100007),

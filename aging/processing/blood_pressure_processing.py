@@ -1,7 +1,6 @@
-
+import numpy as np
 import pandas as pd
 from .base_processing import  path_data
-import numpy as np
 
 """
 4081	Method of measuring blood pressure
