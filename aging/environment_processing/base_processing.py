@@ -6,12 +6,12 @@ import numpy as np
 if sys.platform == 'linux':
 	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
-	path_features = "/n/groups/patel/samuel/EWAS/feature_importances_v2/"
-	path_predictions = "/n/groups/patel/samuel/EWAS/predictions_v2/"
-	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs_v2/"
-	path_target_residuals = "/n/groups/patel/samuel/residuals/"
-	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_v2/"
-	path_final_preds = "/n/groups/patel/samuel/EWAS/preds_v2/"
+	path_features = "/n/groups/patel/samuel/EWAS/feature_importances_final/"
+	path_predictions = "/n/groups/patel/samuel/EWAS/predictions_final/"
+	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs_final/"
+	path_target_residuals = "/n/groups/patel/samuel/residuals_final/"
+	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_final/"
+	path_final_preds = "/n/groups/patel/samuel/EWAS/preds_final/"
 elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
