@@ -111,7 +111,8 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
 
             for idx in range(cols_numb_onehot[col]):
                 cate = col + '-%s.%s' % (instance, idx)
-                d = pd.get_dummies(temp[cate])
+                d = pd.get_dummies(temp[cate], dummy_na = True)
+                d = d[d[np.nan] == 0][[elem for elem in d.columns if not np.isnan(elem)]]
                 d.columns = [col + '-%s'%instance + '.' + dict_onehot[col][int(elem)] for elem in d.columns ]
                 temp = temp.drop(columns = [cate])
 
@@ -124,7 +125,7 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
                         d_[common_cols] = d_[common_cols].add(d[common_cols])
                     for col_ in remaining_cols:
                         d_[col_] = d[col_]
-            temp = temp.join(d_, how = 'inner')
+            temp = temp.join(d_, how = 'outer')
 
 
         features_index = temp.columns
