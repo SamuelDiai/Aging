@@ -32,7 +32,7 @@ map_dataset_to_field_and_dataloader = {
                     'BodyComposition' : (124, read_body_composition_data),
                     'BoneComposition' : (125, read_bone_composition_data),
                     'ECGAtRest' : (12657, read_ecg_at_rest_data),
-                    'AnthropometryImpedance' : (100008, read_anthropometry_data),
+                    'AnthropometryImpedance' : (100008, read_anthropometry_impedance_data),
                     'UrineBiochemestry' : (100083, read_urine_biomarkers_data),
                     'BloodBiochemestry' : (17518, read_blood_biomarkers_data),
                     'BloodCount' : (100081, read_blood_count_data),  # Need to do blood infection
