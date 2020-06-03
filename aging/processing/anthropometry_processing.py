@@ -60,9 +60,9 @@ def read_anthropometry_body_size_data(**kwargs):
 	21001	Body mass index (BMI)
 	49	Hip circumference
 	50	Standing height
-	51	Seated height
+	20015	Seatting height
 	"""
-	cols_features = ['48', '21002', '21001', '49', '50', '51']
+	cols_features = ['48', '21002', '21001', '49', '50', '20015']
 	cols_filter = []
 	instance = [0, 1, 2, 3]
 	return read_data(cols_features, cols_filter, instance, **kwargs)
