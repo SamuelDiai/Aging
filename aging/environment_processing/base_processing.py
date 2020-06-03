@@ -112,19 +112,21 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
             for idx in range(cols_numb_onehot[col]):
                 cate = col + '-%s.%s' % (instance, idx)
                 d = pd.get_dummies(temp[cate], dummy_na = True)
-                d = d[d[np.nan] == 0][[elem for elem in d.columns if not np.isnan(elem)]]
-                d.columns = [col + '-%s'%instance + '.' + dict_onehot[col][int(elem)] for elem in d.columns ]
-                temp = temp.drop(columns = [cate])
+                d = d[d[np.nan] == 0]
+                if not d.empty:
+                    d = d[[elem for elem in d.columns if not np.isnan(elem)]]
+                    d.columns = [col + '-%s'%instance + '.' + dict_onehot[col][int(elem)] for elem in d.columns ]
+                    temp = temp.drop(columns = [cate])
 
-                if idx == 0:
-                    d_ = d
-                else :
-                    common_cols = d.columns.intersection(d_.columns)
-                    remaining_cols = d.columns.difference(common_cols)
-                    if len(common_cols) > 0 :
-                        d_[common_cols] = d_[common_cols].add(d[common_cols])
-                    for col_ in remaining_cols:
-                        d_[col_] = d[col_]
+                    if idx == 0:
+                        d_ = d
+                    else :
+                        common_cols = d.columns.intersection(d_.columns)
+                        remaining_cols = d.columns.difference(common_cols)
+                        if len(common_cols) > 0 :
+                            d_[common_cols] = d_[common_cols].add(d[common_cols])
+                        for col_ in remaining_cols:
+                            d_[col_] = d[col_]
             temp = temp.join(d_, how = 'outer')
 
 
