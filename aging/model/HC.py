@@ -18,7 +18,7 @@ cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British
        'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
        'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
        'Other']
-cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attented assessment centre'] + cols_ethnicity
+cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + cols_ethnicity
 
 ## Agglomerative Clustering :
 
@@ -50,7 +50,7 @@ def CreateDictSizes(path_dataset_full, target_dataset):
         else :
             continue
     print("End dict series")
-    df_age = full_df['Age when attented assessment centre'].index
+    df_age = full_df['Age when attended assessment centre'].index
     return dict_name_to_df, dict_name_to_num_features, df_age
 
 

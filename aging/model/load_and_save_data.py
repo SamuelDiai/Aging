@@ -85,7 +85,7 @@ def load_data(dataset, **kwargs):
     if 'final_inputs' in dataset :
         df_ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
         df =  df.reset_index().merge(on = 'eid').set_index('id')
-    return df
+    return df.dropna()
 
 def create_data(dataset, **kwargs):
     if dataset not in map_dataset_to_field_and_dataloader.keys():

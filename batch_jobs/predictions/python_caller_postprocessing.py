@@ -61,7 +61,7 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
     # Avg df_val
-    df_val = df_val.groupby('id').agg({'predictions' : 'mean'})
+    df_val = df_val.groupby('id').agg({'pred' : 'mean'})
 
     #map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
     #df_val['fold'] = df_val.index.map(map_eid_to_fold)

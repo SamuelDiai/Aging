@@ -101,7 +101,7 @@ class GeneralPredictor(BaseModel):
         elif self.target == 'Age':
             df_noscaled = df_rescaled
             if hasattr(self, 'scaler'):
-                df_noscaled['predictions'] = self.scaler.inverse_transform(df_noscaled['predictions'].values.reshape(-1, 1))
+                df_noscaled['pred'] = self.scaler.inverse_transform(df_noscaled['pred'].values.reshape(-1, 1))
                 #df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
             return df_noscaled
         else :

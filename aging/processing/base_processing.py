@@ -64,7 +64,7 @@ def read_sex_and_age_data(**kwargs):
         print(instance)
         age_col = '21003-' + str(instance) + '.0'
         cols_age_eid_sex = ['eid', age_col, '31-0.0']
-        cols_target = ['eid', 'Age when attented assessment centre' , 'Sex']
+        cols_target = ['eid', 'Age when attended assessment centre' , 'Sex']
         dict_rename = dict(zip(cols_age_eid_sex, cols_target))
         df = pd.read_csv(path_data, usecols = cols_age_eid_sex, **kwargs)
         df = df.rename(dict_rename, axis = 'columns').dropna()

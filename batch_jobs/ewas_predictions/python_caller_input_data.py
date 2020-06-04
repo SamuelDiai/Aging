@@ -20,7 +20,7 @@ cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British
        'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
        'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
        'Other']
-cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attented assessment centre'] + cols_ethnicity
+cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + cols_ethnicity
 
 
 n_cores = int(sys.argv[1])
