@@ -23,7 +23,7 @@ cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British
 cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attented assessment centre'] + cols_ethnicity
 
 
-n_cores = sys.argv[1]
+n_cores = int(sys.argv[1])
 
 ## Load Full raw data
 list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
