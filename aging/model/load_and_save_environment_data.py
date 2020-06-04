@@ -142,7 +142,7 @@ def create_data(env_dataset, **kwargs):
     else :
         dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
         df = dataloader(**kwargs)
-    df.to_csv(path_inputs_env + dataset + '.csv')
+    df.to_csv(path_inputs_env + env_dataset + '.csv')
 
 def load_sex_age_ethnicity_data(**kwargs):
     sex_age = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id')
