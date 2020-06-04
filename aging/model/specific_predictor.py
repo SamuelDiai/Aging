@@ -109,12 +109,14 @@ class GeneralPredictor(BaseModel):
 
 
     def save_features(self, cols):
+        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
         if not hasattr(self, 'features_imp'):
             raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.target, self.dataset, self.model_name)
+        save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name)
 
 
     def save_predictions(self, predicts_df, step):
+        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
-        save_predictions_to_csv(predicts_df, step, self.target, self.dataset, self.model_name, self.fold, self.best_params)
+        save_predictions_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)

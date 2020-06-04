@@ -11,7 +11,7 @@ elif sys.platform == 'darwin':
 	sys.path.append('/Users/samuel/Desktop/Aging')
 
 from aging.model.load_and_save_data import load_data, dataset_to_field
-
+from aging.processing.base_processing import path_predictions
 model = sys.argv[1]
 target = sys.argv[2]
 dataset = sys.argv[3]
@@ -48,7 +48,7 @@ print(hyperparameters)
 
 
 dataset = '_' + dataset + '_'
-list_files = glob.glob('/n/groups/patel/samuel/predictions_final/*%s*%s*%s*.csv' % (target, dataset, model))
+list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset, model))
 
 list_train = [elem for elem in list_files if 'train' in elem]
 list_test = [elem for elem in list_files if 'test' in elem]

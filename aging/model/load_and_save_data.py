@@ -56,29 +56,44 @@ map_dataset_to_field_and_dataloader = {
                     'HearingTest' : (100049, read_hearing_test_data)
                     }
 
+# def load_data(dataset, **kwargs):
+#     selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
+#     print(selected_inputs)
+#     if len(selected_inputs) == 0:
+#         print("Load New Data")
+#         #df = load_data_(dataset, **kwargs)
+#         if dataset not in map_dataset_to_field_and_dataloader.keys():
+#             raise ValueError('Wrong dataset name ! ')
+#         else :
+#             field, dataloader = map_dataset_to_field_and_dataloader[dataset]
+#             df = dataloader(**kwargs)
+#         df.to_csv(path_inputs + dataset + '.csv')
+#         return df.dropna()
+#     elif len(selected_inputs) == 1 :
+#         nrows = None
+#         if 'nrows' in kwargs.keys():
+#             nrows = kwargs['nrows']
+#         print("Load Existing Data")
+#         df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
+#         return df.dropna()
+#     else :
+#         print("Error")
+#         raise ValueError('Too many Input file for the selected dataset')
+
 def load_data(dataset, **kwargs):
-    selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
-    print(selected_inputs)
-    if len(selected_inputs) == 0:
-        print("Load New Data")
-        #df = load_data_(dataset, **kwargs)
-        if dataset not in map_dataset_to_field_and_dataloader.keys():
-            raise ValueError('Wrong dataset name ! ')
-        else :
-            field, dataloader = map_dataset_to_field_and_dataloader[dataset]
-            df = dataloader(**kwargs)
-        df.to_csv(path_inputs + dataset + '.csv')
-        return df.dropna()
-    elif len(selected_inputs) == 1 :
-        nrows = None
-        if 'nrows' in kwargs.keys():
-            nrows = kwargs['nrows']
-        print("Load Existing Data")
-        df = pd.read_csv(selected_inputs[0], nrows = nrows).set_index('id')
-        return df.dropna()
+    df = pd.read_csv(dataset).set_index('id')
+    if 'final_inputs' in dataset :
+        df_ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
+        df =  df.reset_index().merge(on = 'eid').set_index('id')
+    return df
+
+def create_data(dataset, **kwargs):
+    if dataset not in map_dataset_to_field_and_dataloader.keys():
+        raise ValueError('Wrong dataset name ! ')
     else :
-        print("Error")
-        raise ValueError('Too many Input file for the selected dataset')
+        field, dataloader = map_dataset_to_field_and_dataloader[dataset]
+        df = dataloader(**kwargs)
+    df.to_csv(path_inputs + dataset + '.csv')
 
 def save_features_to_csv(cols, features_imp, target, dataset, model_name):
     final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})

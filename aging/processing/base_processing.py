@@ -9,13 +9,9 @@ if sys.platform == 'linux':
 	path_features = "/n/groups/patel/samuel/feature_importances_final/"
 	path_predictions = "/n/groups/patel/samuel/predictions_final/"
 	path_inputs = "/n/groups/patel/samuel/final_inputs/"
-elif sys.platform == 'darwin':
-	path_data = "/Users/samuel/Desktop/ukbhead.csv"
-	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
-	path_features = "/Users/samuel/Desktop/Aging/feature_importances/"
-	#path_predictions = "/Users/samuel/Desktop/Aging/predictions/"
-	path_predictions = "/Users/samuel/Desktop/Aging/predictions2/"
-	path_inputs = "/Users/samuel/Desktop/Aging/inputs/"
+	path_input = "/n/groups/patel/samuel/Biomarkers_raw.csv"
+	path_HC_features="/n/groups/patel/samuel/HC_features/"
+	path_clusters = "/n/groups/patel/samuel/AutomaticClusters/"
 
 
 def read_ethnicity_data(**kwargs):
@@ -59,7 +55,23 @@ def read_ethnicity_data(**kwargs):
                            + ethnicities['Prefer_not_to_answer'] + ethnicities['NA']
     return ethnicities
 
-
+def read_sex_and_age_data(**kwargs):
+	"""
+	output dataframe with age, sex, eid and id as index
+	"""
+    list_df = []
+    for instance in range(4):
+        print(instance)
+        age_col = '21003-' + str(instance) + '.0'
+        cols_age_eid_sex = ['eid', age_col, '31-0.0']
+        cols_target = ['eid', 'Age when attented assessment centre' , 'Sex']
+        dict_rename = dict(zip(cols_age_eid_sex, cols_target))
+        df = pd.read_csv(path_data, usecols = cols_age_eid_sex, **kwargs)
+        df = df.rename(dict_rename, axis = 'columns').dropna()
+        df['id'] = df['eid'].astype(str) + '_%s' % instance
+        #df = df.drop(columns= ['eid'])
+        list_df.append(df.set_index('id'))
+    return pd.concat(list_df)
 
 
 def read_data(cols_features, cols_filter, instances, **kwargs):
