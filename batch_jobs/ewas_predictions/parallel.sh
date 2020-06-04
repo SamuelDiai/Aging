@@ -23,21 +23,29 @@ counter_input=0
 
 
 
-declare -a IDsLoads=()
-for input_dataset in "${input_datasets[@]}"
-	do
-		job_name="Load_${input_dataset}.job"
-		out_file="./logs/Load_${input_dataset}.out"
-		err_file="./logs/Load_${input_dataset}.err"
-		IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/load_datasets.sh $input_dataset)
-		IDsLoads+=($IDLoad)
-	done
+# declare -a IDsLoads=()
+# for input_dataset in "${input_datasets[@]}"
+# 	do
+# 		job_name="Load_${input_dataset}.job"
+# 		out_file="./logs/Load_${input_dataset}.out"
+# 		err_file="./logs/Load_${input_dataset}.err"
+# 		IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/load_datasets.sh $input_dataset)
+# 		IDsLoads+=($IDLoad)
+# 	done
 
-printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
+## To del :
+
 job_name="Create_raw_data.job"
 out_file="./logs/Create_raw_data.out"
 err_file="./logs/Create_raw_data.err"
-ID_raw=$(sbatch --parsable --dependency=afterok:${joinedIDsLoads%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=50 -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/create_raw_data.sh)
+ID_raw=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=50 -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/create_raw_data.sh)
+
+
+# printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
+# job_name="Create_raw_data.job"
+# out_file="./logs/Create_raw_data.out"
+# err_file="./logs/Create_raw_data.err"
+# ID_raw=$(sbatch --parsable --dependency=afterok:${joinedIDsLoads%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=50 -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/create_raw_data.sh)
 
 
 n_cores_inputing=16
