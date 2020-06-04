@@ -2,6 +2,7 @@ import sys
 import os
 import glob
 import pandas as pd
+import numpy as np
 from multiprocessing import Pool
 
 if sys.platform == 'linux':
