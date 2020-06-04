@@ -44,15 +44,20 @@ def parallel_group_of_features(split_col, categorical):
         inputed_res = inputed_res.join(column)
     return inputed_res
 
+def parallel_group_categorical(split_col):
+    return parallel_group_of_features(split_col, categorical = True)
+
+def parallel_group_non_categorical(split_col):
+    return parallel_group_of_features(split_col, categorical = False)
 
 pool = Pool(n_cores)
-final_df_inputed_non_cate = pool.map(lambda split_col  : parallel_group_of_features(split_col, categorical = False), split_cols_continuous)
+final_df_inputed_non_cate = pool.map(parallel_group_non_categorical, split_cols_continuous)
 pool.close()
 pool.join()
 
 
 pool2 = Pool(n_cores)
-final_df_inputed_cate = pool.map(lambda split_col  : parallel_group_of_features(split_col, categorical = True), split_cols_categorical)
+final_df_inputed_cate = pool.map(parallel_group_categorical, split_cols_categorical)
 pool2.close()
 pool2.join()
 
