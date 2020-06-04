@@ -11,7 +11,7 @@ elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
 from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, path_inputs_env
-from aging.model.InputtingNans import compute_linear_coefficients_for_each_col, load_raw_data, input_variables_in_column
+from aging.model.InputtingNans import  load_raw_data, compute_coefs_and_input
 
 
 cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
