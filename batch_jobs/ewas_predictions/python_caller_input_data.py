@@ -33,7 +33,7 @@ split_cols_continuous = np.array_split(continuous_cols, n_cores)
 split_cols_categorical = np.array_split(list_int_cols, n_cores)
 
 
-def parallel_group_of_features(split_col, categorical):
+def parallel_group_of_features(final_df, split_col, categorical):
     list_features_split = []
     for col in split_col:
         column_modified = compute_coefs_and_input(col, categorical)
@@ -45,10 +45,10 @@ def parallel_group_of_features(split_col, categorical):
     return inputed_res
 
 def parallel_group_categorical(split_col):
-    return parallel_group_of_features(split_col, categorical = True)
+    return parallel_group_of_features(final_df, split_col, categorical = True)
 
 def parallel_group_non_categorical(split_col):
-    return parallel_group_of_features(split_col, categorical = False)
+    return parallel_group_of_features(final_df, split_col, categorical = False)
 
 pool = Pool(n_cores)
 final_df_inputed_non_cate = pool.map(parallel_group_non_categorical, split_cols_continuous)

@@ -35,7 +35,7 @@ def load_raw_data(path_raw,
 
 
 
-def compute_linear_coefficients_for_each_col(col):
+def compute_linear_coefficients_for_each_col(final_df, col):
     age_sex_ethnicity_features = ['Sex', 'Age when attented assessment centre', 'Ethnicity']
     coefs_col = pd.DataFrame(columns= [col, 'Sex', 'Ethnicity'])
     column = final_df[[col, 'eid']  + age_sex_ethnicity_features].iloc[:50000]
@@ -79,7 +79,7 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categor
             return 1
         else :
             return value_
-    
+
     for eid in distinct_eid_col:
         points = column[column.eid == eid]
 
@@ -237,9 +237,9 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categor
                     column.loc[missing_point.name, col] = missing_value
     return column
 
-def compute_coefs_and_input(col, categorical):
+def compute_coefs_and_input(final_df, col, categorical):
     print("Compute mean of coef : %s" % col)
-    coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(col)
+    coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(final_df, col)
     print("Done , input missing data in %s" % col )
     column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categorical)
     return column_modified
