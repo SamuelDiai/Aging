@@ -8,6 +8,6 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.load_and_save_data import create_data
+from aging.model.load_and_save_environment_data import create_data
 
 create_data(dataset_name)
