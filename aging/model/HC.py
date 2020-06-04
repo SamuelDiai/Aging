@@ -189,7 +189,7 @@ def AglomerativeClusteringFull(path_input, target_dataset = None):
 
 ## Processing HC
 def Create_full_linkage_matrix(Zdf, initial_dict):
-    Z = Zdf[['index_i', 'index_j', 'distance_ij', 'number_ij']].values
+    Z = Zdf[['index_i', 'index_j', 'distance_ij', 'number_ij']].astype(float).values
     tree = hierarchy.to_tree(Z)
     cols = list(initial_dict.values())
     linkage_matrix_raw = Zdf.set_index('index_ij')
