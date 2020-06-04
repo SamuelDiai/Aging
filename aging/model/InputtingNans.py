@@ -79,6 +79,7 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categor
             return 1
         else :
             return value_
+    
     for eid in distinct_eid_col:
         points = column[column.eid == eid]
 
