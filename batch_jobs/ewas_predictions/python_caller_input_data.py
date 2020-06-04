@@ -9,7 +9,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed
+from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, path_inputs_env
 from aging.model.InputtingNans import compute_linear_coefficients_for_each_col, load_raw_data, input_variables_in_column
 
 
@@ -25,7 +25,7 @@ cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attented assessment centre
 n_cores = sys.argv[1]
 
 ## Load Full raw data
-list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed)
+list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical
 split_cols_continuous = np.array_split(continuous_cols, n_cores)
