@@ -36,7 +36,7 @@ split_cols_categorical = np.array_split(list_int_cols, n_cores)
 def parallel_group_of_features(final_df, split_col, categorical):
     list_features_split = []
     for col in split_col:
-        column_modified = compute_coefs_and_input(col, categorical)
+        column_modified = compute_coefs_and_input(final_df, col, categorical)
         list_features_split.append(column_modified[col])
 
     inputed_res = col_age_id_eid_sex_ethnicty
