@@ -56,9 +56,9 @@ def read_ethnicity_data(**kwargs):
     return ethnicities
 
 def read_sex_and_age_data(**kwargs):
-	"""
-	output dataframe with age, sex, eid and id as index
-	"""
+    """
+    output dataframe with age, sex, eid and id as index
+    """
     list_df = []
     for instance in range(4):
         print(instance)
