@@ -8,7 +8,7 @@ elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
 from aging.processing.base_processing import path_input, path_clusters, path_HC_features
-from aging.model.HC *
+from aging.model.HC import *
 
 print("Starting HC")
 dict_not_changed_index, Zdf, initial_dict = AglomerativeClusteringFull(path_input, target_dataset = None)

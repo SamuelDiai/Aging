@@ -9,6 +9,8 @@ if sys.platform == 'linux':
 	path_features = "/n/groups/patel/samuel/EWAS/feature_importances_final/"
 	path_predictions = "/n/groups/patel/samuel/EWAS/predictions_final/"
 	path_inputs_env = "/n/groups/patel/samuel/EWAS/inputs_final/"
+	path_input_env = "/n/groups/patel/samuel/EWAS/Environmental_raw.csv"
+	path_input_env_inputed = "/n/groups/patel/samuel/EWAS/Environmental_inputed.csv"
 	path_target_residuals = "/n/groups/patel/samuel/residuals_final/"
 	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_final/"
 	path_final_preds = "/n/groups/patel/samuel/EWAS/preds_final/"

@@ -134,119 +134,156 @@ map_envdataset_to_dataloader_and_field = {
 medical_diagnoses_dict = dict(zip(['medical_diagnoses_%s' % letter for letter in ascii_uppercase], [(partial(read_medical_diagnoses_data, letter = letter), 41270) for letter in ascii_uppercase]))
 map_envdataset_to_dataloader_and_field = {**map_envdataset_to_dataloader_and_field, **medical_diagnoses_dict}
 
-## SUB LOADS : ETHNICITY, TARGET RESIDUALS, ENV DATA
-def load_ethnicity(**kwargs):
-    """
-    Load ethnicity data : must have eid as index
-    """
-    selected_inputs = glob.glob(path_inputs_env + 'ethnicities.csv')
-    if len(selected_inputs) == 0:
-        print("Load New Ethnicity Data")
-        df_ethnicities = load_ethnicity_data(**kwargs)
-        df_ethnicities.to_csv(path_inputs_env + 'ethnicities.csv')
-        return df_ethnicities
-    elif len(selected_inputs) == 1 :
-        print("Load Existing Ethnicity Data")
-        df_ethnicities = pd.read_csv(selected_inputs[0], **kwargs).set_index('eid')
-        return df_ethnicities
+
+
+def create_data(env_dataset, **kwargs):
+    if env_dataset not in map_envdataset_to_dataloader_and_field.keys():
+        raise ValueError('Wrong dataset name ! ')
     else :
-        print("Error")
-        raise ValueError('Too many input file for the Ethnicity dataset')
+        dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
+        df = dataloader(**kwargs)
+    df.to_csv(path_inputs_env + dataset + '.csv')
+
+def load_sex_age_ethnicity_data(**kwargs):
+    sex_age = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id')
+    ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
+    df_sex_age_ethnicity_eid = sex_age.reset_index().merge(ethnicity, on = 'eid').set_index('id').drop(columns = ['eid'])
+    return df_sex_age_ethnicity_eid
 
 
 def load_data_env(env_dataset, **kwargs):
-    selected_inputs = glob.glob(path_inputs_env + '%s.csv' % env_dataset)
-    if len(selected_inputs) == 0:
-        print("Load New Data")
-        #df = load_data_env_(env_dataset, **kwargs)
+    df = pd.read_csv(env_dataset).set_index('id')
+    if 'inputs_final' in env_dataset :
+        df_sex_age_ethnicity = load_sex_age_ethnicity_data()
+        df = df_sex_age_ethnicity.join(df, how= 'outer', rsuffix = '_r')
+        output_cols = df.columns[~df.columns.str.contains('_r')]
+        df = df[output_cols]
+    return df
 
-        if env_dataset not in map_envdataset_to_dataloader_and_field.keys():
-            raise ValueError('Wrong dataset name ! ')
-        else :
-            dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
-            df = dataloader(**kwargs)
-            if 'Age when attended assessment centre' in df.columns:
-                df = df.drop(columns = ['Age when attended assessment centre'])
-
-        df.to_csv(path_inputs_env + env_dataset + '.csv')
-        return df
-    elif len(selected_inputs) == 1 :
-        print("Load Existing Data")
-        if 'medical_diagnoses' in env_dataset:
-            cols = pd.read_csv(selected_inputs[0], nrows = 1).set_index('id').columns
-            map_feature_to_type = dict(zip(cols, ['int8' for elem in range(len(cols))]))
-            map_feature_to_type['id'] = 'str'
-
-            df = pd.read_csv(selected_inputs[0], dtype = map_feature_to_type, index_col = 'id', **kwargs)
-        else :
-            df = pd.read_csv(selected_inputs[0], **kwargs).set_index('id')
-        return df
-    else :
-        print("Error")
-        raise ValueError('Too many Input file for the selected dataset')
-
-## Load target data
 
 def load_target_residuals(target_dataset, **kwargs):
-    #target_dataset_without = target_dataset.replace('_', '')
-    list_files = glob.glob(path_target_residuals + '%s.csv' % target_dataset)
+    df_residuals = pd.read_csv(path_target_residuals + target_dataset + '.csv').set_index('id')
+    return df_residuals[['residual']]
 
-    ## Select best model :
-    if len(list_files) == 1 :
-
-        df_organ = pd.read_csv(list_files[0])
-        if 'id' in df_organ.columns :
-            df_organ = df_organ.set_index('id')
-        elif 'id' not in  df_organ.columns and 'eid' in df_organ.columns :
-            instance, field = dict_target_to_instance_and_id[target_dataset]
-            df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(instance)
-            df_organ = df_organ.set_index('id')
-    else :
-        raise ValueError('')
-    return df_organ[['residual', 'Sex', 'Age', 'eid']]
-
-
-## FINAL LOAD
 
 def load_data(env_dataset, target_dataset, **kwargs):
-    """
-
-    return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
-
-    """
-    ## Join on id by default
     df_env = load_data_env(env_dataset, **kwargs)
-    print("ENV : ", df_env)
+    df_residuals = load_target_residuals(target_dataset, **kwargs)
+    return df_residuals.join(df_env, how = 'outer')
 
-    df_target = load_target_residuals(target_dataset, **kwargs)
-    print("TARGET  :", df_target)
-
-    df_ethnicities = load_ethnicity(**kwargs)
-    print("ETHNICITY  :", df_ethnicities)
-
-
-    df_target = FillNa(df_target)
-    ## Try intersection
-    df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
-    columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-    df = df[columns_not_dup]
-
-    ## If empty intersection join on eid
-    if df.shape[0] == 0:
-        ## Change index :
-        df_env = df_env.reset_index().set_index('eid')
-        df_target = df_target.reset_index().set_index('eid')
-        ## Join
-        df = df_env.join(df_target, how = 'inner', lsuffix='', rsuffix='_dup')
-        ## Remove duplicates including id
-        columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
-        df = df[columns_not_dup]
-        ## Recreate id
-        df['id'] = df.index
-        df = df[columns_not_dup].reset_index().set_index('id')
-
-    df = df.merge(df_ethnicities, on = 'eid', right_index = True)
-    return df
+# ## SUB LOADS : ETHNICITY, TARGET RESIDUALS, ENV DATA
+# def load_ethnicity(**kwargs):
+#     """
+#     Load ethnicity data : must have eid as index
+#     """
+#     selected_inputs = glob.glob(path_inputs_env + 'ethnicities.csv')
+#     if len(selected_inputs) == 0:
+#         print("Load New Ethnicity Data")
+#         df_ethnicities = load_ethnicity_data(**kwargs)
+#         df_ethnicities.to_csv(path_inputs_env + 'ethnicities.csv')
+#         return df_ethnicities
+#     elif len(selected_inputs) == 1 :
+#         print("Load Existing Ethnicity Data")
+#         df_ethnicities = pd.read_csv(selected_inputs[0], **kwargs).set_index('eid')
+#         return df_ethnicities
+#     else :
+#         print("Error")
+#         raise ValueError('Too many input file for the Ethnicity dataset')
+#
+#
+# def load_data_env(env_dataset, **kwargs):
+#     selected_inputs = glob.glob(path_inputs_env + '%s.csv' % env_dataset)
+#     if len(selected_inputs) == 0:
+#         print("Load New Data")
+#         #df = load_data_env_(env_dataset, **kwargs)
+#
+#         if env_dataset not in map_envdataset_to_dataloader_and_field.keys():
+#             raise ValueError('Wrong dataset name ! ')
+#         else :
+#             dataloader, field = map_envdataset_to_dataloader_and_field[env_dataset]
+#             df = dataloader(**kwargs)
+#             if 'Age when attended assessment centre' in df.columns:
+#                 df = df.drop(columns = ['Age when attended assessment centre'])
+#
+#         df.to_csv(path_inputs_env + env_dataset + '.csv')
+#         return df
+#     elif len(selected_inputs) == 1 :
+#         print("Load Existing Data")
+#         if 'medical_diagnoses' in env_dataset:
+#             cols = pd.read_csv(selected_inputs[0], nrows = 1).set_index('id').columns
+#             map_feature_to_type = dict(zip(cols, ['int8' for elem in range(len(cols))]))
+#             map_feature_to_type['id'] = 'str'
+#
+#             df = pd.read_csv(selected_inputs[0], dtype = map_feature_to_type, index_col = 'id', **kwargs)
+#         else :
+#             df = pd.read_csv(selected_inputs[0], **kwargs).set_index('id')
+#         return df
+#     else :
+#         print("Error")
+#         raise ValueError('Too many Input file for the selected dataset')
+#
+# ## Load target data
+#
+# def load_target_residuals(target_dataset, **kwargs):
+#     #target_dataset_without = target_dataset.replace('_', '')
+#     list_files = glob.glob(path_target_residuals + '%s.csv' % target_dataset)
+#
+#     ## Select best model :
+#     if len(list_files) == 1 :
+#
+#         df_organ = pd.read_csv(list_files[0])
+#         if 'id' in df_organ.columns :
+#             df_organ = df_organ.set_index('id')
+#         elif 'id' not in  df_organ.columns and 'eid' in df_organ.columns :
+#             instance, field = dict_target_to_instance_and_id[target_dataset]
+#             df_organ['id'] = df_organ['eid'].astype(str) + '_' + str(instance)
+#             df_organ = df_organ.set_index('id')
+#     else :
+#         raise ValueError('')
+#     return df_organ[['residual', 'Sex', 'Age', 'eid']]
+#
+#
+# ## FINAL LOAD
+#
+# def load_data(env_dataset, target_dataset, **kwargs):
+#     """
+#
+#     return dataframe with : 'residual', 'Age', 'Sex', 'eid' + env_features + ethnicty_features with id as index !
+#
+#     """
+#     ## Join on id by default
+#     df_env = load_data_env(env_dataset, **kwargs)
+#     print("ENV : ", df_env)
+#
+#     df_target = load_target_residuals(target_dataset, **kwargs)
+#     print("TARGET  :", df_target)
+#
+#     df_ethnicities = load_ethnicity(**kwargs)
+#     print("ETHNICITY  :", df_ethnicities)
+#
+#
+#     df_target = FillNa(df_target)
+#     ## Try intersection
+#     df = df_env.join(df_target, how = 'inner', lsuffix='_dup', rsuffix='')
+#     columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+#     df = df[columns_not_dup]
+#
+#     ## If empty intersection join on eid
+#     if df.shape[0] == 0:
+#         ## Change index :
+#         df_env = df_env.reset_index().set_index('eid')
+#         df_target = df_target.reset_index().set_index('eid')
+#         ## Join
+#         df = df_env.join(df_target, how = 'inner', lsuffix='', rsuffix='_dup')
+#         ## Remove duplicates including id
+#         columns_not_dup = df.columns[~df.columns.str.contains('_dup')]
+#         df = df[columns_not_dup]
+#         ## Recreate id
+#         df['id'] = df.index
+#         df = df[columns_not_dup].reset_index().set_index('id')
+#
+#     df = df.merge(df_ethnicities, on = 'eid', right_index = True)
+#     return df
 
 ## Saving
 def save_features_to_csv(cols, features_imp, organ_target, dataset_env, model_name):
