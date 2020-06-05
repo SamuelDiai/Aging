@@ -82,6 +82,8 @@ map_dataset_to_field_and_dataloader = {
 
 def load_data(dataset, **kwargs):
     df = pd.read_csv(dataset).set_index('id')
+    if 'Age when attented assessment centre' in df.columns :
+        df.rename(columns={'Age when attented assessment centre':'Age when attended assessment centre'}, inplace=True)
     if 'final_inputs' in dataset :
         df_ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
         df =  df.reset_index().merge(df_ethnicity, on = 'eid').set_index('id')
