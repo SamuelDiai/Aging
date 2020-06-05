@@ -186,7 +186,8 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
-        if self.model_name != 'NeuralNetwork':
+        if False : 
+        #if self.model_name != 'NeuralNetwork':
             X = X.values
             cv = KFold(n_splits = self.inner_splits, shuffle = False)
             clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)

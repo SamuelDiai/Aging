@@ -51,36 +51,36 @@ do
 			dataset_clean=$(basename $dataset .csv)
 			if [ $target != "Sex" ] || [ $model != "ElasticNet" ]
 			then
-				declare -a IDs=()
-				for ((fold=0; fold <= $outer_splits-1; fold++))
-				do
-					job_name="${target}_${model}_${dataset_clean}_${fold}.job"
-					out_file="./logs/${target}_${model}_${dataset_clean}_${fold}.out"
-					err_file="./logs/${target}_${model}_${dataset_clean}_${fold}.err"
-					#ID=$(sbatch --parsable --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
-					# To del :
-					ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
-					IDs+=($ID)
-				done
+				# declare -a IDs=()
+				# for ((fold=0; fold <= $outer_splits-1; fold++))
+				# do
+				# 	job_name="${target}_${model}_${dataset_clean}_${fold}.job"
+				# 	out_file="./logs/${target}_${model}_${dataset_clean}_${fold}.out"
+				# 	err_file="./logs/${target}_${model}_${dataset_clean}_${fold}.err"
+				# 	#ID=$(sbatch --parsable --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
+				# 	# To del :
+				# 	ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
+				# 	IDs+=($ID)
+				# done
 
-				if [ $model != "NeuralNetwork" ]
-				then
+				# if [ $model == "NeuralNetwork" ]
+				# then
 					job_name="${target}_${model}_${dataset_clean}_features.job"
 					out_file="./logs/${target}_${model}_${dataset_clean}_features.out"
 					err_file="./logs/${target}_${model}_${dataset_clean}_features.err"
 					# To del :
 					sbatch  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 					#sbatch --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-				else
-					:
-				fi
+				# else
+				# 	:
+				# fi
 
-				job_name="${target}_${model}_${dataset_clean}_postprocessing.job"
-				out_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.out"
-				err_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.err"
-
-				printf -v joinedIDS '%s:' "${IDs[@]}"
-				sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
+				# job_name="${target}_${model}_${dataset_clean}_postprocessing.job"
+				# out_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.out"
+				# err_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.err"
+				#
+				# printf -v joinedIDS '%s:' "${IDs[@]}"
+				# sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
 			else
 				:
 			fi
