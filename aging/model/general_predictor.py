@@ -186,7 +186,7 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
-        if False : 
+        if False :
         #if self.model_name != 'NeuralNetwork':
             X = X.values
             cv = KFold(n_splits = self.inner_splits, shuffle = False)
@@ -220,7 +220,7 @@ class BaseModel():
             for column in columns :
                 X_copy = copy.deepcopy(X)
                 X_copy[column] = np.random.permutation(X_copy[column])
-                estimator.fit(X_copy.values, y)
+                #estimator.fit(X_copy.values, y)
                 if scoring == 'r2':
                     score = r2_score(y, estimator.predict(X_copy.values))
                 else :
