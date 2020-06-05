@@ -6,10 +6,10 @@ targets=( "Age" "Sex ")
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 datasets=( 'BrainSubcorticalVolumes' 'AnthropometryImpedance' )
 
-outer_splits=10
-inner_splits=9
-n_iter=25
-n_splits=5
+outer_splits=3
+inner_splits=2
+n_iter=2
+n_splits=2
 
 memory=8G
 n_cores=1
