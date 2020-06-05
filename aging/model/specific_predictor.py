@@ -109,7 +109,7 @@ class GeneralPredictor(BaseModel):
 
 
     def save_features(self, cols):
-        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
+        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
         if not hasattr(self, 'features_imp'):
             raise ValueError('Features importance not trained')
         save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name)

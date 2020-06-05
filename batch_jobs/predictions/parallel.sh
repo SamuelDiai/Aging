@@ -56,7 +56,9 @@ do
 					job_name="${target}_${model}_${dataset}_${fold}.job"
 					out_file="./logs/${target}_${model}_${dataset}_${fold}.out"
 					err_file="./logs/${target}_${model}_${dataset}_${fold}.err"
-					ID=$(sbatch --parsable --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
+					#ID=$(sbatch --parsable --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
+					# To del :
+					ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
 					IDs+=($ID)
 				done
 
@@ -65,8 +67,9 @@ do
 					job_name="${target}_${model}_${dataset}_features.job"
 					out_file="./logs/${target}_${model}_${dataset}_features.out"
 					err_file="./logs/${target}_${model}_${dataset}_features.err"
-
-					sbatch --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+					# To del :
+					sbatch  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+					#sbatch --dependency=afterok:$ID_clusters --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 				else
 					:
 				fi
@@ -80,7 +83,7 @@ do
 			else
 				:
 			fi
-		# done
+		done
 		# for dataset in "$search_dir_base"/*
 		# do
 		# 	if [ $target != "Sex" ] || [ $model != "ElasticNet" ]
