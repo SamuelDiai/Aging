@@ -10,7 +10,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
 	sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.load_and_save_data import load_data, dataset_to_field
+from aging.model.load_and_save_data import load_data
 from aging.processing.base_processing import path_predictions
 model = sys.argv[1]
 target = sys.argv[2]
@@ -69,9 +69,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
-    df_train[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' % ( target, dataset, dataset_to_field[dataset], model))
-    df_test[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' % ( target, dataset, dataset_to_field[dataset], model))
-    df_val[['predictions', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' % ( target, dataset, dataset_to_field[dataset], model))
+    df_train[['pred', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' % ( target, dataset, 'Cluster', model))
+    df_test[['pred', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' % ( target, dataset, 'Cluster', model))
+    df_val[['pred', 'fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' % ( target, dataset, 'Cluster', model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
