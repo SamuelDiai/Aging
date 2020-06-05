@@ -1,5 +1,5 @@
 #!/bin/bash
-targets=( "Age" "Sex" )
+targets=( "Age" )
 #models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 
@@ -87,14 +87,15 @@ do
 		# done
 		for dataset in "$search_dir_base"/*
 		do
+			dataset_clean=$(basename $dataset .csv)
 			if [ $target != "Sex" ] || [ $model != "ElasticNet" ]
 			then
 				declare -a IDs=()
 				for ((fold=0; fold <= $outer_splits-1; fold++))
 				do
-					job_name="${target}_${model}_${dataset}_${fold}.job"
-					out_file="./logs/${target}_${model}_${dataset}_${fold}.out"
-					err_file="./logs/${target}_${model}_${dataset}_${fold}.err"
+					job_name="${target}_${model}_${dataset_clean}_${fold}.job"
+					out_file="./logs/${target}_${model}_${dataset_clean}_${fold}.out"
+					err_file="./logs/${target}_${model}_${dataset_clean}_${fold}.err"
 
 					# To del :
 					ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
@@ -103,9 +104,9 @@ do
 
 				# if [ $model != "NeuralNetwork" ]
 				# then
-					job_name="${target}_${model}_${dataset}_features.job"
-					out_file="./logs/${target}_${model}_${dataset}_features.out"
-					err_file="./logs/${target}_${model}_${dataset}_features.err"
+					job_name="${target}_${model}_${dataset_clean}_features.job"
+					out_file="./logs/${target}_${model}_${dataset_clean}_features.out"
+					err_file="./logs/${target}_${model}_${dataset_clean}_features.err"
 
 				# To del :
 
@@ -115,9 +116,9 @@ do
 				# 	:
 				# fi
 
-				job_name="${target}_${model}_${dataset}_postprocessing.job"
-				out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"
-				err_file="./logs/${target}_${model}_${dataset}_postprocessing.err"
+				job_name="${target}_${model}_${dataset_clean}_postprocessing.job"
+				out_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.out"
+				err_file="./logs/${target}_${model}_${dataset_clean}_postprocessing.err"
 
 				printf -v joinedIDS '%s:' "${IDs[@]}"
 				sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
