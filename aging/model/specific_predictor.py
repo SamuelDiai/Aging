@@ -116,7 +116,7 @@ class GeneralPredictor(BaseModel):
 
 
     def save_predictions(self, predicts_df, step):
-        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
+        dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
         save_predictions_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)
