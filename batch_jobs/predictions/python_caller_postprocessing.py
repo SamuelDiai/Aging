@@ -47,7 +47,8 @@ print(hyperparameters)
 #     return map_eid_to_fold
 
 
-dataset = '_' + dataset + '_'
+dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
+
 list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset, model))
 
 list_train = [elem for elem in list_files if 'train' in elem]
