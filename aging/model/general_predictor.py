@@ -294,6 +294,7 @@ class BaseModel():
             else :
                 raise ValueError('Wrong model name')
         else :
+            list_scores = []
             if scoring == 'r2':
                 score_max = r2_score(y, best_estim.predict(X.values))
             else :
