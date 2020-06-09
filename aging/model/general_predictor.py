@@ -274,14 +274,13 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
+        X = X.values
+        cv = KFold(n_splits = self.inner_splits, shuffle = False)
+        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
+        clf.fit(X, y)
+        best_estim = clf.best_estimator_
         if False :
         #if self.model_name != 'NeuralNetwork':
-            X = X.values
-            cv = KFold(n_splits = self.inner_splits, shuffle = False)
-            clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
-            clf.fit(X, y)
-            best_estim = clf.best_estimator_
-
             if self.model_name == 'ElasticNet':
                 self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
             elif self.model_name == 'RandomForest':
@@ -295,23 +294,17 @@ class BaseModel():
             else :
                 raise ValueError('Wrong model name')
         else :
-            list_scores = []
-            get_init_hyper = list(ParameterSampler(self.get_hyper_distribution(), n_iter = 1))[0]
-            estimator = self.get_model()
-            for index, value in get_init_hyper.items():
-                setattr(estimator, index, value)
-            estimator.fit(X.values, y)
             if scoring == 'r2':
-                score_max = r2_score(y, estimator.predict(X.values))
+                score_max = r2_score(y, best_estim.predict(X))
             else :
-                score_max = f1_score(y, estimator.predict(X.values))
+                score_max = f1_score(y, best_estim.predict(X))
             for column in columns :
                 X_copy = copy.deepcopy(X)
                 X_copy[column] = np.random.permutation(X_copy[column])
                 #estimator.fit(X_copy.values, y)
                 if scoring == 'r2':
-                    score = r2_score(y, estimator.predict(X_copy.values))
+                    score = r2_score(y, best_estim.predict(X_copy))
                 else :
-                    score = f1_score(y, estimator.predict(X_copy.values))
+                    score = f1_score(y, best_estim.predict(X_copy))
                 list_scores.append(score_max - score)
             self.features_imp = list_scores
