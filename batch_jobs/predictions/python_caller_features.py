@@ -26,7 +26,7 @@ hyperparameters['dataset'] = dataset
 
 
 print(hyperparameters)
-gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset, -1)
+gp = GeneralPredictor(name, -1, n_splits, n_iter, target, dataset, -1, model_validate = 'RandomizedSearch')
 print("Loading Dataset")
 df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")
