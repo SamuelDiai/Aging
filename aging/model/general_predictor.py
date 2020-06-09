@@ -204,7 +204,7 @@ class BaseModel():
                     else :
                         continue
                 scores = cross_validate(estimator_, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
-                return {'status' : STATUS_OK, 'loss' : scores['test_score'].mean(), 'attachments' : {'split_test_scores' : scores['test_score']}}
+                return {'status' : STATUS_OK, 'loss' : scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparams)}}
             space = self.get_hyper_distribution()
             trials = Trials()
             best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
