@@ -76,7 +76,7 @@ class BaseModel():
                         'min_child_samples': hp.randint('min_child_samples', 400) + 100,
                         'min_child_weight': hp.choice('min_child_weight', [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]),
                         'subsample': hp.uniform('subsample', low=0.2, high=0.8),
-                        'colsample_bytree': hp.uniform('colsample_bytree', loc=0.4, scale=0.6),
+                        'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
                         'reg_alpha': hp.choice('reg_alpha', [0, 1e-1, 1, 2, 5, 7, 10, 50, 100]),
                         'reg_lambda': hp.choice('reg_lambda', [0, 1e-1, 1, 5, 10, 20, 50, 100]),
                         'n_estimators' : hp.randint('n_estimators', 300) + 150
@@ -84,7 +84,7 @@ class BaseModel():
             elif self.model_name == 'NeuralNetwork':
                 return {
                         'learning_rate_init': hp.loguniform('learning_rate_init', low = np.log(5e-5), high = np.log(2e-2)),
-                        'alpha': hp.loguniform('alpha', low = np.log(1e-5), np.log(1e-1)),
+                        'alpha': hp.loguniform('alpha', low = np.log(1e-5), high = np.log(1e-1)),
                         'hidden_layer_sizes': hp.choice('hidden_layer_sizes', [(100, 50), (30, 10)]),
                         'batch_size': hp.choice('batch_size', [1000, 500]),
                         'activation': hp.choice('activation', ['tanh', 'relu'])
