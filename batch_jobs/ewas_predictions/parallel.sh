@@ -8,7 +8,7 @@ target_datasets=( "HeartImages" "LiverImages" )
 #input_datasets=( "Alcohol" "Anthropometry" "AnthropometryBodySize" "AnthropometryImpedance" "ArterialAndBloodPressure" "ArterialStiffness" "Blood" "BloodBiochemestry" "BloodCount" "BloodPressure" "Brain" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Breathing" "CancerScreening" "ChestPain" "Claudification" "Diet" "ECGAtRest" "Education" "ElectronicDevices" "Employment" "Eye" "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eyesight" "FamilyHistory" "GeneralHealth" "GeneralPain" "Hearing" "Heart" "HeartPWA" "HeartSize" "Household" "Medication" "MentalHealth" "Mouth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SpiroAndArterialAndBp" "Spirometry" "SunExposure" "UrineAndBlood" "UrineBiochemestry" )
 
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivity' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' )
-input_datasets=( 'Sleep' 'HeartPWA' )
+input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivity' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' )
 
 outer_splits=5
 inner_splits=4
@@ -23,15 +23,15 @@ counter_input=0
 
 
 
-# declare -a IDsLoads=()
-# for input_dataset in "${input_datasets[@]}"
-# 	do
-# 		job_name="Load_${input_dataset}.job"
-# 		out_file="./logs/Load_${input_dataset}.out"
-# 		err_file="./logs/Load_${input_dataset}.err"
-# 		IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/load_datasets.sh $input_dataset)
-# 		IDsLoads+=($IDLoad)
-# 	done
+declare -a IDsLoads=()
+for input_dataset in "${input_datasets[@]}"
+	do
+		job_name="Load_${input_dataset}.job"
+		out_file="./logs/Load_${input_dataset}.out"
+		err_file="./logs/Load_${input_dataset}.err"
+		IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/load_datasets.sh $input_dataset)
+		IDsLoads+=($IDLoad)
+	done
 
 # printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
 # job_name="Create_raw_data.job"
@@ -47,11 +47,11 @@ counter_input=0
 # ID_inputed=$(sbatch --parsable --dependency=afterok:$ID_raw --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c 16 -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
 
 ## To del :
-n_cores_inputing=4
-job_name="Input_data.job"
-out_file="./logs/Input_data.out"
-err_file="./logs/Input_data.err"
-ID_inputed=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c $n_cores_inputing -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
+# n_cores_inputing=4
+# job_name="Input_data.job"
+# out_file="./logs/Input_data.out"
+# err_file="./logs/Input_data.err"
+# ID_inputed=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c $n_cores_inputing -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
 
 #
 # for input_dataset in "${input_datasets[@]}"
