@@ -16,7 +16,3 @@ def read_abdominal_data(**kwargs):
 	cols_filter = ['22411-2.0', '22412-2.0', '22413-2.0', '22414-2.0']
 	instance = 2
 	return read_data(cols_features, cols_filter, instance, **kwargs)
-
-
-def load_abdominal_data(**kwargs):
-	
