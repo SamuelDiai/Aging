@@ -274,10 +274,10 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
-        X = X.values
+
         cv = KFold(n_splits = self.inner_splits, shuffle = False)
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
-        clf.fit(X, y)
+        clf.fit(X.values, y)
         best_estim = clf.best_estimator_
         if False :
         #if self.model_name != 'NeuralNetwork':
@@ -295,16 +295,16 @@ class BaseModel():
                 raise ValueError('Wrong model name')
         else :
             if scoring == 'r2':
-                score_max = r2_score(y, best_estim.predict(X))
+                score_max = r2_score(y, best_estim.predict(X.values))
             else :
-                score_max = f1_score(y, best_estim.predict(X))
+                score_max = f1_score(y, best_estim.predict(X.values))
             for column in columns :
                 X_copy = copy.deepcopy(X)
                 X_copy[column] = np.random.permutation(X_copy[column])
                 #estimator.fit(X_copy.values, y)
                 if scoring == 'r2':
-                    score = r2_score(y, best_estim.predict(X_copy))
+                    score = r2_score(y, best_estim.predict(X_copy.values))
                 else :
-                    score = f1_score(y, best_estim.predict(X_copy))
+                    score = f1_score(y, best_estim.predict(X_copy.values))
                 list_scores.append(score_max - score)
             self.features_imp = list_scores
