@@ -18,6 +18,7 @@ from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_
 import numpy as np
 import scipy.stats as stat
 from sklearn.metrics import r2_score, f1_score
+from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 
 
 
@@ -27,10 +28,11 @@ MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm
 
 
 class BaseModel():
-    def __init__(self, model, outer_splits, inner_splits, n_iter):
+    def __init__(self, model, outer_splits, inner_splits, n_iter, model_validate = 'HyperOpt'):
         self.outer_splits = outer_splits
         self.inner_splits = inner_splits
         self.n_iter = n_iter
+        self.model_validate = model_validate
         if model not in MODELS:
             raise ValueError(f'{model} model unrecognized')
         else :
@@ -40,51 +42,100 @@ class BaseModel():
         return self.model
 
     def get_hyper_distribution(self):
-        if self.model_name == 'ElasticNet':
-            return {
-                    'alpha': np.geomspace(0.01, 10, 30),
-                    'l1_ratio': stat.uniform(loc = 0.01, scale = 0.99)
-                    }
-        elif self.model_name == 'RandomForest':
-            return {
-                    'n_estimators': stat.randint(low = 50, high = 300),
-                    'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4],
-                    'max_depth': [None, 10, 8, 6]
-                    }
-        elif self.model_name == 'GradientBoosting':
-            return {
-                    'n_estimators': stat.randint(low = 250, high = 500),
-                    'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3],
-                    'learning_rate': stat.uniform(0.01, 0.3),
-                    'max_depth': stat.randint(3, 6)
-                    }
-        elif self.model_name == 'Xgboost':
-            return {
-                    'colsample_bytree': stat.uniform(loc = 0.2, scale = 0.7),
-                    'gamma': stat.uniform(loc = 0.1, scale = 0.5),
-                    'learning_rate': stat.uniform(0.02, 0.2),
-                    'max_depth': stat.randint(3, 6),
-                    'n_estimators': stat.randint(low = 200, high = 400),
-                    'subsample': stat.uniform(0.6, 0.4)
-            }
-        elif self.model_name == 'LightGbm':
-            return {
-                    'num_leaves': stat.randint(6, 50),
-                    'min_child_samples': stat.randint(100, 500),
-                    'min_child_weight': [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4],
-                    'subsample': stat.uniform(loc=0.2, scale=0.8),
-                    'colsample_bytree': stat.uniform(loc=0.4, scale=0.6),
-                    'reg_alpha': [0, 1e-1, 1, 2, 5, 7, 10, 50, 100],
-                    'reg_lambda': [0, 1e-1, 1, 5, 10, 20, 50, 100]
+        if self.model_validate = 'HyperOpt':
+            if self.model_name == 'ElasticNet':
+                return {
+                        'alpha':  hp.loguniform('alpha', low = np.log(0.01), high = np.log(10)),
+                        'l1_ratio': hp.uniform('l1_ratio', low = 0.01, high = 0.99)
+                        }
+            elif self.model_name == 'RandomForest':
+                return {
+                        'n_estimators': hp.randint('n_estimators', upper = 300) + 150,
+                        'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4]),
+                        'max_depth': hp.choice('max_depth', [None, 10, 8, 6])
+                        }
+            elif self.model_name == 'GradientBoosting':
+                return {
+                        'n_estimators': hp.randint('n_estimators', upper = 300) + 150,
+                        'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]),
+                        'learning_rate': hp.uniform('learning_rate', low = 0.01, high = 0.3),
+                        'max_depth': hp.randint('max_depth', 10) + 5
+                        }
+            elif self.model_name == 'Xgboost':
+                return {
+                        'colsample_bytree': hp.uniform('colsample_bytree', low = 0.2, high = 0.7),
+                        'gamma': hp.uniform('gamma', low = 0.1, high = 0.5),
+                        'learning_rate': hp.uniform('learning_rate', low = 0.02, high = 0.2),
+                        'max_depth': hp.randint('max_depth', 10) + 5,
+                        'n_estimators': hp.randint('n_estimators', 300) + 150,
+                        'subsample': hp.uniform('subsample', 0.6, 0.4)
                 }
-        elif self.model_name == 'NeuralNetwork':
-            return {
-                    'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
-                    'alpha': np.geomspace(1e-5, 1e-1, 30),
-                    'hidden_layer_sizes': [(100, 50), (30, 10)],
-                    'batch_size': [1000, 500],
-                    'activation': ['tanh', 'relu']
-            }
+            elif self.model_name == 'LightGbm':
+                return {
+                        'num_leaves': hp.randint('num_leaves', 40) + 5,
+                        'min_child_samples': hp.randint('min_child_samples', 400) + 100,
+                        'min_child_weight': hp.choice('min_child_weight', [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]),
+                        'subsample': hp.uniform('subsample', low=0.2, high=0.8),
+                        'colsample_bytree': hp.uniform('colsample_bytree', loc=0.4, scale=0.6),
+                        'reg_alpha': hp.choice('reg_alpha', [0, 1e-1, 1, 2, 5, 7, 10, 50, 100]),
+                        'reg_lambda': hp.choice('reg_lambda', [0, 1e-1, 1, 5, 10, 20, 50, 100]),
+                        'n_estimators' : hp.randint('n_estimators', 300) + 150
+                    }
+            elif self.model_name == 'NeuralNetwork':
+                return {
+                        'learning_rate_init': hp.loguniform('learning_rate_init', low = np.log(5e-5), high = np.log(2e-2)),
+                        'alpha': hp.loguniform('alpha', low = np.log(1e-5), np.log(1e-1)),
+                        'hidden_layer_sizes': hp.choice('hidden_layer_sizes', [(100, 50), (30, 10)]),
+                        'batch_size': hp.choice('batch_size', [1000, 500]),
+                        'activation': hp.choice('activation', ['tanh', 'relu'])
+                }
+        elif self.model_validate = 'RandomizedSearch':
+            if self.model_name == 'ElasticNet':
+                return {
+                        'alpha': np.geomspace(0.01, 10, 30),
+                        'l1_ratio': stat.uniform(loc = 0.01, scale = 0.99)
+                        }
+            elif self.model_name == 'RandomForest':
+                return {
+                        'n_estimators': stat.randint(low = 50, high = 300),
+                        'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4],
+                        'max_depth': [None, 10, 8, 6]
+                        }
+            elif self.model_name == 'GradientBoosting':
+                return {
+                        'n_estimators': stat.randint(low = 250, high = 500),
+                        'max_features': ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3],
+                        'learning_rate': stat.uniform(0.01, 0.3),
+                        'max_depth': stat.randint(3, 6)
+                        }
+            elif self.model_name == 'Xgboost':
+                return {
+                        'colsample_bytree': stat.uniform(loc = 0.2, scale = 0.7),
+                        'gamma': stat.uniform(loc = 0.1, scale = 0.5),
+                        'learning_rate': stat.uniform(0.02, 0.2),
+                        'max_depth': stat.randint(3, 6),
+                        'n_estimators': stat.randint(low = 200, high = 400),
+                        'subsample': stat.uniform(0.6, 0.4)
+                }
+            elif self.model_name == 'LightGbm':
+                return {
+                        'num_leaves': stat.randint(6, 50),
+                        'min_child_samples': stat.randint(100, 500),
+                        'min_child_weight': [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4],
+                        'subsample': stat.uniform(loc=0.2, scale=0.8),
+                        'colsample_bytree': stat.uniform(loc=0.4, scale=0.6),
+                        'reg_alpha': [0, 1e-1, 1, 2, 5, 7, 10, 50, 100],
+                        'reg_lambda': [0, 1e-1, 1, 5, 10, 20, 50, 100]
+                    }
+            elif self.model_name == 'NeuralNetwork':
+                return {
+                        'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
+                        'alpha': np.geomspace(1e-5, 1e-1, 30),
+                        'hidden_layer_sizes': [(100, 50), (30, 10)],
+                        'batch_size': [1000, 500],
+                        'activation': ['tanh', 'relu']
+                }
+
 
 
     def optimize_hyperparameters_fold_(self, X, y, scoring, fold):
@@ -123,23 +174,59 @@ class BaseModel():
         print(X.columns, y.columns)
         X_train, X_test, y_train, y_test = X.loc[index_train], X.loc[index_test], y.loc[index_train], y.loc[index_test]
 
+        ## Create custom Splits
         list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
         test_folds = np.zeros(len(X_train), dtype = 'int')
         for fold_count in range(len(list_test_folds_id)):
             test_folds[list_test_folds_id_index[fold_count]] = fold_count
-        #
         inner_cv = PredefinedSplit(test_fold = test_folds)
         #
-        clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = True)
-        clf.fit(X_train.values, y_train.values)
+        ## RandomizedSearch :
+        if self.model_validate = 'RandomizedSearch':
+            clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = False)
+            clf.fit(X_train.values, y_train.values)
+            best_estim = copy.deepcopy(clf.best_estimator_)
+            best_params = copy.deepcopy(clf.best_params_)
+            results = clf.cv_results_
+            results = pd.DataFrame(data = results)
 
-        best_estim = copy.deepcopy(clf.best_estimator_)
-        best_params = copy.deepcopy(clf.best_params_)
-        results = clf.cv_results_
-        results = pd.DataFrame(data = results)
+            params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
+            params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
 
-        params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
-        params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+        ## HyperOpt :
+        elif self.model_validate = 'HyperOpt':
+            def objective(hyperparameters):
+                estimator_ = self.get_model()
+                ## Set hyperparameters to the model :
+                for key, value in hyperparameters.items():
+                    if hasattr(estimator_, key):
+                        setattr(estimator_, key, value)
+                    else :
+                        continue
+                scores = cross_validate(estimator_, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
+                return {'status' : STATUS_OK, 'loss' : scores['test_score'].mean(), 'attachments' : {'split_test_scores' : scores['test_score']}}
+            space = self.get_hyper_distribution()
+            trials = Trials()
+            best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
+            best_params = space_eval(space, best)
+            ## Recreate best estim :
+            estim = self.get_model()
+            for key, value in best_params.items():
+                if hasattr(estim, key):
+                    setattr(estim, key, value)
+                else :
+                    continue
+            best_estim = estim.fit(X_train.values, y_train.values)
+            results = pd.DataFrame(columns = ['params'] + ['split%s_test_score' % elem for elem in range(self.inner_splits)]) # nsplits
+            for idx, value in trials.attachments.items():
+                d = dict()
+                for split in range(self.inner_splits):
+                    d['split%s_test_score' % split] = value[0][split]
+                d['params'] = value[1]
+                results = results.append(d, ignore_index = True)
+                params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
+                params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+
 
         list_train_val = []
         list_train_train = []

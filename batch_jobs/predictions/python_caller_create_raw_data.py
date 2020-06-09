@@ -8,7 +8,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.processing.base_processing import path_inputs
+from aging.processing.base_processing import path_inputs, path_input
 
 
 
