@@ -4,8 +4,8 @@ from .load_and_save_data import load_data, save_features_to_csv, save_prediction
 
 
 class GeneralPredictor(BaseModel):
-    def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold):
-        BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter)
+    def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt'):
+        BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter, model_validate)
         self.fold = fold
         self.dataset = dataset
         if target == 'Sex':
