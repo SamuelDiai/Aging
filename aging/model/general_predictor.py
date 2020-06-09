@@ -14,7 +14,7 @@ from sklearn.utils.validation import check_is_fitted
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
 import copy
-from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit, ParameterSampler
+from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit, ParameterSampler, cross_validate
 import numpy as np
 import scipy.stats as stat
 from sklearn.metrics import r2_score, f1_score
