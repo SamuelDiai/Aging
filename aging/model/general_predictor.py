@@ -219,6 +219,7 @@ class BaseModel():
             best_estim = estim.fit(X_train.values, y_train.values)
             results = pd.DataFrame(columns = ['params'] + ['split%s_test_score' % elem for elem in range(self.inner_splits)]) # nsplits
             for idx, value in trials.attachments.items():
+                print(idx, value)
                 d = dict()
                 for split in range(self.inner_splits):
                     d['split%s_test_score' % split] = value[0][split]
