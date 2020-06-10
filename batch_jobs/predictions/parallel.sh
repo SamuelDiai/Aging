@@ -18,7 +18,7 @@ n_cores=1
 search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
 search_dir_base='/n/groups/patel/samuel/final_inputs'
 
-
+dataset='/n/groups/patel/samuel/AutomaticClusters/Cluster_score_14038970.csv'
 # declare -a IDsLoads=()
 # for dataset in "${datasets[@]}"
 # do
@@ -47,8 +47,8 @@ for target in "${targets[@]}"
 do
 	for model in "${models[@]}"
 	do
-		for dataset in ['/n/groups/patel/samuel/AutomaticClusters/Cluster_score_14038970.csv']#"$search_dir_clusters"/*
-		do
+		# for dataset in ( '/n/groups/patel/samuel/AutomaticClusters/Cluster_score_14038970.csv' )#"$search_dir_clusters"/*
+		# do
 			dataset_clean=$(basename $dataset .csv)
 			if [ $target != "Sex" ] || [ $model != "ElasticNet" ]
 			then
@@ -85,7 +85,7 @@ do
 			else
 				:
 			fi
-		done
+		# done
 		# for dataset in "$search_dir_base"/*
 		# do
 		# 	dataset_clean=$(basename $dataset .csv)
