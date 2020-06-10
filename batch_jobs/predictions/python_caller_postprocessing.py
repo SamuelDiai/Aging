@@ -69,7 +69,7 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     df_val = df_val.groupby('id').agg({'pred' : 'mean'})
 	df_val['pred'] = 1*(df_val['pred'] > 0.5)
     if 'outer_fold' not in df_val.columns :
-    	df_val['outer_fold'] = np.nan
+        df_val['outer_fold'] = np.nan
 
     #map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
     #df_val['fold'] = df_val.index.map(map_eid_to_fold)
