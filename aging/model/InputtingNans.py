@@ -257,4 +257,5 @@ def compute_coefs_and_input(final_df, col):
     coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(final_df, col)
     print("Done , input missing data in %s" % col )
     column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean)
+    print("Done inputting")
     return column_modified
