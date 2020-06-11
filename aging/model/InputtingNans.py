@@ -2,7 +2,7 @@ import glob
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
+cols_ethnicity_full = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
        'Irish', 'White_Other', 'Mixed', 'White_and_Black_Caribbean',
        'White_and_Black_African', 'White_and_Asian', 'Mixed_Other', 'Asian',
        'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
@@ -20,7 +20,7 @@ def load_raw_data(path_raw,
     df_ethnicity.columns = ['Ethnicity']
     final_df = final_df.reset_index().merge(df_ethnicity, on ='eid').set_index('id')
 
-    features = [ elem for elem in final_df.columns if elem not in cols_ethnicity + ['Sex', 'Age when attended assessment centre', 'Ethnicity', 'eid'] + cols_ethnicity]
+    features = [ elem for elem in final_df.columns if elem not in cols_ethnicity_full + ['Sex', 'Age when attended assessment centre', 'Ethnicity', 'eid']]
     return features, final_df
 
 # def load_raw_data(path_raw,
