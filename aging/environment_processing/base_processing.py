@@ -69,7 +69,7 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
     feature_id_to_name = df_features.to_dict()['Field']
 
     for idx_instance, instance in enumerate(instances) :
-		int_cols = set()
+        int_cols = set()
         cols_continuous = deepcopy(cols_continuous_)
         cols_ordinal = deepcopy(cols_ordinal_)
         cont_fill_na = deepcopy(cont_fill_na_)
