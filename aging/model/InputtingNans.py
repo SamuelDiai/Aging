@@ -52,7 +52,7 @@ def load_raw_data(path_raw,
 def compute_linear_coefficients_for_each_col(final_df, col):
     age_sex_ethnicity_features = ['Sex', 'Age when attended assessment centre', 'Ethnicity']
     coefs_col = pd.DataFrame(columns= [col, 'Sex', 'Ethnicity'])
-    column = final_df[[col, 'eid']  + age_sex_ethnicity_features].iloc[:50000]
+    column = final_df[[col, 'eid']  + age_sex_ethnicity_features]
     distinct_eid_col = column.eid.drop_duplicates().values
     is_longitudinal = (column.groupby('eid').count() > 1).any().any()
 
