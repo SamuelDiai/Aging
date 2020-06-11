@@ -69,7 +69,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
                 if num_points == 2:
                     point1 = points.iloc[0]
                     point2 = points.iloc[1]
-                    coef = (point2[col] - point1[col])/(point2['Age when attended assessment centre'] - point1['Age when attented assessment centre'])
+                    coef = (point2[col] - point1[col])/(point2['Age when attended assessment centre'] - point1['Age when attended assessment centre'])
 
                 elif num_points in [3, 4]:
                     y = points[col].values.reshape(-1, 1)
