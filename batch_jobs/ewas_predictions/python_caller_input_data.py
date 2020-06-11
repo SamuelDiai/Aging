@@ -26,12 +26,17 @@ cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre
 n_cores = int(sys.argv[1])
 
 ## Load Full raw data
-list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+#to del :
+#list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+
+
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical
 split_cols_continuous = np.array_split(continuous_cols, n_cores)
 split_cols_categorical = np.array_split(list_int_cols, n_cores)
-
+print("Cols categorical : ", split_cols_categorical)
+print("Cols continuous : ", split_cols_continuous)
 
 def parallel_group_of_features(final_df, split_col, categorical):
     list_features_split = []
@@ -45,9 +50,11 @@ def parallel_group_of_features(final_df, split_col, categorical):
     return inputed_res
 
 def parallel_group_categorical(split_col):
+    print("Split col : ", split_col)
     return parallel_group_of_features(final_df, split_col, categorical = True)
 
 def parallel_group_non_categorical(split_col):
+    print("Split col : ", split_col)
     return parallel_group_of_features(final_df, split_col, categorical = False)
 
 pool = Pool(n_cores)

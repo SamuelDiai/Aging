@@ -225,8 +225,8 @@ class BaseModel():
                     d['split%s_test_score' % split] = value[0][split]
                 d['params'] = value[1]
                 results = results.append(d, ignore_index = True)
-                params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
-                params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+            params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
+            params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
 
 
         list_train_val = []
