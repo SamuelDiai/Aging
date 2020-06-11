@@ -129,7 +129,7 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
                             d_[common_cols] = d_[common_cols].add(d[common_cols])
                         for col_ in remaining_cols:
                             d_[col_] = d[col_]
-            temp = temp.join(d_, how = 'outer')
+            temp = temp.join(d_.astype('Int32'), how = 'outer')
 
 
         features_index = temp.columns
