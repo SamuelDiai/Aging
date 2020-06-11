@@ -67,8 +67,9 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
     df_features = pd.read_csv(path_dictionary, usecols = ["FieldID", "Field"])
     df_features.set_index('FieldID', inplace = True)
     feature_id_to_name = df_features.to_dict()['Field']
-    int_cols = set()
+
     for idx_instance, instance in enumerate(instances) :
+		int_cols = set()
         cols_continuous = deepcopy(cols_continuous_)
         cols_ordinal = deepcopy(cols_ordinal_)
         cont_fill_na = deepcopy(cont_fill_na_)
@@ -132,7 +133,7 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
                     int_cols.update(d_.columns)
             temp = temp.join(d_, how = 'outer')
 
-
+        temp[list(int_cols)] = temp[list(int_cols)].astype('Int32')
         features_index = temp.columns
         features = []
         for elem in features_index:
@@ -147,7 +148,7 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
         else :
             df = df.append(temp.reindex(df.columns, axis = 1, fill_value=0))
 
-    df[list(int_cols)] = df[list(int_cols)].astype('Int32')
+
     df = df.replace(-1, np.nan)
     df = df.replace(-3, np.nan)
     return df
