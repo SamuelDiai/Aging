@@ -28,20 +28,16 @@ n_cores = int(sys.argv[1])
 ## Load Full raw data
 #to del :
 #list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
-list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
-
-
+features_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical
-split_cols_continuous = np.array_split(continuous_cols, n_cores)
-split_cols_categorical = np.array_split(list_int_cols, n_cores)
-print("Cols categorical : ", split_cols_categorical)
-print("Cols continuous : ", split_cols_continuous)
+split_cols = np.array_split(features_cols, n_cores)
 
-def parallel_group_of_features(final_df, split_col, categorical):
+
+def parallel_group_of_features(final_df, split_col):
     list_features_split = []
     for col in split_col:
-        column_modified = compute_coefs_and_input(final_df, col, categorical)
+        column_modified = compute_coefs_and_input(final_df, col)
         list_features_split.append(column_modified[col])
 
     inputed_res = col_age_id_eid_sex_ethnicty
@@ -49,34 +45,21 @@ def parallel_group_of_features(final_df, split_col, categorical):
         inputed_res = inputed_res.join(column)
     return inputed_res
 
-def parallel_group_categorical(split_col):
+def parallel_group(split_col):
     print("Split col : ", split_col)
-    return parallel_group_of_features(final_df, split_col, categorical = True)
-
-def parallel_group_non_categorical(split_col):
-    print("Split col : ", split_col)
-    return parallel_group_of_features(final_df, split_col, categorical = False)
+    return parallel_group_of_features(final_df, split_col)
 
 pool = Pool(n_cores)
-final_df_inputed_non_cate = pool.map(parallel_group_non_categorical, split_cols_continuous)
+final_df_inputed_cols = pool.map(parallel_group, split_cols)
 pool.close()
 pool.join()
 
 
-pool2 = Pool(n_cores)
-final_df_inputed_cate = pool.map(parallel_group_categorical, split_cols_categorical)
-pool2.close()
-pool2.join()
-
 
 final_df_inputed = col_age_id_eid_sex_ethnicty
-for df in final_df_inputed_non_cate :
+for df in final_df_inputed_cols :
      final_df_inputed = final_df_inputed.join(df, how = 'outer', rsuffix = '_r')
      final_df_inputed = final_df_inputed[final_df_inputed.columns[~final_df_inputed.columns.str.contains('_r')]]
-
-for df in final_df_inputed_cate:
-    final_df_inputed = final_df_inputed.join(df, how = 'outer', rsuffix = '_r')
-    final_df_inputed = final_df_inputed[final_df_inputed.columns[~final_df_inputed.columns.str.contains('_r')]]
 
 
 final_df_inputed.to_csv(path_input_env_inputed)

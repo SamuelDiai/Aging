@@ -20,13 +20,8 @@ def load_raw_data(path_raw,
     df_ethnicity.columns = ['Ethnicity']
     final_df = final_df.reset_index().merge(df_ethnicity, on ='eid').set_index('id')
 
-    list_int_cols = final_df.select_dtypes('int').columns
-    list_int_cols = [elem for elem in list_int_cols if elem not in ['Sex', 'eid', 'Age when attended assessment centre', 'Ethnicity'] + cols_ethnicity]
-
-    continuous_cols = final_df.select_dtypes('float').columns
-    continuous_cols = [elem for elem in continuous_cols if elem not in ['Sex', 'eid', 'Age when attended assessment centre', 'Ethnicity'] + cols_ethnicity]
-    
-    return list_int_cols, continuous_cols, final_df
+    features = [ elem for elem in final_df.columns if elem not in cols_ethnicity + ['Sex', 'Age when attended assessment centre', 'Ethnicity', 'eid'] + cols_ethnicity]
+    return features, final_df
 
 # def load_raw_data(path_raw,
 #                   path_output,
@@ -90,7 +85,8 @@ def compute_linear_coefficients_for_each_col(final_df, col):
 
 
 
-def input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categorical):
+def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
+    categorical = (column[col].max() == 1) and (column[col].min() == 0)
     def recenter_between_0_1(value_):
         if value_ < 0:
             return 0
@@ -256,9 +252,9 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categor
                     column.loc[missing_point.name, col] = missing_value
     return column
 
-def compute_coefs_and_input(final_df, col, categorical):
+def compute_coefs_and_input(final_df, col):
     print("Compute mean of coef : %s" % col)
     coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(final_df, col)
     print("Done , input missing data in %s" % col )
-    column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean, categorical)
+    column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean)
     return column_modified
