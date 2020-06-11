@@ -177,7 +177,7 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     coef_ = coefs_mean.loc[sex, ethnicity].values
                     missing_value_1 = valid_value + (age_missing_1 - age_valid) * coef_
                     missing_value_2 = valid_value + (age_missing_2 - age_valid) * coef_
-                    missing_value_3 = valid_value + (age_missing_4 - age_valid) * coef_
+                    missing_value_3 = valid_value + (age_missing_3 - age_valid) * coef_
                     if categorical :
                         missing_value_1 = recenter_between_0_1(missing_value_1)
                         missing_value_2 = recenter_between_0_1(missing_value_2)
