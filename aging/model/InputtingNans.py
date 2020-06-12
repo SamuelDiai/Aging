@@ -57,7 +57,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
     is_longitudinal = (column.groupby('eid').count() > 1).any().any()
 
     if not is_longitudinal:
-        raise ValueError('Feature is not longitudinal')
+        return -1, distinct_eid_col, column
     else :
         ## Create weights by sex and ethnicty
         for eid in distinct_eid_col:
@@ -256,6 +256,10 @@ def compute_coefs_and_input(final_df, col):
     print("Compute mean of coef : %s" % col)
     coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(final_df, col)
     print("Done , input missing data in %s" % col )
-    column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean)
-    print("Done inputting")
-    return column_modified
+    if coefs_mean != -1:
+        column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean)
+        print("Done inputting")
+        return column_modified
+    else :
+        print('Non longitudinal feature')
+        return column
