@@ -101,7 +101,7 @@ scores = r2_score(y_test, y_test_estimed)
 #
 # score_test = r2_score(y_test, predict_test)
 
-test = test.append({'dataset' : dataset, 'sample_size' : sample_size, 'num features' : num_features, 'training score' : training_score, 'test score' : scores,, 'alpha' : alpha}, ignore_index = True)
+test = test.append({'dataset' : dataset, 'sample_size' : sample_size, 'num features' : num_features, 'training score' : training_score, 'test score' : scores, 'alpha' : alpha}, ignore_index = True)
 test.to_csv('/n/groups/patel/samuel/res_NN/res_2_%s_%s' % (dataset, architecture))
 
 
