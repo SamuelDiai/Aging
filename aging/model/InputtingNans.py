@@ -81,12 +81,14 @@ def compute_linear_coefficients_for_each_col(final_df, col):
                     raise ValueError('not the right number of points')
                 coefs_col = coefs_col.append(pd.Series([coef, points['Sex'].mean(), points['Ethnicity'].min()], index=[col, 'Sex', 'Ethnicity'], name= eid))
         coefs_mean = coefs_col.groupby(['Sex', 'Ethnicity']).mean()
+        if coefs_mean.shape != 10:
+            coefs_mean = coefs_col.groupby(['Sex']).mean()
         return coefs_mean, distinct_eid_col, column
-
 
 
 def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
     categorical = (column[col].max() == 1) and (column[col].min() == 0)
+    all_ethnicity_available = (coefs_mean.shape[0] == 10)
     def recenter_between_0_1(value_):
         if value_ < 0:
             return 0
@@ -109,12 +111,15 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
             elif num_avail == 2:
                 missing_point = points[points[col].isna()].iloc[0]
                 valid_point = points[~points[col].isna()].iloc[0]
-                ethnicity = valid_point['Ethnicity']
                 sex = valid_point['Sex']
                 age_missing = missing_point['Age when attended assessment centre']
                 age_valid = valid_point['Age when attended assessment centre']
                 valid_value = valid_point[col]
-                coef_ = coefs_mean.loc[sex, ethnicity].values
+                if all_ethnicity_available:
+                    ethnicity = valid_point['Ethnicity']
+                    coef_ = coefs_mean.loc[sex, ethnicity].values
+                else :
+                    coef_ = coefs_mean.loc[sex].values
                 missing_value = valid_value + (age_missing - age_valid) * coef_
                 if categorical:
                     missing_value = recenter_between_0_1(missing_value)
@@ -125,11 +130,13 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     missing_point = points[points[col].isna()].iloc[0]
                     valid_point_1 = points[~points[col].isna()].iloc[0]
                     valid_point_2 = points[~points[col].isna()].iloc[1]
-                    ethnicity = missing_point['Ethnicity']
                     sex = missing_point['Sex']
-                    coef_ = coefs_mean.loc[sex, ethnicity].values
+                    if all_ethnicity_available:
+                        ethnicity = missing_point['Ethnicity']
+                        coef_ = coefs_mean.loc[sex, ethnicity].values
+                    else :
+                        coef_ = coefs_mean.loc[sex].values
                     age_missing = missing_point['Age when attended assessment centre']
-
                     age_valid_1 = valid_point_1['Age when attended assessment centre']
                     age_valid_2 = valid_point_2['Age when attended assessment centre']
 
@@ -147,13 +154,16 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     missing_point_1 = points[points[col].isna()].iloc[0]
                     missing_point_2 = points[points[col].isna()].iloc[1]
                     valid_point = points[~points[col].isna()].iloc[0]
-                    ethnicity = valid_point['Ethnicity']
                     sex = valid_point['Sex']
+                    if all_ethnicity_available:
+                        ethnicity = valid_point['Ethnicity']
+                        coef_ = coefs_mean.loc[sex, ethnicity].values
+                    else :
+                        coef_ = coefs_mean.loc[sex].values
                     age_missing_1 = missing_point_1['Age when attended assessment centre']
                     age_missing_2 = missing_point_2['Age when attended assessment centre']
                     age_valid = valid_point['Age when attended assessment centre']
                     valid_value = valid_point[col]
-                    coef_ = coefs_mean.loc[sex, ethnicity].values
                     missing_value_1 = valid_value + (age_missing_1 - age_valid) * coef_
                     missing_value_2 = valid_value + (age_missing_2 - age_valid) * coef_
                     if categorical:
@@ -167,14 +177,18 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     missing_point_2 = points[points[col].isna()].iloc[1]
                     missing_point_3 = points[points[col].isna()].iloc[2]
                     valid_point = points[~points[col].isna()].iloc[0]
-                    ethnicity = valid_point['Ethnicity']
                     sex = valid_point['Sex']
+                    if all_ethnicity_available:
+                        ethnicity = valid_point['Ethnicity']
+                        coef_ = coefs_mean.loc[sex, ethnicity].values
+                    else :
+                        coef_ = coefs_mean.loc[sex].values
                     age_missing_1 = missing_point_1['Age when attended assessment centre']
                     age_missing_2 = missing_point_2['Age when attended assessment centre']
                     age_missing_3 = missing_point_3['Age when attended assessment centre']
                     age_valid = valid_point['Age when attended assessment centre']
                     valid_value = valid_point[col]
-                    coef_ = coefs_mean.loc[sex, ethnicity].values
+
                     missing_value_1 = valid_value + (age_missing_1 - age_valid) * coef_
                     missing_value_2 = valid_value + (age_missing_2 - age_valid) * coef_
                     missing_value_3 = valid_value + (age_missing_3 - age_valid) * coef_
@@ -194,9 +208,12 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     valid_point_1 = points[~points[col].isna()].iloc[0]
                     valid_point_2 = points[~points[col].isna()].iloc[1]
 
-                    ethnicity = missing_point_1['Ethnicity']
                     sex = missing_point_1['Sex']
-                    coef_ = coefs_mean.loc[sex, ethnicity].values
+                    if all_ethnicity_available:
+                        ethnicity = missing_point_1['Ethnicity']
+                        coef_ = coefs_mean.loc[sex, ethnicity].values
+                    else :
+                        coef_ = coefs_mean.loc[sex].values
 
                     age_missing_1 = missing_point_1['Age when attended assessment centre']
                     age_missing_2 = missing_point_2['Age when attended assessment centre']
@@ -230,9 +247,13 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
                     valid_point_1 = points[~points[col].isna()].iloc[0]
                     valid_point_2 = points[~points[col].isna()].iloc[1]
                     valid_point_3 = points[~points[col].isna()].iloc[2]
-                    ethnicity = missing_point['Ethnicity']
+
                     sex = missing_point['Sex']
-                    coef_ = coefs_mean.loc[sex, ethnicity].values
+                    if all_ethnicity_available:
+                        ethnicity = missing_point['Ethnicity']
+                        coef_ = coefs_mean.loc[sex, ethnicity].values
+                    else :
+                        coef_ = coefs_mean.loc[sex].values
                     age_missing = missing_point['Age when attended assessment centre']
 
                     age_valid_1 = valid_point_1['Age when attended assessment centre']
