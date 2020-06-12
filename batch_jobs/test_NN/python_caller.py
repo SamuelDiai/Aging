@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, RandomizedSearchCV, PredefinedSplit, ParameterSampler, cross_validate, train_test_split
 from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 from sklearn.metrics import r2_score, f1_score
-
+import numpy as np
 dataset = sys.argv[1]
 architecture = sys.argv[2]
 
