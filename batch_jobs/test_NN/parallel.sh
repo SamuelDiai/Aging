@@ -15,7 +15,7 @@
 # done
 
 
-alphas=( '1e-3' '1e-2' '1e-1' '1e0' '1e1' '1e2' '1e3' )
+alphas=( '200' '300' '400' '500' )
 dataset='BraindMRIWeightedMeans'
 architecture='1024;512;256;128'
 for alpha in "${alphas[@]}"
