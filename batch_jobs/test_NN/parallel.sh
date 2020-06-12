@@ -7,9 +7,9 @@ for dataset in "${datasets[@]}"
 do
   for architecture in "${architectures[@]}"
   do
-    job_name="${dataset}_${architecture}.job"
-    out_file="./logs/${dataset}_${architecture}.out"
-    err_file="./logs/${dataset}_${architecture}.err"
+    job_name="test_${dataset}_${architecture}.job"
+    out_file="./logs/test_${dataset}_${architecture}.out"
+    err_file="./logs/test_${dataset}_${architecture}.err"
     sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=16G -c 1 -p short -t 0-11:59 batch_jobs/test_NN/single.sh $dataset $architecture
   done
 done
