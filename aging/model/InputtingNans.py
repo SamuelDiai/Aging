@@ -276,7 +276,7 @@ def input_variables_in_column(col, column, coefs_mean):
                     if categorical:
                         missing_value = recenter_between_0_1(missing_value)
                     column.loc[missing_point.name, col] = missing_value
-    return column
+    return column.drop(columns = ['Ethnicity'])
 
 def compute_coefs_and_input(final_df, col):
     print("Compute mean of coef : %s" % col)
@@ -288,4 +288,4 @@ def compute_coefs_and_input(final_df, col):
         return column_modified
     else :
         print('Non longitudinal feature')
-        return column
+        return column.drop(columns = ['Ethnicity'])
