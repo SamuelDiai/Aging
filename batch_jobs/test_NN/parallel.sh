@@ -15,7 +15,7 @@
 # done
 
 
-alphas=( '1e-2' '1e-1' '1e0' '1e1' '50' '1e2' '200' '300' '400' )
+alphas=( '2' '5' '8' )
 dataset='BloodBiochemestry'
 architecture='512;256;128'
 for alpha in "${alphas[@]}"
