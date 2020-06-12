@@ -60,7 +60,7 @@ def parallel_group(col):
     column_modified = compute_coefs_and_input(final_df.iloc[:50000], col)
     return col_age_id_eid_sex_ethnicty.join(column_modified, how = 'outer')
 
-pool = Pool(-1)
+pool = Pool(processes=None)
 final_df_inputed_cols = pool.map(parallel_group, features_cols)
 pool.close()
 pool.join()
