@@ -279,7 +279,7 @@ class BaseModel():
         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
         clf.fit(X.values, y)
         best_estim = clf.best_estimator_
-        if False :
+        if True :
         #if self.model_name != 'NeuralNetwork':
             if self.model_name == 'ElasticNet':
                 self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))
