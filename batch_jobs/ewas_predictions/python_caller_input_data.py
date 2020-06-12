@@ -28,7 +28,7 @@ n_cores = int(sys.argv[1])
 ## Load Full raw data
 #to del :
 #features_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
-features_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+features_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical
 
@@ -57,7 +57,7 @@ col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 
 def parallel_group(col):
     print("Col : ", col)
-    column_modified = compute_coefs_and_input(final_df, col)
+    column_modified = compute_coefs_and_input(final_df.iloc[:50000], col)
     return column_modified
 
 pool = Pool(processes=None)
