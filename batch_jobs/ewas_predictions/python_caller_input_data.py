@@ -27,7 +27,7 @@ n_cores = int(sys.argv[1])
 
 ## Load Full raw data
 #to del :
-#list_int_cols, continuous_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+#features_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 features_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical
@@ -58,8 +58,8 @@ pool.join()
 
 final_df_inputed = col_age_id_eid_sex_ethnicty
 for df in final_df_inputed_cols :
-     final_df_inputed = final_df_inputed.join(df, how = 'outer', rsuffix = '_r')
-     final_df_inputed = final_df_inputed[final_df_inputed.columns[~final_df_inputed.columns.str.contains('_r')]]
+    final_df_inputed = final_df_inputed.join(df, how = 'outer', rsuffix = '_r')
+    final_df_inputed = final_df_inputed[final_df_inputed.columns[~final_df_inputed.columns.str.contains('_r')]]
 
 
 final_df_inputed.to_csv(path_input_env_inputed)

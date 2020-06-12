@@ -53,7 +53,10 @@ def compute_linear_coefficients_for_each_col(final_df, col):
     age_sex_ethnicity_features = ['Sex', 'Age when attended assessment centre', 'Ethnicity']
     coefs_col = pd.DataFrame(columns= [col, 'Sex', 'Ethnicity'])
     column = final_df[[col, 'eid']  + age_sex_ethnicity_features]
-    distinct_eid_col = column.eid.drop_duplicates().values
+    #distinct_eid_col = column.eid.drop_duplicates().values
+
+    group_eid = column.groupby('eid').count()[col]
+    distinct_eid_col = group_eid[group_eid > 1].index
     is_longitudinal = (column.groupby('eid').count() > 1).any().any()
 
     if not is_longitudinal:
@@ -83,12 +86,14 @@ def compute_linear_coefficients_for_each_col(final_df, col):
         coefs_mean = coefs_col.groupby(['Sex', 'Ethnicity']).mean()
         if coefs_mean.shape != 10:
             coefs_mean = coefs_col.groupby(['Sex']).mean()
-        return coefs_mean, distinct_eid_col, column
+        return coefs_mean, column
 
 
-def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
+def input_variables_in_column(col, column, coefs_mean):
     categorical = (column[col].max() == 1) and (column[col].min() == 0)
     all_ethnicity_available = (coefs_mean.shape[0] == 10)
+    count = column.groupby('eid').count()
+    distinct_eid_col = count.index[(count[col] > 0) & (count['Age when attended assessment centre'] > 1)]
     def recenter_between_0_1(value_):
         if value_ < 0:
             return 0
@@ -275,10 +280,10 @@ def input_variables_in_column(col, column, distinct_eid_col, coefs_mean):
 
 def compute_coefs_and_input(final_df, col):
     print("Compute mean of coef : %s" % col)
-    coefs_mean, distinct_eid_col, column = compute_linear_coefficients_for_each_col(final_df, col)
+    coefs_mean, column = compute_linear_coefficients_for_each_col(final_df, col)
     print("Done , input missing data in %s" % col )
     if coefs_mean is not None:
-        column_modified = input_variables_in_column(col, column, distinct_eid_col, coefs_mean)
+        column_modified = input_variables_in_column(col, column, coefs_mean)
         print("Done inputting")
         return column_modified
     else :
