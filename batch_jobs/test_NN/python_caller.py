@@ -45,21 +45,56 @@ num_features = df_with_ethnicity.shape[1]
 df_rescaled, scaler_age = normalise_dataset(df_with_ethnicity)
 X = df_rescaled.drop(columns = ['eid', 'Age when attended assessment centre'])
 y = df_rescaled['Age when attended assessment centre']
-params = { 'alpha': 0,
+params = {
                     'batch_size': 5000,
                     'activation': 'relu', 'max_iter' : 200, 'tol' : 1e-7}
 
 hidd_layer = [int(elem) for elem in architecture.split(';')]
 
 params['hidden_layer_sizes'] = hidd_layer
-c = MLPRegressor(**params)
-c.fit(X.values, y.values)
-score = c.score(X.values, y.values)
 
-test = test.append({'dataset' : dataset, 'sample_size' : sample_size, 'num features' : num_features, 'training score' : score}, ignore_index = True)
-test.to_csv('/n/groups/patel/samuel/res_NN/res_%s_%s' % (dataset, architecture))
 
-prediction = c.predict(X.values)
-real = y.values
-df_res = pd.DataFrame({'pred' : prediction, 'real' : real})
-df_res.to_csv('/n/groups/patel/samuel/res_NN/pred_%s_%s' % (dataset, architecture))
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=3)
+X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.5, random_state=3) # 0.25 x 0.8 = 0.2
+
+space = {'alpha': hp.loguniform('alpha', low = np.log(1e-5), high = np.log(1e-1))}
+
+def objective(hyperparameters):
+    estimator_ = MLPRegressor(**params)
+                ## Set hyperparameters to the model :
+    for key, value in hyperparameters.items():
+        if hasattr(estimator_, key):
+            setattr(estimator_, key, value)
+        else :
+            continue
+    estimator_.fit(X_train.values, y_train.values)
+    y_val_estimed = estimator_.predict(X_val.values)
+    scores = r2_score(y_val, y_val_estimed)
+
+    y_train_estimed = estimator_.predict(X_train.values)
+    score_train = r2_score(y_train, y_train_estimed)
+
+
+    return {'status' : STATUS_OK, 'loss' : -scores, 'attachments' :  {'score_train_val_model_param' :(scores, score_train, estimator_, hyperparameters['alpha'])}}
+
+trials = Trials()
+best = fmin(objective, space, algo = tpe.suggest, max_evals=5, trials = trials)
+best_params = space_eval(space, best)
+
+d = pd.DataFrame(columns = ['score_val', 'score_train', 'estim', 'alpha'])
+for key, value in trials.attachments.items():
+    score_val, score_train, estim, alpha = value
+    d = d.append({'score_val' : score_val, 'score_train' : score_train, 'estim' : estim, 'alpha' : alpha}, ignore_index = True)
+
+
+score_val_max, score_train_max, estim_max, alpha_max = d.iloc[d['score_val'].idxmax(axis = 1)]
+predict_test = estim_max.predict(X_test.values)
+
+score_test = r2_score(y_test, predict_test)
+
+test = test.append({'dataset' : dataset, 'sample_size' : sample_size, 'num features' : num_features, 'training score' : score_train_max, 'validation score' : score_val_max, 'test score' : score_test, 'alpha max' : alpha_max}, ignore_index = True)
+test.to_csv('/n/groups/patel/samuel/res_NN/res_2_%s_%s' % (dataset, architecture))
+
+
+df_res = pd.DataFrame({'pred' : predict_test, 'real' : y_test})
+df_res.to_csv('/n/groups/patel/samuel/res_NN/pred_2_%s_%s' % (dataset, architecture))

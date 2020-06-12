@@ -1,7 +1,8 @@
 #!/bin/bash
-datasets=( 'BloodBiochemestry' 'EyeAcuity' 'BraindMRIWeightedMeans' 'HearingTest' 'HearingTest' )
-architectures=( '1024;512;256;128' '512;256;128' '500;250' '300;100' '100;50' '30;10' )
-
+#datasets=( 'BloodBiochemestry' 'EyeAcuity' 'BraindMRIWeightedMeans' 'HearingTest' 'HearingTest' )
+datasets=( 'HeartPWA' )
+#architectures=( '1024;512;256;128' '512;256;128' '500;250' '300;100' '100;50' '30;10' )
+architectures=( '30;10' )
 for dataset in "${datasets[@]}"
 do
   for architecture in "${architectures[@]}"
