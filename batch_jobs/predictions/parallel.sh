@@ -45,8 +45,8 @@ search_dir_base='/n/groups/patel/samuel/final_inputs'
 
 for target in "${targets[@]}"
 do
-	# for model in "${models[@]}"
-	# do
+	for model in "${models[@]}"
+	do
 	# 	for dataset in "$search_dir_clusters"/*
 	# 	do
 	# 		dataset_clean=$(basename $dataset .csv)
