@@ -15,9 +15,9 @@
 # done
 
 
-alphas=( '200' '300' '400' '500' )
-dataset='BraindMRIWeightedMeans'
-architecture='1024;512;256;128'
+alphas=( '1e-2' '1e-1' '1e0' '1e1' '50' '1e2' '200' '300' '400' )
+dataset='BloodBiochemestry'
+architecture='512;256;128'
 for alpha in "${alphas[@]}"
 do
     job_name="test_${dataset}_${alpha}.job"
