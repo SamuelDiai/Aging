@@ -84,8 +84,10 @@ def compute_linear_coefficients_for_each_col(final_df, col):
                     raise ValueError('not the right number of points')
                 coefs_col = coefs_col.append(pd.Series([coef, points['Sex'].mean(), points['Ethnicity'].min()], index=[col, 'Sex', 'Ethnicity'], name= eid))
         coefs_mean = coefs_col.groupby(['Sex', 'Ethnicity']).mean()
-        if coefs_mean.shape != 10:
+        if coefs_mean.shape[0] != 12:
             coefs_mean = coefs_col.groupby(['Sex']).mean()
+            if coefs_mean.shape[0] != 2:
+                coefs_mean = None
         return coefs_mean, column
 
 
@@ -287,5 +289,5 @@ def compute_coefs_and_input(final_df, col):
         print("Done inputting")
         return column_modified
     else :
-        print('Non longitudinal feature')
+        print('Non longitudinal feature or not enought samples')
         return column.drop(columns = ['Ethnicity'])
