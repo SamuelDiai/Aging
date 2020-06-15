@@ -61,7 +61,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
     is_longitudinal = (column.groupby('eid').count()[col] > 1).any()
 
     if not is_longitudinal:
-        return None, distinct_eid_col, column
+        return None, column
     else :
         ## Create weights by sex and ethnicty
         for eid in distinct_eid_col:
