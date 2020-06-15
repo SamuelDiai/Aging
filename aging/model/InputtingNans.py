@@ -94,6 +94,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
 
 
 def input_variables_in_column(col, column, coefs_mean):
+    print("Inputing col : %s"  % col)
     categorical = (column[col].max() == 1) and (column[col].min() == 0)
     all_ethnicity_available = (coefs_mean.shape[0] == 10)
     count = column.groupby('eid').count()
@@ -283,13 +284,13 @@ def input_variables_in_column(col, column, coefs_mean):
     return column.drop(columns = ['Ethnicity'])
 
 def compute_coefs_and_input(final_df, col):
-    print("Compute mean of coef : %s" % col)
+    #print("Compute mean of coef : %s" % col)
     coefs_mean, column = compute_linear_coefficients_for_each_col(final_df, col)
     if coefs_mean is not None:
-        print("Done Averaging, input missing data in %s" % col )
+        #print("Done Averaging, input missing data in %s" % col )
         column_modified = input_variables_in_column(col, column, coefs_mean)
-        print("Done inputting %s" % col)
+        #print("Done inputting %s" % col)
         return column_modified
     else :
-        print('Non longitudinal feature or not enought samples in %s' % col)
+        #print('Non longitudinal feature or not enought samples in %s' % col)
         return column.drop(columns = ['Ethnicity'])
