@@ -50,7 +50,7 @@ def load_raw_data(path_raw,
 
 
 def compute_linear_coefficients_for_each_col(final_df, col):
-    print("Column ": col)
+    print("Column : ", col)
     age_sex_ethnicity_features = ['Sex', 'Age when attended assessment centre', 'Ethnicity']
     coefs_col = pd.DataFrame(columns= [col, 'Sex', 'Ethnicity'])
     column = final_df[[col, 'eid']  + age_sex_ethnicity_features]
