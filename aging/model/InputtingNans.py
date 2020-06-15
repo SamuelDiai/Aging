@@ -89,6 +89,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
             coefs_mean = coefs_col.groupby(['Sex']).mean()
             if coefs_mean.shape[0] != 2:
                 coefs_mean = None
+        print(col, coefs_mean)
         return coefs_mean, column
 
 
@@ -284,11 +285,11 @@ def input_variables_in_column(col, column, coefs_mean):
 def compute_coefs_and_input(final_df, col):
     print("Compute mean of coef : %s" % col)
     coefs_mean, column = compute_linear_coefficients_for_each_col(final_df, col)
-    print("Done , input missing data in %s" % col )
     if coefs_mean is not None:
+        print("Done Averaging, input missing data in %s" % col )
         column_modified = input_variables_in_column(col, column, coefs_mean)
-        print("Done inputting")
+        print("Done inputting %s" % col)
         return column_modified
     else :
-        print('Non longitudinal feature or not enought samples')
+        print('Non longitudinal feature or not enought samples in %s' % col)
         return column.drop(columns = ['Ethnicity'])
