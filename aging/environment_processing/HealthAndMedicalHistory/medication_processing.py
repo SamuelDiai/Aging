@@ -41,9 +41,21 @@ def read_medication_data(instances = [0, 1, 2, 3], **kwargs):
                            **kwargs)
 
     for type_ in ['Cholesterol lowering medication','Blood pressure medication', 'Insulin']:
-        male = df['Medication for cholesterol, blood pressure or diabetes.' + type_]
-        female = df['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_]
-        df['Medication for cholesterol, blood pressure or diabetes.' + type_] = male.add(female, fill_value = 0)
+        male_and_female = df[['Medication for cholesterol, blood pressure or diabetes.' + type_, 'Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_]]
+        def custom_sum(row, type_):
+            male_val = row['Medication for cholesterol, blood pressure or diabetes.' + type_]
+            female_val = row['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_]
+
+            if pd.isna(male_val) and pd.isna(female_val):
+                return np.nan
+            elif ~pd.isna(male_val) and pd.isna(female_val):
+                return male_val
+            elif pd.isna(male_val) and ~pd.isna(female_val):
+                return female_val
+            else :
+                return (male_val + female_val)%2
+
+        df['Medication for cholesterol, blood pressure or diabetes.' + type_] = male_and_female.apply(lambda row : custom_sum(row, type_ = type_), axis = 1)
         #df['Medication for cholesterol, blood pressure or diabetes.' + type_] = (df['Medication for cholesterol, blood pressure or diabetes.' + type_] + df['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_])%2
         df = df.drop(columns = ['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_])
     return df
