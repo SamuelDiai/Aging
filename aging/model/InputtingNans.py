@@ -58,7 +58,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
 
     group_eid = column.groupby('eid').count()[col]
     distinct_eid_col = group_eid[group_eid > 1].index
-    is_longitudinal = (column.groupby('eid').count() > 1).any().any()
+    is_longitudinal = (column.groupby('eid').count()[col] > 1).any()
 
     if not is_longitudinal:
         return None, distinct_eid_col, column
