@@ -107,7 +107,7 @@ n_cores=1
 # done
 
 
-n_cores_inputing=16
+n_cores_inputing=8
 job_name="Input_data.job"
 out_file="./logs/Input_data.out"
 err_file="./logs/Input_data.err"
