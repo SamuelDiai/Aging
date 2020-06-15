@@ -50,7 +50,6 @@ def load_raw_data(path_raw,
 
 
 def compute_linear_coefficients_for_each_col(final_df, col):
-    print("Column : ", col)
     age_sex_ethnicity_features = ['Sex', 'Age when attended assessment centre', 'Ethnicity']
     coefs_col = pd.DataFrame(columns= [col, 'Sex', 'Ethnicity'])
     column = final_df[[col, 'eid']  + age_sex_ethnicity_features]
@@ -89,7 +88,6 @@ def compute_linear_coefficients_for_each_col(final_df, col):
             coefs_mean = coefs_col.groupby(['Sex']).mean()
             if coefs_mean.shape[0] != 2:
                 coefs_mean = None
-        print(col, coefs_mean)
         return coefs_mean, column
 
 
@@ -281,6 +279,7 @@ def input_variables_in_column(col, column, coefs_mean):
                     if categorical:
                         missing_value = recenter_between_0_1(missing_value)
                     column.loc[missing_point.name, col] = missing_value
+    print("Done inputing col : %s " % col)
     return column.drop(columns = ['Ethnicity'])
 
 def compute_coefs_and_input(final_df, col):
