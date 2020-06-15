@@ -41,6 +41,9 @@ def read_medication_data(instances = [0, 1, 2, 3], **kwargs):
                            **kwargs)
 
     for type_ in ['Cholesterol lowering medication','Blood pressure medication', 'Insulin']:
-        df['Medication for cholesterol, blood pressure or diabetes.' + type_] = (df['Medication for cholesterol, blood pressure or diabetes.' + type_] + df['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_])%2
+        male = df['Medication for cholesterol, blood pressure or diabetes.' + type_]
+        female = df['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_]
+        df['Medication for cholesterol, blood pressure or diabetes.' + type_] = male.add(female, fill_value = 0)
+        #df['Medication for cholesterol, blood pressure or diabetes.' + type_] = (df['Medication for cholesterol, blood pressure or diabetes.' + type_] + df['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_])%2
         df = df.drop(columns = ['Medication for cholesterol, blood pressure, diabetes, or take exogenous hormones.' + type_])
     return df
