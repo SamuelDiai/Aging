@@ -94,7 +94,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
 def input_variables_in_column(col, column, coefs_mean):
     print("Inputing col : %s"  % col)
     categorical = (column[col].max() == 1) and (column[col].min() == 0)
-    all_ethnicity_available = (coefs_mean.shape[0] == 10)
+    all_ethnicity_available = (coefs_mean.shape[0] == 12)
     count = column.groupby('eid').count()
     distinct_eid_col = count.index[(count[col] > 0) & (count['Age when attended assessment centre'] > 1)]
     def recenter_between_0_1(value_):
