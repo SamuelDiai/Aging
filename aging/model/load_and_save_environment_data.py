@@ -5,7 +5,7 @@ from functools import partial
 
 ## Environmental Variables + Medical condition
 from ..processing.base_processing import read_ethnicity_data
-from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS, path_input_env_inputed
+from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS, path_input_env_inputed, path_input_env
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 from ..environment_processing.FamilyHistory import read_family_history_data
 from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data, \
@@ -152,7 +152,7 @@ def load_sex_age_ethnicity_data(**kwargs):
 
 
 def load_data_env(env_dataset, **kwargs):
-    ## TO CHANGEEEEE !!!! 
+    ## TO CHANGEEEEE !!!!
     use_inputed = False
     ## Find columns to read
     cols_to_read = pd.read_csv(env_dataset, nrows = 2).set_index('id').columns
