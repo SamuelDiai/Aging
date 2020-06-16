@@ -168,7 +168,7 @@ def load_data_env(env_dataset, **kwargs):
 
 
 def load_target_residuals(target_dataset, **kwargs):
-    Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data_wip/RESIDUALS_bestmodels_instances_Age_test.csv'
+    Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data2/RESIDUALS_bestmodels_instances_Age_test.csv'
     Alan_residuals = pd.read_csv(Alan_residuals, usecols = [target_dataset, 'id']).set_index('id')
     Alan_residuals.columns = ['residuals']
     return Alan_residuals
