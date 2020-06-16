@@ -22,7 +22,7 @@ class GeneralPredictor(BaseModel):
             elif model == 'LightGbm':
                 self.model = LGBMClassifier()
             elif model == 'NeuralNetwork':
-                self.model = MLPClassifier(solver = 'adam')
+                self.model = MLPClassifier(solver = 'adam', activation = 'relu', hidden_layer_sizes = (128, 64, 32), batch_size = 1000, early_stopping = True)
         elif target == 'Age':
             self.scoring = 'r2'
             self.target = 'Age'
@@ -37,7 +37,7 @@ class GeneralPredictor(BaseModel):
             elif model == 'LightGbm':
                 self.model = LGBMRegressor()
             elif model == 'NeuralNetwork':
-                self.model = MLPRegressor(solver = 'adam')
+                self.model = MLPRegressor(solver = 'adam', activation = 'relu', hidden_layer_sizes = (128, 64, 32), batch_size = 1000, early_stopping = True)
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
 

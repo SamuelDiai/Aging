@@ -84,10 +84,7 @@ class BaseModel():
             elif self.model_name == 'NeuralNetwork':
                 return {
                         'learning_rate_init': hp.loguniform('learning_rate_init', low = np.log(5e-5), high = np.log(2e-2)),
-                        'alpha': hp.loguniform('alpha', low = np.log(1e-5), high = np.log(1e-1)),
-                        'hidden_layer_sizes': hp.choice('hidden_layer_sizes', [(100, 50), (30, 10)]),
-                        'batch_size': hp.choice('batch_size', [1000, 500]),
-                        'activation': hp.choice('activation', ['tanh', 'relu'])
+                        'alpha': hp.uniform('alpha', low = 1e-6, high = 1e3)
                 }
         elif self.model_validate == 'RandomizedSearch':
             if self.model_name == 'ElasticNet':
@@ -130,10 +127,7 @@ class BaseModel():
             elif self.model_name == 'NeuralNetwork':
                 return {
                         'learning_rate_init': np.geomspace(5e-5, 2e-2, 30),
-                        'alpha': np.geomspace(1e-5, 1e-1, 30),
-                        'hidden_layer_sizes': [(100, 50), (30, 10)],
-                        'batch_size': [1000, 500],
-                        'activation': ['tanh', 'relu']
+                        'alpha': np.geomspace(1e-5, 1e3, 30)
                 }
 
 

@@ -20,7 +20,7 @@ class EnvironmentPredictor(BaseModel):
         elif model == 'LightGbm':
             self.model = LGBMRegressor()
         elif model == 'NeuralNetwork':
-            self.model = MLPRegressor(solver = 'adam')
+            self.model = MLPRegressor(solver = 'adam', activation = 'relu', hidden_layer_sizes = (128, 64, 32), batch_size = 1000, early_stopping = True)
         else :
             raise ValueError('model : "%s" not valid' % model)
 
@@ -65,7 +65,7 @@ class EnvironmentPredictor(BaseModel):
         #     return pd.DataFrame(array_rescaled, columns = cols, index = indexes)
         #else :
             # Get categorical data apart from continous ones
-        df_cat = df.select_dtypes(include=['int', 'int8'])
+        df_cat = df.select_dtypes(include=['int', 'int8', 'Int64'])
         df_cont = df.drop(columns = df_cat.columns)
 
         cols = df_cont.columns
