@@ -84,7 +84,7 @@ def load_data(dataset, **kwargs):
     if 'Cluster' in dataset :
         df = pd.read_csv(dataset).set_index('id')
     elif '/n' not in dataset:
-        path_dataset = path_inputs + dataset
+        path_dataset = path_inputs + dataset + '.csv'
         df = pd.read_csv(path_dataset).set_index('id')
         df_ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
         df =  df.reset_index().merge(df_ethnicity, on = 'eid').set_index('id')
