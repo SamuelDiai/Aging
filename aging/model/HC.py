@@ -42,7 +42,7 @@ def CreateDictSizes(path_dataset_full, target_dataset):
         full_df = full_df.join(Alan_residuals)
 
     print("Starting to convert columns to vectors")
-    cols = [elem for elem in full_df.columns if elem not in cols_age_sex_eid_ethnicity]
+    cols = [elem for elem in full_df.columns if elem not in cols_age_sex_eid_ethnicity + ['residuals']]
     for col in cols :
         if not full_df[col].dropna().empty :
             col_name = col
