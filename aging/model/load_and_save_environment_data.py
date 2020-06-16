@@ -161,6 +161,7 @@ def load_data_env(env_dataset, **kwargs):
         df = pd.read_csv(env_dataset).set_index('id')
     else :
         ## Find columns to read
+        path_env = path_inputs_env + env_dataset + '.csv'
         cols_to_read = pd.read_csv(env_dataset, nrows = 2).set_index('id').columns
         ## Features + eid + id / without ethnicity + age + sex
         cols_to_read = [elem for elem in cols_to_read if elem not in ['Sex', 'Age when attended assessment centre', 'eid'] + ETHNICITY_COLS] + ['id']
