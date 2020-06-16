@@ -37,8 +37,11 @@ def CreateDictSizes(path_dataset_full, target_dataset):
     print("Loading Full raw data")
     full_df = pd.read_csv(path_dataset_full).set_index('id')
     if target_dataset is not None :
-        target_df = pd.read_csv(path_residual + '%s.csv' % target_dataset).dropna()[['id', 'eid']].set_index('id')
-        full_df= full_df.join(target_df).drop(columns = ['eid'])
+        Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data_wip/RESIDUALS_bestmodels_instances_Age_test.csv'
+        Alan_residuals = pd.read_csv(Alan_residuals, usecols = [target_dataset, 'id']).set_index('id')
+        Alan_residuals.columns = ['residuals']
+        #target_df = pd.read_csv(path_residual + '%s.csv' % target_dataset).dropna()[['id', 'eid']].set_index('id')
+        full_df = full_df.join(Alan_residuals).drop(columns = ['eid', 'residuals'])
 
     print("Starting to convert columns to vectors")
     cols = [elem for elem in full_df.columns if elem not in cols_age_sex_eid_ethnicity]
@@ -267,7 +270,15 @@ def GetInterestingNodes(tree_, linkage_matrix_raw, printing = True):
 
     return recurse(tree_)
 
-def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters):
+def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target = None):
+    ## EWAS :
+    if target is not None:
+        os.mkdir(path_clusters + target + '/')
+        path_saving = path_clusters + target + '/'
+    ## Biomarkers
+    else :
+        path_saving = path_clusters
+    ## Compute interesting Nodes
     for node_id in list_interesting:
         print(node_id)
         features = linkage_matrix_raw.loc[node_id, 'name_ij']
@@ -275,4 +286,4 @@ def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, pat
         print(features)
         list_features = features.split('//')
         df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features + cols_age_sex_eid_ethnicity ).set_index('id') ## Remember to drop nas
-        df_cluster.to_csv(path_clusters + 'Cluster_score_%s.csv' % score)
+        df_cluster.to_csv(path_saving + 'Cluster_score_%s.csv' % score)

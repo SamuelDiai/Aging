@@ -5,7 +5,7 @@ from functools import partial
 
 ## Environmental Variables + Medical condition
 from ..processing.base_processing import read_ethnicity_data
-from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS
+from ..environment_processing.base_processing import path_features , path_predictions, path_inputs_env, path_target_residuals, ETHNICITY_COLS, path_input_env_inputed
 from ..environment_processing.disease_processing import read_infectious_diseases_data, read_infectious_disease_antigens_data
 from ..environment_processing.FamilyHistory import read_family_history_data
 from ..environment_processing.HealthAndMedicalHistory import read_breathing_data, read_cancer_screening_data, read_chest_pain_data, read_claudication_data, read_eye_history_data, \
@@ -147,23 +147,26 @@ def create_data(env_dataset, **kwargs):
 def load_sex_age_ethnicity_data(**kwargs):
     sex_age = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id')
     ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
-    df_sex_age_ethnicity_eid = sex_age.reset_index().merge(ethnicity, on = 'eid').set_index('id').drop(columns = ['eid'])
+    df_sex_age_ethnicity_eid = sex_age.reset_index().merge(ethnicity, on = 'eid').set_index('id')
     return df_sex_age_ethnicity_eid
 
 
 def load_data_env(env_dataset, **kwargs):
-    df = pd.read_csv(env_dataset).set_index('id')
-    if 'inputs_final' in env_dataset :
-        df_sex_age_ethnicity = load_sex_age_ethnicity_data()
-        df = df_sex_age_ethnicity.join(df, how= 'outer', rsuffix = '_r')
-        output_cols = df.columns[~df.columns.str.contains('_r')]
-        df = df[output_cols]
+    ## Find columns to read
+    cols_to_read = pd.read_csv(env_dataset, nrows = 2).set_index('id').columns
+    ## Features + eid + id / without ethnicity + age + sex
+    cols_to_read = [elem for elem in cols_to_read if elem not in ['Sex', 'Age when attended assessment centre', 'eid'] + ETHNICITY_COLS]
+    df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
+    df_sex_age_ethnicity = load_sex_age_ethnicity_data()
+    df = df.join(df_sex_age_ethnicity)
     return df
 
 
 def load_target_residuals(target_dataset, **kwargs):
-    df_residuals = pd.read_csv(path_target_residuals + target_dataset + '.csv').set_index('id')
-    return df_residuals[['residual']]
+    Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data_wip/RESIDUALS_bestmodels_instances_Age_test.csv'
+    Alan_residuals = pd.read_csv(Alan_residuals, usecols = [target_dataset, 'id']).set_index('id')
+    Alan_residuals.columns = ['residuals']
+    return Alan_residuals
 
 
 def load_data(env_dataset, target_dataset, **kwargs):
