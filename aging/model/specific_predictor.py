@@ -112,7 +112,7 @@ class GeneralPredictor(BaseModel):
         if 'Cluster' in self.dataset:
             dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
         else :
-            dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
+            dataset_proper = self.dataset
         if not hasattr(self, 'features_imp'):
             raise ValueError('Features importance not trained')
         save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name)
@@ -122,7 +122,7 @@ class GeneralPredictor(BaseModel):
         if 'Cluster' in self.dataset:
             dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
         else :
-            dataset_proper = self.dataset.split('/')[-1].replace('.csv', '')
+            dataset_proper = self.dataset
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
         save_predictions_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)

@@ -50,7 +50,7 @@ if 'Cluster' in dataset:
     dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
     field = 'Cluster'
 else :
-    dataset_proper = dataset.split('/')[-1].replace('.csv', '')
+    dataset_proper = dataset
     field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
 list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset_proper, model))
