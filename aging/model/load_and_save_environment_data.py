@@ -137,6 +137,7 @@ map_envdataset_to_dataloader_and_field = {**map_envdataset_to_dataloader_and_fie
 
 
 def create_data(env_dataset, **kwargs):
+    ## env_dataset is just name not a path at this point.
     if env_dataset not in map_envdataset_to_dataloader_and_field.keys():
         raise ValueError('Wrong dataset name ! ')
     else :
@@ -154,22 +155,26 @@ def load_sex_age_ethnicity_data(**kwargs):
 def load_data_env(env_dataset, **kwargs):
     ## TO CHANGEEEEE !!!!
     use_inputed = False
-    ## Find columns to read
-    cols_to_read = pd.read_csv(env_dataset, nrows = 2).set_index('id').columns
-    ## Features + eid + id / without ethnicity + age + sex
-    cols_to_read = [elem for elem in cols_to_read if elem not in ['Sex', 'Age when attended assessment centre', 'eid'] + ETHNICITY_COLS] + ['id']
-    if use_inputed == True:
-        df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
+
+    if 'Cluster' in env_dataset:
+        ## Clusters
+        df = pd.read_csv(env_dataset).set_index('id')
     else :
-        df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
-    df_sex_age_ethnicity = load_sex_age_ethnicity_data()
-    df = df.join(df_sex_age_ethnicity)
+        ## Find columns to read
+        cols_to_read = pd.read_csv(env_dataset, nrows = 2).set_index('id').columns
+        ## Features + eid + id / without ethnicity + age + sex
+        cols_to_read = [elem for elem in cols_to_read if elem not in ['Sex', 'Age when attended assessment centre', 'eid'] + ETHNICITY_COLS] + ['id']
+        if use_inputed == True:
+            df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
+        else :
+            df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
+        df_sex_age_ethnicity = load_sex_age_ethnicity_data()
+        df = df.join(df_sex_age_ethnicity)
     return df
 
 
 def load_target_residuals(target_dataset, **kwargs):
-    Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data2/RESIDUALS_bestmodels_instances_Age_test.csv'
-    Alan_residuals = pd.read_csv(Alan_residuals, usecols = [target_dataset, 'id']).set_index('id')
+    Alan_residuals = pd.read_csv(path_target_residuals, usecols = [target_dataset, 'id']).set_index('id')
     Alan_residuals.columns = ['residuals']
     return Alan_residuals
 
