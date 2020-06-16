@@ -7,6 +7,7 @@ import sys
 
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.cluster import hierarchy
+from .load_and_save_environment_data import load_target_residuals
 
 sys.path.append('/home/sd375/')
 from UsefulFonctions import ComputeDistanceMatrix
@@ -37,11 +38,8 @@ def CreateDictSizes(path_dataset_full, target_dataset):
     print("Loading Full raw data")
     full_df = pd.read_csv(path_dataset_full).set_index('id')
     if target_dataset is not None :
-        Alan_residuals = '/n/groups/patel/Alan/Aging/Medical_Images/data_wip/RESIDUALS_bestmodels_instances_Age_test.csv'
-        Alan_residuals = pd.read_csv(Alan_residuals, usecols = [target_dataset, 'id']).set_index('id')
-        Alan_residuals.columns = ['residuals']
-        #target_df = pd.read_csv(path_residual + '%s.csv' % target_dataset).dropna()[['id', 'eid']].set_index('id')
-        full_df = full_df.join(Alan_residuals).drop(columns = ['eid', 'residuals'])
+        Alan_residuals = load_target_residuals(target_dataset)
+        full_df = full_df.join(Alan_residuals)
 
     print("Starting to convert columns to vectors")
     cols = [elem for elem in full_df.columns if elem not in cols_age_sex_eid_ethnicity]

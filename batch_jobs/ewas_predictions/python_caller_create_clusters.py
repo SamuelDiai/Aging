@@ -7,7 +7,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.ewas_processing.base_processing import path_input_env_inputed, path_clusters, path_HC_features
+from aging.environment_processing.base_processing import path_input_env_inputed, path_clusters, path_HC_features
 from aging.model.HC import *
 
 target_dataset = str(sys.argv[1])
