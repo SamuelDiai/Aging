@@ -227,7 +227,7 @@ class BaseModel():
         list_train_train = []
         for inner_fold in range(self.inner_splits):
             index_train_val = list_test_folds_id[inner_fold]
-            index_train_train = list(list_test_folds_id[:inner_fold]) + list(list_test_folds_id[inner_fold + 1:])
+            index_train_train = np.concatenate(list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])
             print(list_test_folds_id[:inner_fold])
             print(list_test_folds_id[inner_fold + 1:])
             print(index_train_train)
