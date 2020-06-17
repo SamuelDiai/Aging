@@ -228,13 +228,6 @@ class BaseModel():
         for inner_fold in range(self.inner_splits):
             index_train_val = list_test_folds_id[inner_fold]
             index_train_train = np.concatenate(list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])
-
-            print(index_train_train)
-            print(len(index_train_train))
-            index_train_train = [elem for elem in index_train if elem not in index_train_val]
-            print(index_train_train)
-            print(len(index_train_train))
-            print((index_train_train == np.concatenate(list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])).all())
             X_train_train, X_train_val, y_train_train, y_train_val = X.loc[index_train_train], X.loc[index_train_val], y.loc[index_train_train], y.loc[index_train_val]
 
             model_ = self.get_model()
