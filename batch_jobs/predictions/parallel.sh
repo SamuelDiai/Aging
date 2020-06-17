@@ -1,16 +1,14 @@
 #!/bin/bash
-#targets=( "Age" "Sex" )
-targets=( "Sex" )
-#models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
-#datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
+targets=( "Age" "Sex" )
+#targets=( "Sex" )
+models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
+datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 
-models=( "ElasticNet" )
-datasets=( 'EyeAcuity' )
 
-outer_splits=3
-inner_splits=2
-n_iter=25
-n_splits=2
+outer_splits=10
+inner_splits=9
+n_iter=30
+n_splits=5
 
 memory=8G
 n_cores=1
