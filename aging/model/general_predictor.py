@@ -299,7 +299,7 @@ class BaseModel():
 
         if self.model_name != 'NeuralNetwork':
             if self.model_name == 'ElasticNet':
-                self.features_imp = np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_)).flatten()
+                self.features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
             elif self.model_name == 'RandomForest':
                 self.features_imp = best_estim.feature_importances_
             elif self.model_name == 'GradientBoosting':

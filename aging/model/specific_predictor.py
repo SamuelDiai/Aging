@@ -115,8 +115,6 @@ class GeneralPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'features_imp'):
             raise ValueError('Features importance not trained')
-        print(cols)
-        print(self.features_imp)
         save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name)
 
 
