@@ -12,7 +12,7 @@ class GeneralPredictor(BaseModel):
             self.scoring = 'f1'
             self.target = 'Sex'
             if model == 'ElasticNet':
-                self.model = ElasticNet(max_iter = 2000)
+                self.model = SGDClassifier(loss = 'log', penalty = 'elasticnet', max_iter = 2000)
             elif model == 'RandomForest':
                 self.model = RandomForestClassifier()
             elif model == 'GradientBoosting':

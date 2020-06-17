@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import copy
 
-from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import ElasticNet, SGDClassifier
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.preprocessing import StandardScaler

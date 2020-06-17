@@ -271,7 +271,7 @@ def GetInterestingNodes(tree_, linkage_matrix_raw, printing = True):
 def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target = None):
     ## EWAS :
     if target is not None:
-        os.mkdir(path_clusters + target + '/')
+        os.mkdir(path_clusters + target )
         path_saving = path_clusters + target + '/'
     ## Biomarkers
     else :

@@ -15,7 +15,7 @@ if sys.platform == 'linux':
 	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_final/"
 	path_final_preds = "/n/groups/patel/samuel/EWAS/preds_final/"
 	path_clusters = "/n/groups/patel/samuel/EWAS/AutomaticClusters/"
-	path_HC_features="/n/groups/patel/samuelEWAS//HC_features/"
+	path_HC_features="/n/groups/patel/samuel/EWAS/HC_features/"
 elif sys.platform == 'darwin':
 	path_data = "/Users/samuel/Desktop/ukbhead.csv"
 	path_dictionary = "/Users/samuel/Downloads/drop/Data_Dictionary_Showcase.csv"
