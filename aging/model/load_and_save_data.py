@@ -89,7 +89,7 @@ def load_data(dataset, **kwargs):
         df_ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
         df =  df.reset_index().merge(df_ethnicity, on = 'eid').set_index('id')
         if 'Age when attended assessment centre' not in df.columns or 'Sex' not in df.columns:
-            df = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id').join(df)
+            df = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id').drop(columns = ['eid']).join(df)
     return df.dropna()
 
 def create_data(dataset, **kwargs):
