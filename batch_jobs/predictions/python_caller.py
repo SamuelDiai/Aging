@@ -33,7 +33,7 @@ print(hyperparameters)
 if fold not in list(range(outer_splits)):
 	raise ValueError('fold must be < outer_splits, here fold = %s and outer_splits = %s' % (fold, outer_splits) )
 else :
-	gp = GeneralPredictor(name, outer_splits, inner_splits, n_iter, target, dataset, fold)
+	gp = GeneralPredictor(name, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt')
 	print("Loading Dataset")
 	df = gp.load_dataset()
 	print("Dataset Loaded, optimizing hyper")
