@@ -229,6 +229,8 @@ class BaseModel():
             index_train_val = list_test_folds_id[inner_fold]
             index_train_train = list(list_test_folds_id[:inner_fold]) + list(list_test_folds_id[inner_fold + 1:])
             print(list(list_test_folds_id[:inner_fold]))
+            print(list(list_test_folds_id[inner_fold + 1:]))
+            print(index_train_train)
             print(len(index_train_train))
             index_train_train = [elem for elem in index_train if elem not in index_train_val]
             print(len(index_train_train))
