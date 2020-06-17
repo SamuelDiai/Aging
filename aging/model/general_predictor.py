@@ -228,7 +228,8 @@ class BaseModel():
         for inner_fold in range(self.inner_splits):
             index_train_val = list_test_folds_id[inner_fold]
             index_train_train = list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:]
-            print(len(index_train_train))
+            print(list_test_folds_id[:inner_fold])
+            print(list_test_folds_id[inner_fold + 1:])
             index_train_train = [elem for elem in index_train if elem not in index_train_val]
             print(len(index_train_train))
             print(index_train_train == list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])
