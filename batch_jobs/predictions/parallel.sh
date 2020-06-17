@@ -1,11 +1,11 @@
 #!/bin/bash
 #targets=( "Age" "Sex" )
-targets=( "Age" )
+targets=( "Sex" )
 #models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 
-models=( "LightGbm" "ElasticNet" )
-datasets=( 'EyeAcuity' 'AnthropometryImpedance' )
+models=( "ElasticNet" )
+datasets=( 'EyeAcuity' )
 
 outer_splits=3
 inner_splits=2
