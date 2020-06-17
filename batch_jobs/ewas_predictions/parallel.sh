@@ -36,12 +36,12 @@ n_cores=1
 # ID_raw=$(sbatch --parsable --dependency=afterok:${joinedIDsLoads%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=50G -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/create_raw_data.sh)
 #
 #
-# n_cores_inputing=50
+# n_cores_inputing=8
 # job_name="Input_data.job"
 # out_file="./logs/Input_data.out"
 # err_file="./logs/Input_data.err"
 # ID_inputed=$(sbatch --parsable --dependency=afterok:$ID_raw --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c $n_cores_inputing -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
-# #ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c 16 -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
+# #ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c 8 -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
 #
 # ## To del :
 # # n_cores_inputing=16
