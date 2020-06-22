@@ -78,9 +78,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
     dataset = dataset.replace('_', '')
-    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_train.csv' % ( target, dataset_proper, field, model))
-    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_test.csv' % ( target, dataset_proper, field, model))
-    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_%s_%s_%s_main_raw_%s_0_0_0_0_val.csv' % ( target, dataset_proper, field, model))
+    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_train.csv' % ( target, dataset_proper, field, model))
+    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_test.csv' % ( target, dataset_proper, field, model))
+    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_val.csv' % ( target, dataset_proper, field, model))
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")

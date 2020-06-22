@@ -55,23 +55,43 @@ def read_ethnicity_data(**kwargs):
                            + ethnicities['Prefer_not_to_answer'] + ethnicities['NA']
     return ethnicities
 
+from dateutil import relativedelta
+from datetime import timedelta
+
 def read_sex_and_age_data(**kwargs):
     """
-    output dataframe with age, sex, eid and id as index
+        output dataframe with age, sex, eid and id as index
     """
+    ## Load month, year, sex, eid
+    year_col = '34-0.0'
+    month_col = '52-0.0'
+    cols_age_eid_sex = ['eid', year_col, month_col, '31-0.0']
+    cols_target = ['eid', 'year', 'month', 'Sex']
+    dict_rename = dict(zip(cols_age_eid_sex, cols_target))
+
+    df_year_month = pd.read_csv(path_data, usecols = cols_age_eid_sex, **kwargs)
+    df_year_month = df_year_month.rename(dict_rename, axis = 'columns').set_index('eid').dropna()
+    df_year_month['day'] = 1
+    df_year_month['birth_date'] = pd.to_datetime(df_year_month[['year', 'month', 'day']])
+
+    ## Load date asssessment for each visit.
     list_df = []
     for instance in range(4):
-        print(instance)
-        age_col = '21003-' + str(instance) + '.0'
-        cols_age_eid_sex = ['eid', age_col, '31-0.0']
-        cols_target = ['eid', 'Age when attended assessment centre' , 'Sex']
-        dict_rename = dict(zip(cols_age_eid_sex, cols_target))
-        df = pd.read_csv(path_data, usecols = cols_age_eid_sex, **kwargs)
-        df = df.rename(dict_rename, axis = 'columns').dropna()
+        date_and_eid = ['eid', '53-' + str(instance) + '.0']
+        cols_date_eid = ['eid', 'date']
+        dict_rename_data = dict(zip(date_and_eid, cols_date_eid))
+
+        df = pd.read_csv(path_data, usecols = date_and_eid, **kwargs).dropna()
+        df = df.rename(dict_rename_data, axis = 'columns')
+        df['date'] = pd.to_datetime(df['date'])
         df['id'] = df['eid'].astype(str) + '_%s' % instance
-        #df = df.drop(columns= ['eid'])
         list_df.append(df.set_index('id'))
-    return pd.concat(list_df)
+
+    df_date = pd.concat(list_df)
+    df_final =  df_date.reset_index().merge(df_year_month, on = 'eid').set_index('id')
+    df_final['Age when attended assessment centre'] = (df_final['date'] - df_final['birth_date'])/ timedelta(days=365)
+
+    return df_final[['eid', 'Sex', 'Age when attended assessment centre']]
 
 
 def read_data(cols_features, cols_filter, instances, **kwargs):
