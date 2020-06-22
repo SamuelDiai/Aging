@@ -88,7 +88,7 @@ def load_data(dataset, **kwargs):
         df = pd.read_csv(path_dataset).set_index('id')
         df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
         df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
-        df = df.columns[~df.columns.str.contains('_r')]
+        df = df[df.columns[~df.columns.str.contains('_r')]]
     return df.dropna()
 
 def create_data(dataset, **kwargs):
