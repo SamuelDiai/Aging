@@ -47,14 +47,17 @@ def read_blood_pressure_data(**kwargs):
             else :
                 values2 = np.nan, np.nan, np.nan
 
-            #values1, values2 = list(values1), list(values2)
-            values_final = (values1 + values2) / 2
+            values1, values2 = list(values1), list(values2)
+            if pd.isna(values1 + values2).all():
+                values_final = [np.nan, np.nan, np.nan]
+            else :
+                values_final = np.nansum([values1, values2], axis = 0)/2
             #cols_name = ['eid', 'Age when attended assessment centre', 'Sex', 'Diastolic blood pressure_0', 'Pulse rate_0', 'Systolic blood pressure_0',
             #             'Diastolic blood pressure_1', 'Pulse rate_1', 'Systolic blood pressure_1']
 
             cols_name = ['eid', 'Age when attended assessment centre', 'Sex', 'Diastolic blood pressure', 'Pulse rate', 'Systolic blood pressure']
 
-            return pd.Series([str(int(row['eid'])), row[age_col], row['31-0.0']] + values1 + values2, index = cols_name)
+            return pd.Series([str(int(row['eid'])), row[age_col], row['31-0.0']] + values_final, index = cols_name)
 
 
         df_ = d.apply(custom_apply, axis = 1)
