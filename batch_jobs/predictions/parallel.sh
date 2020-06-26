@@ -2,8 +2,8 @@
 targets=( "Age" "Sex" )
 #targets=( "Sex" )
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
-#datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
-datasets=( 'BloodPressure' )
+datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
+#datasets=( 'BloodPressure' )
 
 outer_splits=10
 inner_splits=9
@@ -27,17 +27,17 @@ search_dir_base='/n/groups/patel/samuel/final_inputs'
 # 	IDsLoads+=($IDLoad)
 # done
 #
-printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
-job_name="Create_raw_data.job"
-out_file="./logs/Create_raw_data.out"
-err_file="./logs/Create_raw_data.err"
-ID_raw=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_raw_data.sh)
-
-
-job_name="Create_clusters.job"
-out_file="./logs/Create_clusters.out"
-err_file="./logs/Create_clusters.err"
-ID_clusters=$(sbatch --parsable --dependency=afterok:$ID_raw --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_clusters.sh)
+# printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
+# job_name="Create_raw_data.job"
+# out_file="./logs/Create_raw_data.out"
+# err_file="./logs/Create_raw_data.err"
+# ID_raw=$(sbatch --parsable --dependency=afterok:${joinedIDsLoads%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_raw_data.sh)
+#
+#
+# job_name="Create_clusters.job"
+# out_file="./logs/Create_clusters.out"
+# err_file="./logs/Create_clusters.err"
+# ID_clusters=$(sbatch --parsable --dependency=afterok:$ID_raw --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_clusters.sh)
 
 
 
@@ -119,3 +119,15 @@ ID_clusters=$(sbatch --parsable --dependency=afterok:$ID_raw --error=$err_file -
 # 		done
 # 	done
 # done
+
+for dataset in "${datasets[@]}"
+do
+	for target in "${targets[@]}"
+	do
+		model="Correlation"
+		job_name="${target}_${model}_${dataset}_features.job"
+		out_file="./logs/${target}_${model}_${dataset}_features.out"
+		err_file="./logs/${target}_${model}_${dataset}_features.err"
+		sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+	done
+done
