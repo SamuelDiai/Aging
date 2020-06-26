@@ -268,36 +268,40 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
-        cv = KFold(n_splits = self.inner_splits, shuffle = False)
-        if self.model_validate == 'RandomizedSearch':
-            clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
-            clf.fit(X.values, y)
-            best_estim = clf.best_estimator_
-        elif self.model_validate == 'HyperOpt':
-            def objective(hyperparameters):
-                estimator_ = self.get_model()
-                ## Set hyperparameters to the model :
-                for key, value in hyperparameters.items():
-                    if hasattr(estimator_, key):
-                        setattr(estimator_, key, value)
+        if self.model_name == 'Correlation':
+            list_corr = []
+            for column in columns:
+                list_corr.append(stat.pearsonr(X[column], y))
+        else :
+            cv = KFold(n_splits = self.inner_splits, shuffle = False)
+            if self.model_validate == 'RandomizedSearch':
+                clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
+                clf.fit(X.values, y)
+                best_estim = clf.best_estimator_
+            elif self.model_validate == 'HyperOpt':
+                def objective(hyperparameters):
+                    estimator_ = self.get_model()
+                    ## Set hyperparameters to the model :
+                    for key, value in hyperparameters.items():
+                        if hasattr(estimator_, key):
+                            setattr(estimator_, key, value)
+                        else :
+                            continue
+                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10 )
+                    return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
+                space = self.get_hyper_distribution()
+                trials = Trials()
+                best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
+                best_params = space_eval(space, best)
+                ## Recreate best estim :
+                estim = self.get_model()
+                for key, value in best_params.items():
+                    if hasattr(estim, key):
+                        setattr(estim, key, value)
                     else :
                         continue
-                scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10 )
-                return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
-            space = self.get_hyper_distribution()
-            trials = Trials()
-            best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
-            best_params = space_eval(space, best)
-            ## Recreate best estim :
-            estim = self.get_model()
-            for key, value in best_params.items():
-                if hasattr(estim, key):
-                    setattr(estim, key, value)
-                else :
-                    continue
-            best_estim = estim.fit(X.values, y)
+                best_estim = estim.fit(X.values, y)
 
-        if self.model_name != 'NeuralNetwork':
             if self.model_name == 'ElasticNet':
                 self.features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
             elif self.model_name == 'RandomForest':
@@ -308,22 +312,22 @@ class BaseModel():
                 self.features_imp = best_estim.feature_importances_
             elif self.model_name == 'LightGbm':
                 self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+            elif self.model_name == 'NeuralNetwork'  :
+                list_scores = []
+                if scoring == 'r2':
+                    score_max = r2_score(y, best_estim.predict(X.values))
+                else :
+                    score_max = f1_score(y, best_estim.predict(X.values))
+                for column in columns :
+                    X_copy = copy.deepcopy(X)
+                    X_copy[column] = np.random.permutation(X_copy[column])
+                    if scoring == 'r2':
+                        score = r2_score(y, best_estim.predict(X_copy.values))
+                    elif scoring == 'f1' :
+                        score = f1_score(y, best_estim.predict(X_copy.values))
+                    else :
+                        raise ValueError(' Wrong scoring fonction ')
+                    list_scores.append(score_max - score)
+                self.features_imp = list_scores
             else :
                 raise ValueError('Wrong model name')
-        else  :
-            list_scores = []
-            if scoring == 'r2':
-                score_max = r2_score(y, best_estim.predict(X.values))
-            else :
-                score_max = f1_score(y, best_estim.predict(X.values))
-            for column in columns :
-                X_copy = copy.deepcopy(X)
-                X_copy[column] = np.random.permutation(X_copy[column])
-                if scoring == 'r2':
-                    score = r2_score(y, best_estim.predict(X_copy.values))
-                elif scoring == 'f1' :
-                    score = f1_score(y, best_estim.predict(X_copy.values))
-                else :
-                    raise ValueError(' Wrong scoring fonction ')
-                list_scores.append(score_max - score)
-            self.features_imp = list_scores
