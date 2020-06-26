@@ -269,9 +269,7 @@ class BaseModel():
         columns = X.columns
         y = y.values
         if self.model_name == 'Correlation':
-            list_corr = []
-            for column in columns:
-                list_corr.append(stat.pearsonr(X[column], y))
+            self.features_imp = [stat.pearsonr(X[column], y) for column in columns]
         else :
             cv = KFold(n_splits = self.inner_splits, shuffle = False)
             if self.model_validate == 'RandomizedSearch':
