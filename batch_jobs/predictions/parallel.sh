@@ -31,7 +31,7 @@ printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
 job_name="Create_raw_data.job"
 out_file="./logs/Create_raw_data.out"
 err_file="./logs/Create_raw_data.err"
-ID_raw=$(sbatch --parsable --dependency=afterok:${joinedIDsLoads%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_raw_data.sh)
+ID_raw=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=32 -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/create_raw_data.sh)
 
 
 job_name="Create_clusters.job"
