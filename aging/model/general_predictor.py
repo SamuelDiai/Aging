@@ -22,7 +22,7 @@ from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 
 
 
-MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork'}
+MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork', 'Correlation'}
 
 
 
