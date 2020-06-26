@@ -113,7 +113,7 @@ class GeneralPredictor(BaseModel):
             dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
         else :
             dataset_proper = self.dataset
-        if not hasattr(self, 'features_imp') and self.model != 'Correlation':
+        if not hasattr(self, 'features_imp') and self.model_name != 'Correlation':
             raise ValueError('Features importance not trained')
         save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name)
 
