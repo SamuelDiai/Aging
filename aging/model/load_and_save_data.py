@@ -99,10 +99,12 @@ def create_data(dataset, **kwargs):
         df = dataloader(**kwargs)
     df.to_csv(path_inputs + dataset + '.csv')
 
-def save_features_to_csv(cols, features_imp, target, dataset, model_name):
+def save_features_to_csv(cols, features_imp, target, dataset, model_name, sd):
     final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})
-    final_df.set_index('features').to_csv(path_features + '/' + 'FeatureImp_' + target + '_' + dataset + '_' + model_name + '.csv')
-
+    full_name = 'FeatureImp_'
+    if sd :
+        full_name += 'sd_'
+    final_df.set_index('features').to_csv(path_features + '/' + full_name + target + '_' + dataset + '_' + model_name + '.csv')
 
 def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold, best_params):
     hyper_parameters_name = '_'.join([str(elem) for elem in best_params])
