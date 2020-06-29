@@ -299,10 +299,13 @@ class BaseModel():
                         old_best_score = trials.attachments['ATTACH::0::best_score']
                         if scores['test_score'].mean() > old_best_score:
                             trials.attachments['ATTACH::0::best_models'] = scores['estimator']
+                            trials.attachments['ATTACH::0::best_score'] = scores['test_score'].mean()
+
                         print("Modify element")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
                     else :
                         print("Adding first elem")
+                        print("First estims : ", scores['estimator'])
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
                     print(trials.attachments)
                 space = self.get_hyper_distribution()
