@@ -265,10 +265,44 @@ class BaseModel():
 
 
 
+def Create_feature_imps_for_estimator(self, best_estim, X, y):
+    if self.model_name == 'ElasticNet':
+        features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
+    elif self.model_name == 'RandomForest':
+        features_imp = best_estim.feature_importances_
+    elif self.model_name == 'GradientBoosting':
+        features_imp = best_estim.feature_importances_
+    elif self.model_name == 'Xgboost':
+        features_imp = best_estim.feature_importances_
+    elif self.model_name == 'LightGbm':
+        features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+    elif self.model_name == 'NeuralNetwork'  :
+        list_scores = []
+        if scoring == 'r2':
+            score_max = r2_score(y, best_estim.predict(X.values))
+        else :
+            score_max = f1_score(y, best_estim.predict(X.values))
+        for column in columns :
+            X_copy = copy.deepcopy(X)
+            X_copy[column] = np.random.permutation(X_copy[column])
+            if scoring == 'r2':
+                score = r2_score(y, best_estim.predict(X_copy.values))
+            elif scoring == 'f1' :
+                score = f1_score(y, best_estim.predict(X_copy.values))
+            else :
+                raise ValueError(' Wrong scoring fonction ')
+            list_scores.append(score_max - score)
+        features_imp = list_scores
+    else :
+        raise ValueError('Wrong model name')
+    return features_imp
+
+
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
         cv = KFold(n_splits = self.inner_splits, shuffle = False)
+        ## If Correlation
         if self.model_name == 'Correlation':
             matrix = np.zeros((self.inner_splits, len(columns)))
             for fold, indexes in enumerate(list(cv.split(X.values, y))):
@@ -279,13 +313,14 @@ class BaseModel():
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
             self.features_imp = [np.abs(stat.pearsonr(X[column], y)[0]) for column in columns]
+        ## Else More Complex Models :
         else :
-
             if self.model_validate == 'RandomizedSearch':
                 clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
                 clf.fit(X.values, y)
                 best_estim = clf.best_estimator_
             elif self.model_validate == 'HyperOpt':
+                ## Objective which saves last best estimators accross all folds
                 trials = Trials()
                 def objective(hyperparameters):
                     estimator_ = self.get_model()
@@ -304,12 +339,15 @@ class BaseModel():
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
                     else :
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
+                ## Create search space
                 space = self.get_hyper_distribution()
 
+                ## Optimize and recover best_params and best estimators ( for sd )
                 best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
                 best_params = space_eval(space, best)
                 print(trials.attachments)
                 best_estimators = trials.attachments['ATTACH::0::best_models']
+                matrix_std = np.zeros((self.inner_splits, len(columns)))
                 ## Recreate best estim :
                 estim = self.get_model()
                 for key, value in best_params.items():
@@ -319,32 +357,42 @@ class BaseModel():
                         continue
                 best_estim = estim.fit(X.values, y)
 
-            if self.model_name == 'ElasticNet':
-                self.features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
-            elif self.model_name == 'RandomForest':
-                self.features_imp = best_estim.feature_importances_
-            elif self.model_name == 'GradientBoosting':
-                self.features_imp = best_estim.feature_importances_
-            elif self.model_name == 'Xgboost':
-                self.features_imp = best_estim.feature_importances_
-            elif self.model_name == 'LightGbm':
-                self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-            elif self.model_name == 'NeuralNetwork'  :
-                list_scores = []
-                if scoring == 'r2':
-                    score_max = r2_score(y, best_estim.predict(X.values))
-                else :
-                    score_max = f1_score(y, best_estim.predict(X.values))
-                for column in columns :
-                    X_copy = copy.deepcopy(X)
-                    X_copy[column] = np.random.permutation(X_copy[column])
-                    if scoring == 'r2':
-                        score = r2_score(y, best_estim.predict(X_copy.values))
-                    elif scoring == 'f1' :
-                        score = f1_score(y, best_estim.predict(X_copy.values))
-                    else :
-                        raise ValueError(' Wrong scoring fonction ')
-                    list_scores.append(score_max - score)
-                self.features_imp = list_scores
-            else :
-                raise ValueError('Wrong model name')
+            self.features_imp = Create_feature_imps_for_estimator(best_estim = best_estim, X = X, y = y)
+            matrix = np.zeros((self.inner_splits, len(columns)))
+            for fold, indexes in enumerate(list(cv.split(X.values, y))):
+                train_index, test_index = indexes
+                X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
+                list_corr =  Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test)
+                matrix[fold] = list_corr
+            self.features_imp_sd = np.std(matrix, axis = 0)
+
+
+            # if self.model_name == 'ElasticNet':
+            #     self.features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
+            # elif self.model_name == 'RandomForest':
+            #     self.features_imp = best_estim.feature_importances_
+            # elif self.model_name == 'GradientBoosting':
+            #     self.features_imp = best_estim.feature_importances_
+            # elif self.model_name == 'Xgboost':
+            #     self.features_imp = best_estim.feature_importances_
+            # elif self.model_name == 'LightGbm':
+            #     self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+            # elif self.model_name == 'NeuralNetwork'  :
+            #     list_scores = []
+            #     if scoring == 'r2':
+            #         score_max = r2_score(y, best_estim.predict(X.values))
+            #     else :
+            #         score_max = f1_score(y, best_estim.predict(X.values))
+            #     for column in columns :
+            #         X_copy = copy.deepcopy(X)
+            #         X_copy[column] = np.random.permutation(X_copy[column])
+            #         if scoring == 'r2':
+            #             score = r2_score(y, best_estim.predict(X_copy.values))
+            #         elif scoring == 'f1' :
+            #             score = f1_score(y, best_estim.predict(X_copy.values))
+            #         else :
+            #             raise ValueError(' Wrong scoring fonction ')
+            #         list_scores.append(score_max - score)
+            #     self.features_imp = list_scores
+            # else :
+            #     raise ValueError('Wrong model name')
