@@ -299,13 +299,16 @@ class BaseModel():
                         old_best_score = trials.attachments['best_score']
                         if scores['test_score'].mean() > old_best_score:
                             trials.attachments['best_models'] = scores['estimator']
+                        print("Modify element")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
                     else :
+                        print("Adding first elem")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
                 space = self.get_hyper_distribution()
 
                 best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
                 best_params = space_eval(space, best)
+                print(trials.attachments)
                 best_estimators = trials.attachments['best_models']
                 ## Recreate best estim :
                 estim = self.get_model()
