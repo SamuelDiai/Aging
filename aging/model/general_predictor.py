@@ -271,7 +271,7 @@ class BaseModel():
         cv = KFold(n_splits = self.inner_splits, shuffle = False)
         if self.model_name == 'Correlation':
             matrix = np.zeros((self.inner_splits, len(columns)))
-            for fold, indexes in enumerate(list(cv.split(X, y))):
+            for fold, indexes in enumerate(list(cv.split(X.values, y))):
                 train_index, test_index = indexes[0], indexes[1]
                 X_train, X_test, y_train, y_test = X[train_index], X[test_index], y[train_index], y[test_index]
                 list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
@@ -300,20 +300,15 @@ class BaseModel():
                         if scores['test_score'].mean() > old_best_score:
                             trials.attachments['ATTACH::0::best_models'] = scores['estimator']
                             trials.attachments['ATTACH::0::best_score'] = scores['test_score'].mean()
-
-                        print("Modify element")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
                     else :
-                        print("Adding first elem")
-                        print("First estims : ", scores['estimator'])
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
-                    print(trials.attachments)
                 space = self.get_hyper_distribution()
 
                 best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
                 best_params = space_eval(space, best)
                 print(trials.attachments)
-                best_estimators = trials.attachments['best_models']
+                best_estimators = trials.attachments['ATTACH::0::best_models']
                 ## Recreate best estim :
                 estim = self.get_model()
                 for key, value in best_params.items():
