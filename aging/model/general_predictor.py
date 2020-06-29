@@ -268,15 +268,24 @@ class BaseModel():
     def features_importance_(self, X, y, scoring):
         columns = X.columns
         y = y.values
+        cv = KFold(n_splits = self.inner_splits, shuffle = False)
         if self.model_name == 'Correlation':
+            matrix = np.zeros((self.inner_splits, len(columns)))
+            for fold, indexes in enumerate(list(cv.split(X, y))):
+                train_index, test_index = indexes
+                X_train, X_test, y_train, y_test = X[train_index], X[test_index], y[train_index], y[test_index]
+                list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
+                matrix[fold] = list_corr
+            self.features_imp_sd = np.std(matrix, axis = 0)
             self.features_imp = [np.abs(stat.pearsonr(X[column], y)[0]) for column in columns]
         else :
-            cv = KFold(n_splits = self.inner_splits, shuffle = False)
+
             if self.model_validate == 'RandomizedSearch':
                 clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
                 clf.fit(X.values, y)
                 best_estim = clf.best_estimator_
             elif self.model_validate == 'HyperOpt':
+                trials = Trials()
                 def objective(hyperparameters):
                     estimator_ = self.get_model()
                     ## Set hyperparameters to the model :
@@ -285,12 +294,19 @@ class BaseModel():
                             setattr(estimator_, key, value)
                         else :
                             continue
-                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10 )
-                    return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
+                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator)
+                    if hasattr(trials, 'attachments'):
+                        old_best_score = trials.attachments['best_score']
+                        if scores['test_score'].mean() > old_best_score:
+                            trials.attachments['best_models'] = scores['estimator']
+                        return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
+                    else :
+                        return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
                 space = self.get_hyper_distribution()
-                trials = Trials()
+
                 best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
                 best_params = space_eval(space, best)
+                best_estimators = trials.attachments['best_models']
                 ## Recreate best estim :
                 estim = self.get_model()
                 for key, value in best_params.items():
