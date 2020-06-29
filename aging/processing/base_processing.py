@@ -12,6 +12,7 @@ if sys.platform == 'linux':
 	path_input = "/n/groups/patel/samuel/Biomarkers_raw.csv"
 	path_HC_features="/n/groups/patel/samuel/HC_features/"
 	path_clusters = "/n/groups/patel/samuel/AutomaticClusters/"
+	path_output_linear_study = "/n/groups/patel/samuel/LinearOutput/"
 
 
 def read_ethnicity_data(**kwargs):
