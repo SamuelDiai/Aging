@@ -272,7 +272,7 @@ class BaseModel():
         if self.model_name == 'Correlation':
             matrix = np.zeros((self.inner_splits, len(columns)))
             for fold, indexes in enumerate(list(cv.split(X, y))):
-                train_index, test_index = indexes
+                train_index, test_index = indexes[0], indexes[1]
                 X_train, X_test, y_train, y_test = X[train_index], X[test_index], y[train_index], y[test_index]
                 list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
                 matrix[fold] = list_corr
@@ -295,7 +295,7 @@ class BaseModel():
                         else :
                             continue
                     scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
-                    if hasattr(trials, 'attachments'):
+                    if hasattr(trials, 'attachments') and 'best_score' in trials.attachments.keys():
                         old_best_score = trials.attachments['best_score']
                         if scores['test_score'].mean() > old_best_score:
                             trials.attachments['best_models'] = scores['estimator']
