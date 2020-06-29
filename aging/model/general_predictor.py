@@ -295,15 +295,16 @@ class BaseModel():
                         else :
                             continue
                     scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
-                    if hasattr(trials, 'attachments') and 'best_score' in trials.attachments.keys():
-                        old_best_score = trials.attachments['best_score']
+                    if hasattr(trials, 'attachments') and 'ATTACH::0::best_score' in trials.attachments.keys():
+                        old_best_score = trials.attachments['ATTACH::0::best_score']
                         if scores['test_score'].mean() > old_best_score:
-                            trials.attachments['best_models'] = scores['estimator']
+                            trials.attachments['ATTACH::0::best_models'] = scores['estimator']
                         print("Modify element")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
                     else :
                         print("Adding first elem")
                         return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
+                    print(trials.attachments)
                 space = self.get_hyper_distribution()
 
                 best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
