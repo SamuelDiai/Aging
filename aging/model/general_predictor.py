@@ -294,7 +294,7 @@ class BaseModel():
                             setattr(estimator_, key, value)
                         else :
                             continue
-                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator)
+                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
                     if hasattr(trials, 'attachments'):
                         old_best_score = trials.attachments['best_score']
                         if scores['test_score'].mean() > old_best_score:
