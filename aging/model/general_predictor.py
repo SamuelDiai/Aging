@@ -264,38 +264,37 @@ class BaseModel():
         return df_test, df_val, df_train
 
 
-
-def Create_feature_imps_for_estimator(self, best_estim, X, y):
-    if self.model_name == 'ElasticNet':
-        features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
-    elif self.model_name == 'RandomForest':
-        features_imp = best_estim.feature_importances_
-    elif self.model_name == 'GradientBoosting':
-        features_imp = best_estim.feature_importances_
-    elif self.model_name == 'Xgboost':
-        features_imp = best_estim.feature_importances_
-    elif self.model_name == 'LightGbm':
-        features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-    elif self.model_name == 'NeuralNetwork'  :
-        list_scores = []
-        if scoring == 'r2':
-            score_max = r2_score(y, best_estim.predict(X.values))
-        else :
-            score_max = f1_score(y, best_estim.predict(X.values))
-        for column in columns :
-            X_copy = copy.deepcopy(X)
-            X_copy[column] = np.random.permutation(X_copy[column])
+    def Create_feature_imps_for_estimator(self, best_estim, X, y):
+        if self.model_name == 'ElasticNet':
+            features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
+        elif self.model_name == 'RandomForest':
+            features_imp = best_estim.feature_importances_
+        elif self.model_name == 'GradientBoosting':
+            features_imp = best_estim.feature_importances_
+        elif self.model_name == 'Xgboost':
+            features_imp = best_estim.feature_importances_
+        elif self.model_name == 'LightGbm':
+            features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+        elif self.model_name == 'NeuralNetwork'  :
+            list_scores = []
             if scoring == 'r2':
-                score = r2_score(y, best_estim.predict(X_copy.values))
-            elif scoring == 'f1' :
-                score = f1_score(y, best_estim.predict(X_copy.values))
+                score_max = r2_score(y, best_estim.predict(X.values))
             else :
-                raise ValueError(' Wrong scoring fonction ')
-            list_scores.append(score_max - score)
-        features_imp = list_scores
-    else :
-        raise ValueError('Wrong model name')
-    return features_imp
+                score_max = f1_score(y, best_estim.predict(X.values))
+            for column in columns :
+                X_copy = copy.deepcopy(X)
+                X_copy[column] = np.random.permutation(X_copy[column])
+                if scoring == 'r2':
+                    score = r2_score(y, best_estim.predict(X_copy.values))
+                elif scoring == 'f1' :
+                    score = f1_score(y, best_estim.predict(X_copy.values))
+                else :
+                    raise ValueError(' Wrong scoring fonction ')
+                list_scores.append(score_max - score)
+            features_imp = list_scores
+        else :
+            raise ValueError('Wrong model name')
+        return features_imp
 
 
     def features_importance_(self, X, y, scoring):
