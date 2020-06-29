@@ -270,8 +270,9 @@ class BaseModel():
         y = y.values
         cv = KFold(n_splits = self.inner_splits, shuffle = False)
         if self.model_name == 'Correlation':
+            X = X.values
             matrix = np.zeros((self.inner_splits, len(columns)))
-            for fold, indexes in enumerate(list(cv.split(X.values, y))):
+            for fold, indexes in enumerate(list(cv.split(X, y))):
                 train_index, test_index = indexes[0], indexes[1]
                 X_train, X_test, y_train, y_test = X[train_index], X[test_index], y[train_index], y[test_index]
                 list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
