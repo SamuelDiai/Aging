@@ -355,12 +355,12 @@ class BaseModel():
                         continue
                 best_estim = estim.fit(X.values, y)
 
-            self.features_imp = self.Create_feature_imps_for_estimator(best_estim = best_estim, X = X, y = y, scoring)
+            self.features_imp = self.Create_feature_imps_for_estimator(best_estim = best_estim, X = X, y = y, scoring = scoring)
             matrix = np.zeros((self.inner_splits, len(columns)))
             for fold, indexes in enumerate(list(cv.split(X.values, y))):
                 train_index, test_index = indexes
                 X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
-                list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test, scoring)
+                list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test, scoring = scoring)
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
 
