@@ -1,15 +1,15 @@
 #!/bin/bash
-targets=( "Age" "Sex" )
-#targets=( "Age" )
-#models=( "LightGbm" )
-models=( "Correlation" "LightGbm" "NeuralNetwork" "ElasticNet" )
+#targets=( "Age" "Sex" )
+targets=( "Age" )
+models=( "LightGbm" )
+#models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( 'Eyes_AllBiomarkers' 'Anthropometry_AllBiomarkers' 'Heart_AllBiomarkers' 'Brain_AllBiomarkers' )
-outer_splits=10
-inner_splits=9
-n_iter=30
-n_splits=10
+datasets=( 'Anthropometry_AllBiomarkers' 'Heart_AllBiomarkers' 'Brain_AllBiomarkers' )#Eyes_AllBiomarkers
+outer_splits=3
+inner_splits=2
+n_iter=2
+n_splits=2
 
 memory=8G
 n_cores=1
@@ -18,15 +18,15 @@ search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
 search_dir_base='/n/groups/patel/samuel/final_inputs'
 
 
-declare -a IDsLoads=()
-for dataset in "${datasets[@]}"
-do
-	job_name="Load_${dataset}.job"
-	out_file="./logs/Load_${dataset}.out"
-	err_file="./logs/Load_${dataset}.err"
-	IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/load_datasets.sh $dataset)
-	IDsLoads+=($IDLoad)
-done
+# declare -a IDsLoads=()
+# for dataset in "${datasets[@]}"
+# do
+# 	job_name="Load_${dataset}.job"
+# 	out_file="./logs/Load_${dataset}.out"
+# 	err_file="./logs/Load_${dataset}.err"
+# 	IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/load_datasets.sh $dataset)
+# 	IDsLoads+=($IDLoad)
+# done
 #
 # printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
 # job_name="Create_raw_data.job"
@@ -79,49 +79,49 @@ do
 		# done
 		for dataset in "${datasets[@]}"
 		do
-			# declare -a IDs=()
-			# for ((fold=0; fold <= $outer_splits-1; fold++))
-			# do
-			# 	job_name="${target}_${model}_${dataset}_${fold}.job"
-			# 	out_file="./logs/${target}_${model}_${dataset}_${fold}.out"
-			# 	err_file="./logs/${target}_${model}_${dataset}_${fold}.err"
-			#
-			# 	# To del :
-			# 	ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
-			# 	IDs+=($ID)
-			# done
-			#
-			#
-			# job_name="${target}_${model}_${dataset}_features.job"
-			# out_file="./logs/${target}_${model}_${dataset}_features.out"
-			# err_file="./logs/${target}_${model}_${dataset}_features.err"
-			#
-			# # To del :
-			#
-			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-				#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-			# model="Correlation"
-			# job_name="${target}_${model}_${dataset}_features.job"
-			# out_file="./logs/${target}_${model}_${dataset}_features.out"
-			# err_file="./logs/${target}_${model}_${dataset}_features.err"
-			#
-			# # To del
-			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			declare -a IDs=()
+			for ((fold=0; fold <= $outer_splits-1; fold++))
+			do
+				job_name="${target}_${model}_${dataset}_${fold}.job"
+				out_file="./logs/${target}_${model}_${dataset}_${fold}.out"
+				err_file="./logs/${target}_${model}_${dataset}_${fold}.err"
 
-			# job_name="${target}_${model}_${dataset}_postprocessing.job"
-			# out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"
-			# err_file="./logs/${target}_${model}_${dataset}_postprocessing.err"
+				# To del :
+				ID=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single.sh $model $outer_splits $inner_splits $n_iter $target $dataset $fold)
+				IDs+=($ID)
+			done
 			#
-			# printf -v joinedIDS '%s:' "${IDs[@]}"
-			# sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
+			#
+			job_name="${target}_${model}_${dataset}_features.job"
+			out_file="./logs/${target}_${model}_${dataset}_features.out"
+			err_file="./logs/${target}_${model}_${dataset}_features.err"
 
-			# if [ $target = "Age" ] && [ $model = "LightGbm" ]
-			# then
-			# 	job_name="Linear_${dataset}.job"
-			# 	out_file="./logs/Linear_${dataset}.out"
-			# 	err_file="./logs/Linear_${dataset}.err"
-			# 	sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
-			# fi
+			# To del :
+
+			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			model="Correlation"
+			job_name="${target}_${model}_${dataset}_features.job"
+			out_file="./logs/${target}_${model}_${dataset}_features.out"
+			err_file="./logs/${target}_${model}_${dataset}_features.err"
+
+			# To del
+			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+
+			job_name="${target}_${model}_${dataset}_postprocessing.job"
+			out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"
+			err_file="./logs/${target}_${model}_${dataset}_postprocessing.err"
+
+			printf -v joinedIDS '%s:' "${IDs[@]}"
+			sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
+
+			if [ $target = "Age" ] && [ $model = "LightGbm" ]
+			then
+				job_name="Linear_${dataset}.job"
+				out_file="./logs/Linear_${dataset}.out"
+				err_file="./logs/Linear_${dataset}.err"
+				sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
+			fi
 		done
 	done
 done
