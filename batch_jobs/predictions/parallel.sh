@@ -1,8 +1,8 @@
 #!/bin/bash
-#targets=( "Age" "Sex" )
-targets=( "Age" )
-models=( "LightGbm" )
-#models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
+targets=( "Age" "Sex" )
+#targets=( "Age" )
+#models=( "LightGbm" )
+models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
 datasets=( 'AnthropometryAllBiomarkers' 'HeartAllBiomarkers' 'BrainAllBiomarkers' )
