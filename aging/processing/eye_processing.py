@@ -11,8 +11,10 @@ def read_eye_data(instances = [0, 1], **kwargs):
 	a = read_eye_acuity_data(instances, **kwargs)
 	b = read_eye_intraocular_pressure_data(**kwargs)
 	c = read_eye_autorefraction_data(**kwargs)
-	ab = a.join(b, rsuffix = '_del', lsuffix = '', how = 'outer').drop(columns = ['Age when attended assessment centre_del', 'Sex_del', 'eid_del'])
-	abc = ab.join(c, rsuffix = '_del', lsuffix = '', how = 'outer').drop(columns = ['Age when attended assessment centre_del', 'Sex_del', 'eid_del'])
+	ab = a.join(b, rsuffix = '_del', lsuffix = '', how = 'outer')
+	ab = ab[ab.columns[ab.columns.str.contains('_del')]]
+	abc = ab.join(c, rsuffix = '_del', lsuffix = '', how = 'outer')
+	abc = abc[abc.columns[~abc.columns.str.contains('_del')]]
 
 # def read_eye_acuity_data(**kwargs):
 # 	cols_features =  ['20261', '5208', '5201', '5206', '5199']
