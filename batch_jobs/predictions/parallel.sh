@@ -3,9 +3,9 @@ targets=( "Age" "Sex" )
 #targets=( "Age" )
 #models=( "LightGbm" )
 models=( "Correlation" "LightGbm" "NeuralNetwork" "ElasticNet" )
-datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
+#datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-#datasets=( 'HandGripStrength' )
+datasets=( 'Eyes_AllBiomarkers' 'Anthropometry_AllBiomarkers' 'Heart_AllBiomarkers' 'Brain_AllBiomarkers' )
 outer_splits=10
 inner_splits=9
 n_iter=30
@@ -18,15 +18,15 @@ search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
 search_dir_base='/n/groups/patel/samuel/final_inputs'
 
 
-# declare -a IDsLoads=()
-# for dataset in "${datasets[@]}"
-# do
-# 	job_name="Load_${dataset}.job"
-# 	out_file="./logs/Load_${dataset}.out"
-# 	err_file="./logs/Load_${dataset}.err"
-# 	IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/load_datasets.sh $dataset)
-# 	IDsLoads+=($IDLoad)
-# done
+declare -a IDsLoads=()
+for dataset in "${datasets[@]}"
+do
+	job_name="Load_${dataset}.job"
+	out_file="./logs/Load_${dataset}.out"
+	err_file="./logs/Load_${dataset}.err"
+	IDLoad=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/load_datasets.sh $dataset)
+	IDsLoads+=($IDLoad)
+done
 #
 # printf -v joinedIDsLoads '%s:' "${IDsLoads[@]}"
 # job_name="Create_raw_data.job"
@@ -92,13 +92,13 @@ do
 			# done
 			#
 			#
-			job_name="${target}_${model}_${dataset}_features.job"
-			out_file="./logs/${target}_${model}_${dataset}_features.out"
-			err_file="./logs/${target}_${model}_${dataset}_features.err"
-
-			# To del :
-
-			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			# job_name="${target}_${model}_${dataset}_features.job"
+			# out_file="./logs/${target}_${model}_${dataset}_features.out"
+			# err_file="./logs/${target}_${model}_${dataset}_features.err"
+			#
+			# # To del :
+			#
+			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 				#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 			# model="Correlation"
 			# job_name="${target}_${model}_${dataset}_features.job"
