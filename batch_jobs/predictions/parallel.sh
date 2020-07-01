@@ -101,13 +101,6 @@ do
 
 			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 			#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-			model="Correlation"
-			job_name="${target}_${model}_${dataset}_features.job"
-			out_file="./logs/${target}_${model}_${dataset}_features.out"
-			err_file="./logs/${target}_${model}_${dataset}_features.err"
-
-			# To del
-			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 
 			job_name="${target}_${model}_${dataset}_postprocessing.job"
 			out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"
@@ -123,6 +116,7 @@ do
 				err_file="./logs/Linear_${dataset}.err"
 				sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
 			fi
+
 		done
 	done
 done
