@@ -12,9 +12,10 @@ def read_eye_data(instances = [0, 1], **kwargs):
 	b = read_eye_intraocular_pressure_data(**kwargs)
 	c = read_eye_autorefraction_data(**kwargs)
 	ab = a.join(b, rsuffix = '_del', lsuffix = '', how = 'outer')
-	ab = ab[ab.columns[ab.columns.str.contains('_del')]]
+	ab = ab[ab.columns[~ab.columns.str.contains('_del')]]
 	abc = ab.join(c, rsuffix = '_del', lsuffix = '', how = 'outer')
 	abc = abc[abc.columns[~abc.columns.str.contains('_del')]]
+	return abc
 
 # def read_eye_acuity_data(**kwargs):
 # 	cols_features =  ['20261', '5208', '5201', '5206', '5199']
@@ -66,8 +67,8 @@ def read_eye_autorefraction_data(**kwargs):
 	feature_id_to_name = df_features.to_dict()['Field']
 
 	## create features to extract for each category : left, right and 6mm, 3mm, keratometry
-	l6 = sorted(['5110','5157','5113','5118','5162','5134','5102','5097']) # missing 5105
-	r6 = sorted(['5109','5158','5114','5117','5161','5106','5133','5101','5098'])
+	l6 = sorted(['5113','5118','5134','5102','5097']) # missing 5105
+	r6 = sorted(['5114','5117','5106','5133','5101','5098'])
 	l3 = sorted(['5108','5159','5115','5116','5160','5107','5132','5100','5099'])
 	r3 = sorted(['5111','5156','5112','5119','5163','5104','5135','5103','5096'])
 	lg = sorted(['5089','5086','5085'])

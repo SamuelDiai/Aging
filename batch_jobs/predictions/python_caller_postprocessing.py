@@ -72,15 +72,41 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     if 'outer_fold' not in df_val.columns :
         df_val['outer_fold'] = np.nan
 
+
+
+
     #map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
     #df_val['fold'] = df_val.index.map(map_eid_to_fold)
 
     ## Save datasets :
     #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
-    dataset = dataset.replace('_', '')
-    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_train.csv' % ( target, dataset_proper, field, model))
-    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_test.csv' % ( target, dataset_proper, field, model))
-    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_final/Predictions_instances_%s_%s_%s_main_raw_%s_0_0_0_0_0_val.csv' % ( target, dataset_proper, field, model))
+
+    view = 'main'
+    if 'Heart' in dataset_proper:
+        view = dataset_proper.split('Heart')[1]
+        organ = 'Heart'
+    elif 'Anthropometry' in dataset_proper:
+        view = dataset_proper.split('Anthropometry')[1]
+        organ = 'Anthropometry'
+    elif 'Brain' in dataset_proper :
+        view = dataset_proper.split('Brain')[1]
+        organ = 'Brain'
+    elif 'Brain' in dataset_proper :
+        view = dataset_proper.split('Brain')[1]
+        organ = 'Brain'
+
+    else :
+        view = 'main'
+        organ = dataset_proper
+        if 'chemestry' in organ:
+            organ = organ.replace('chemestry', 'chemistry')
+
+
+        #print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
+    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
+    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
+    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
+
 
 else :
     raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
