@@ -454,10 +454,7 @@ class BaseModel():
                 train_index, test_index = indexes
 
                 X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
-                print(X_test, y_test)
-                column_ = columns[0]
-                print(X_test[column_], y_test)
-                list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
+                list_corr = [np.abs(stat.pearsonr(X_test[column].values, y_test)[0]) for column in columns]
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
             self.features_imp = [np.abs(stat.pearsonr(X[column], y)[0]) for column in columns]
