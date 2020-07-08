@@ -434,6 +434,8 @@ class BaseModel():
         test_folds = np.zeros(len(X), dtype = 'int')
         for fold_count in range(len(list_test_folds_id)):
             test_folds[list_test_folds_id_index[fold_count]] = fold_count
+
+        print(test_folds)
         cv = PredefinedSplit(test_fold = test_folds)
 
         #cv = KFold(n_splits = self.inner_splits, shuffle = False)
@@ -442,7 +444,7 @@ class BaseModel():
             matrix = np.zeros((self.inner_splits, len(columns)))
             for fold, indexes in enumerate(list(cv.split(X.values, y))):
                 train_index, test_index = indexes
-                print(train_index, test_index)
+
                 X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
                 list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
                 matrix[fold] = list_corr
