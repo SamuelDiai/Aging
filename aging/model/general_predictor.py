@@ -333,6 +333,8 @@ class BaseModel():
                 index_train_train = list_test_folds_id[ : val_fold] + list_test_folds_id[test_fold + 1 : ]
             else :
                 index_train_train = list_test_folds_id[ : val_fold]
+
+        print(index_train_train)
         index_train_train = np.concatenate(index_train_train)
 
 
