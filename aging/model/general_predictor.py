@@ -431,7 +431,7 @@ class BaseModel():
         columns = X.columns
         y = y.values
         list_test_folds_id_index = [np.array([X.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
-        test_folds = np.zeros(len(X_train), dtype = 'int')
+        test_folds = np.zeros(len(X), dtype = 'int')
         for fold_count in range(len(list_test_folds_id)):
             test_folds[list_test_folds_id_index[fold_count]] = fold_count
         cv = PredefinedSplit(test_fold = test_folds)
