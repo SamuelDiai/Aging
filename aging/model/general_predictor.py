@@ -19,6 +19,7 @@ import numpy as np
 import scipy.stats as stat
 from sklearn.metrics import r2_score, f1_score
 from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
+from sklearn.pipeline import Pipeline
 
 path_eid_split = '/n/groups/patel/samuel/eids/'
 
@@ -360,7 +361,8 @@ class BaseModel():
                         setattr(estimator_, key, value)
                     else :
                         continue
-                scores = cross_validate(estimator_, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
+                pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
+                scores = cross_validate(pipeline, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
                 return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
             space = self.get_hyper_distribution()
             trials = Trials()
@@ -376,14 +378,16 @@ class BaseModel():
                     setattr(estim_train, key, value)
                 else :
                     continue
-            best_estim = estim.fit(X_train.values, y_train.values)
-            best_estim_only_train = estim_train.fit(X_train_train.values, y_train_train.values)
+            pipeline_best_on_train_and_val = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
+            pipeline_best_on_train = Pipeline([('scaler', StandardScaler()), ('estimator', estim_train)])
+            best_estim_train_val = pipeline_best_on_train_and_val.fit(X_train.values, y_train.values)
+            best_estim_train = pipeline_best_on_train.fit(X_train_train.values, y_train_train.values)
 
 
 
-        y_predict_val = best_estim.predict(X_val)
-        y_predict_test = best_estim.predict(X_test)
-        y_predict_train = best_estim_only_train.predict(X_train)
+        y_predict_val = best_estim_train.predict(X_val)
+        y_predict_test = best_estim_train_val.predict(X_test)
+        y_predict_train = best_estim_train.predict(X_train)
         df_test = pd.DataFrame(data = {'id' : index_test, 'outer_fold' : fold, 'pred' : y_predict_test} )
         df_train = pd.DataFrame(data = {'id' : index_train, 'outer_fold' : fold, 'pred' : y_predict_train })
         df_val = pd.DataFrame(data = {'id' : index_val, 'outer_fold' : fold, 'pred' : y_predict_val} )
@@ -438,9 +442,8 @@ class BaseModel():
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
         columns = X.columns
-        print(y)
         y = np.ravel(y.values)
-        print(y)
+
         list_test_folds_id_index = [np.array([X.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
         test_folds = np.zeros(len(X), dtype = 'int')
         for fold_count in range(len(list_test_folds_id)):
@@ -448,8 +451,6 @@ class BaseModel():
 
         cv = PredefinedSplit(test_fold = test_folds)
 
-        #cv = KFold(n_splits = self.inner_splits, shuffle = False)
-        ## If Correlation
         if self.model_name == 'Correlation':
             matrix = np.zeros((self.inner_splits, len(columns)))
 
