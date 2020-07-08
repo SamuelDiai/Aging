@@ -80,15 +80,15 @@ dict_dataset_to_organ_and_view = {
     'ECGAtRest' : ('ECG', 'BiomarkersAtRest'),
     'AnthropometryImpedance' : ('Anthropometry', 'Impedance'),
     'UrineBiochemestry' : ('Urine', 'Biochemistry'),
-    'BloodBiochemestry' : ('Blood', 'Biochemistry'),
-    'BloodCount' : ('ImmuneSystem', 'BloodCount'),  # Need to do blood infection
+    'BloodBiochemestry' : ('BloodB', 'BloodBiochemistry'),
+    'BloodCount' : ('BloodC', 'BloodCount'),  # Need to do blood infection
     'EyeAutorefraction' : ('Eyes', 'Autorefraction'),
     'EyeAcuity' : ('Eyes', 'Acuity'),
     'EyeIntraoculaPressure' : ('Eyes', 'IntraocularPressure'),
     'EyesAllBiomarkers' : ('Eyes', 'AllBiomarkers'),
     'BraindMRIWeightedMeans' : ('Brain', 'dMRIWeightedMeans'),
     'Spirometry' :  ('Lungs', 'Spirometry'),
-    'BloodPressure' : ('BloodPressure', 'main'),
+    'BloodPressure' : ('BloodPressure', 'Biomarkers'),
     'AnthropometryBodySize' : ('Anthropometry', 'BodySize'),
     'AnthropometryAllBiomarkers' : ('Anthropometry', 'AllBiomarkers'),
     'ArterialStiffness' : ('Vascular', 'BiomarkersArterialStiffness'),

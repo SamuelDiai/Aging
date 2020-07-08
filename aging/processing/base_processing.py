@@ -7,7 +7,7 @@ if sys.platform == 'linux':
 	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
 	path_features = "/n/groups/patel/samuel/feature_importances_final/"
-	path_predictions = "/n/groups/patel/samuel/predictions_final/"
+	path_predictions = "/n/groups/patel/samuel/predictions_final_2/"
 	path_inputs = "/n/groups/patel/samuel/final_inputs/"
 	path_input = "/n/groups/patel/samuel/Biomarkers_raw.csv"
 	path_HC_features="/n/groups/patel/samuel/HC_features/"
@@ -72,7 +72,7 @@ def read_sex_and_age_data(**kwargs):
 
     df_year_month = pd.read_csv(path_data, usecols = cols_age_eid_sex, **kwargs)
     df_year_month = df_year_month.rename(dict_rename, axis = 'columns').set_index('eid').dropna()
-    df_year_month['day'] = 1
+    df_year_month['day'] = 15
     df_year_month['birth_date'] = pd.to_datetime(df_year_month[['year', 'month', 'day']])
 
     ## Load date asssessment for each visit.
