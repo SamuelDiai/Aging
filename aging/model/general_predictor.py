@@ -263,15 +263,7 @@ class BaseModel():
     #
     #     return df_test, df_val, df_train
 
-    def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ):
-        """
-        input X  : dataframe with features + eid
-        input y : dataframe with target + eid
-        """
-
-        if self.inner_splits != self.outer_splits - 1:
-            raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
-
+    def create_list_test_train_folds(self, X, y, fold, organ):
         X_eid = X.drop_duplicates('eid')
         y_eid = y.drop_duplicates('eid')
         eids = X_eid.eid
@@ -294,6 +286,18 @@ class BaseModel():
         #
         list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
         list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
+        return list_train_fold_id, list_test_folds_id
+
+    def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ):
+        """
+        input X  : dataframe with features + eid
+        input y : dataframe with target + eid
+        """
+
+        if self.inner_splits != self.outer_splits - 1:
+            raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
+
+        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X, y, fold, organ)
         #
         test_fold = (fold + 1)%self.outer_splits
         val_fold = fold
@@ -360,9 +364,6 @@ class BaseModel():
                     setattr(estim_train, key, value)
                 else :
                     continue
-            print(X_train_train)
-            print(y_train_train)
-            print(X_train_train.values)
             best_estim = estim.fit(X_train.values, y_train.values)
             best_estim_only_train = estim_train.fit(X_train_train.values, y_train_train.values)
 
@@ -420,11 +421,17 @@ class BaseModel():
             raise ValueError('Wrong model name')
         return features_imp
 
-
     def features_importance_(self, X, y, scoring):
+        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X, y, fold, organ)
         columns = X.columns
         y = y.values
-        cv = KFold(n_splits = self.inner_splits, shuffle = False)
+        list_test_folds_id_index = [np.array([X.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
+        test_folds = np.zeros(len(X_train), dtype = 'int')
+        for fold_count in range(len(list_test_folds_id)):
+            test_folds[list_test_folds_id_index[fold_count]] = fold_count
+        cv = PredefinedSplit(test_fold = test_folds)
+
+        #cv = KFold(n_splits = self.inner_splits, shuffle = False)
         ## If Correlation
         if self.model_name == 'Correlation':
             matrix = np.zeros((self.inner_splits, len(columns)))
@@ -489,32 +496,69 @@ class BaseModel():
             self.features_imp_sd = np.std(matrix, axis = 0)
 
 
-            # if self.model_name == 'ElasticNet':
-            #     self.features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
-            # elif self.model_name == 'RandomForest':
-            #     self.features_imp = best_estim.feature_importances_
-            # elif self.model_name == 'GradientBoosting':
-            #     self.features_imp = best_estim.feature_importances_
-            # elif self.model_name == 'Xgboost':
-            #     self.features_imp = best_estim.feature_importances_
-            # elif self.model_name == 'LightGbm':
-            #     self.features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
-            # elif self.model_name == 'NeuralNetwork'  :
-            #     list_scores = []
-            #     if scoring == 'r2':
-            #         score_max = r2_score(y, best_estim.predict(X.values))
-            #     else :
-            #         score_max = f1_score(y, best_estim.predict(X.values))
-            #     for column in columns :
-            #         X_copy = copy.deepcopy(X)
-            #         X_copy[column] = np.random.permutation(X_copy[column])
-            #         if scoring == 'r2':
-            #             score = r2_score(y, best_estim.predict(X_copy.values))
-            #         elif scoring == 'f1' :
-            #             score = f1_score(y, best_estim.predict(X_copy.values))
-            #         else :
-            #             raise ValueError(' Wrong scoring fonction ')
-            #         list_scores.append(score_max - score)
-            #     self.features_imp = list_scores
-            # else :
-            #     raise ValueError('Wrong model name')
+    # def features_importance_(self, X, y, scoring):
+    #     columns = X.columns
+    #     y = y.values
+    #     cv = KFold(n_splits = self.inner_splits, shuffle = False)
+    #     ## If Correlation
+    #     if self.model_name == 'Correlation':
+    #         matrix = np.zeros((self.inner_splits, len(columns)))
+    #         for fold, indexes in enumerate(list(cv.split(X.values, y))):
+    #             train_index, test_index = indexes
+    #             X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
+    #             list_corr = [np.abs(stat.pearsonr(X_test[column], y_test)[0]) for column in columns]
+    #             matrix[fold] = list_corr
+    #         self.features_imp_sd = np.std(matrix, axis = 0)
+    #         self.features_imp = [np.abs(stat.pearsonr(X[column], y)[0]) for column in columns]
+    #     ## Else More Complex Models :
+    #     else :
+    #         if self.model_validate == 'RandomizedSearch':
+    #             clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = cv, n_jobs = -1, scoring = scoring, n_iter = self.n_iter)
+    #             clf.fit(X.values, y)
+    #             best_estim = clf.best_estimator_
+    #         elif self.model_validate == 'HyperOpt':
+    #             ## Objective which saves last best estimators accross all folds
+    #             trials = Trials()
+    #             def objective(hyperparameters):
+    #                 estimator_ = self.get_model()
+    #                 ## Set hyperparameters to the model :
+    #                 for key, value in hyperparameters.items():
+    #                     if hasattr(estimator_, key):
+    #                         setattr(estimator_, key, value)
+    #                     else :
+    #                         continue
+    #                 scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
+    #                 if hasattr(trials, 'attachments') and 'ATTACH::0::best_score' in trials.attachments.keys():
+    #                     old_best_score = trials.attachments['ATTACH::0::best_score']
+    #                     if scores['test_score'].mean() > old_best_score:
+    #                         trials.attachments['ATTACH::0::best_models'] = scores['estimator']
+    #                         trials.attachments['ATTACH::0::best_score'] = scores['test_score'].mean()
+    #                     return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean()}
+    #                 else :
+    #                     return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'best_models' : scores['estimator'], 'best_score' : scores['test_score'].mean()}}
+    #             ## Create search space
+    #             space = self.get_hyper_distribution()
+    #
+    #             ## Optimize and recover best_params and best estimators ( for sd )
+    #             best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
+    #             best_params = space_eval(space, best)
+    #             print(trials.attachments)
+    #             best_estimators = trials.attachments['ATTACH::0::best_models']
+    #             matrix_std = np.zeros((self.inner_splits, len(columns)))
+    #             ## Recreate best estim :
+    #             estim = self.get_model()
+    #             for key, value in best_params.items():
+    #                 if hasattr(estim, key):
+    #                     setattr(estim, key, value)
+    #                 else :
+    #                     continue
+    #             best_estim = estim.fit(X.values, y)
+    #
+    #         self.features_imp = self.Create_feature_imps_for_estimator(best_estim = best_estim, X = X, y = y, scoring = scoring, columns = columns)
+    #         matrix = np.zeros((self.inner_splits, len(columns)))
+    #         for fold, indexes in enumerate(list(cv.split(X.values, y))):
+    #             train_index, test_index = indexes
+    #             X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
+    #             list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test, scoring = scoring, columns = columns)
+    #             matrix[fold] = list_corr
+    #         self.features_imp_sd = np.std(matrix, axis = 0)
