@@ -36,7 +36,7 @@ else :
 	gp = GeneralPredictor(name, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt')
 	print("Loading Dataset")
 	df, organ, view = gp.load_dataset()
-	gp.set_organ_view(self, organ, view)
+	gp.set_organ_view(organ, view)
 	print("Dataset Loaded, optimizing hyper")
 	df_scaled = gp.normalise_dataset(df)
 	df_predicts_rescaled_test, df_predicts_rescaled_val, df_predicts_rescaled_train = gp.optimize_hyperparameters_fold(df_scaled)
