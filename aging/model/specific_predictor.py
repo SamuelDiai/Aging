@@ -63,17 +63,31 @@ class GeneralPredictor(BaseModel):
 
     def feature_importance(self, df):
         if self.target == 'Sex':
-            X = df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid'])
-            y = df['Sex']
+            X = df.drop(columns = ['Sex', 'Age when attended assessment centre'])
+            y = df['Sex', 'eid']
             self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
         elif self.target == 'Age':
-            X = df.drop(columns = ['Age when attended assessment centre', 'eid'])
-            y = df['Age when attended assessment centre']
+            X = df.drop(columns = ['Age when attended assessment centre'])
+            y = df['Age when attended assessment centre', 'eid']
             self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
         else :
             raise ValueError('GeneralPredictor not instancied')
+
+    # def feature_importance(self, df):
+    #     if self.target == 'Sex':
+    #         X = df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid'])
+    #         y = df['Sex']
+    #         self.features_importance_(X, y, self.scoring, self.organ)
+    #         return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
+    #     elif self.target == 'Age':
+    #         X = df.drop(columns = ['Age when attended assessment centre', 'eid'])
+    #         y = df['Age when attended assessment centre']
+    #         self.features_importance_(X, y, self.scoring, self.organ)
+    #         return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
+    #     else :
+    #         raise ValueError('GeneralPredictor not instancied')
 
 
     def normalise_dataset(self, df):
