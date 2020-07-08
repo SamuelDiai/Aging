@@ -275,6 +275,7 @@ class BaseModel():
             else :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(self.outer_splits)]
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
+            print("list_test_folds_eid", list_test_folds_eid)
             if fold is not None:
                 list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
         else :
@@ -291,7 +292,9 @@ class BaseModel():
             list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
         else :
             list_train_fold_id = None
+
         list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
+        print('list_test_folds_id', list_test_folds_id)
         return list_train_fold_id, list_test_folds_id
 
     def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ):
