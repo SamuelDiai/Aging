@@ -285,6 +285,28 @@ class BaseModel():
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
             list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
         else :
+            # X_eid = X.drop_duplicates('eid')
+            # y_eid = y.drop_duplicates('eid')
+            # #
+            # outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
+            # #
+            # #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
+            # #         # test_fold contain all test list_test_folds
+            # #         # train_fold contain all the input dataset except the test fold
+            # #
+            # list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
+            # list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
+            # #
+            # #
+            # list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
+            # list_train_folds_eid = X_eid.eid[list_train_folds].values
+            # #
+            # list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
+            # list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
+
+
+
+
             outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
             #
             #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
@@ -294,8 +316,8 @@ class BaseModel():
             list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
             list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
 
-            list_test_folds_eid = [eids[elem].values for elem in list_test_folds]
-            list_train_folds_eid = eids[list_train_folds].values
+            list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
+            list_train_folds_eid = X_eid.eid[list_train_folds].values
         #
         list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
         list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
