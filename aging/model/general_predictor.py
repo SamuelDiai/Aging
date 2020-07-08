@@ -392,6 +392,9 @@ class BaseModel():
                     setattr(estim_train, key, value)
                 else :
                     continue
+            print(X_train_train)
+            print(y_train_train)
+            print(X_train_train.values)
             best_estim = estim.fit(X_train.values, y_train.values)
             best_estim_only_train = estim_train.fit(X_train_train.values, y_train_train.values)
 
