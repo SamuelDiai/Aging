@@ -407,15 +407,15 @@ class BaseModel():
 
     def Create_feature_imps_for_estimator(self, best_estim, X, y, scoring, columns):
         if self.model_name == 'ElasticNet':
-            features_imp = (np.abs(best_estim.coef_) / np.sum(np.abs(best_estim.coef_))).flatten()
+            features_imp = (np.abs(best_estim['estimator'].coef_) / np.sum(np.abs(best_estim['estimator'].coef_))).flatten()
         elif self.model_name == 'RandomForest':
-            features_imp = best_estim.feature_importances_
+            features_imp = best_estim['estimator'].feature_importances_
         elif self.model_name == 'GradientBoosting':
-            features_imp = best_estim.feature_importances_
+            features_imp = best_estim['estimator'].feature_importances_
         elif self.model_name == 'Xgboost':
-            features_imp = best_estim.feature_importances_
+            features_imp = best_estim['estimator'].feature_importances_
         elif self.model_name == 'LightGbm':
-            features_imp = best_estim.feature_importances_ / np.sum(best_estim.feature_importances_)
+            features_imp = best_estim['estimator'].feature_importances_ / np.sum(best_estim['estimator'].feature_importances_)
         elif self.model_name == 'NeuralNetwork'  :
             list_scores = []
             if scoring == 'r2':
