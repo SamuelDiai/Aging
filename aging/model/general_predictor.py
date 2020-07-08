@@ -267,23 +267,25 @@ class BaseModel():
         X_eid = X.drop_duplicates('eid')
         y_eid = y.drop_duplicates('eid')
         eids = X_eid.eid
+        if fold is None :
+            splits = self.inner_splits
+        else :
+            splits = self.outer_splits
+
         if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
             if organ in ['Brain', 'Carotids', 'Heart']:
-                list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(self.outer_splits)]
+                list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             else :
-                list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(self.outer_splits)]
+                list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
             print("list_test_folds", list_test_folds)
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
             print("list_test_folds_eid", list_test_folds_eid)
             if fold is not None:
                 list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
         else :
-            if fold is None:
-                outer_cv = KFold(n_splits = self.inner_splits, shuffle = False, random_state = 0)
-            else  :
-                outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
+            outer_cv = KFold(n_splits = splits, shuffle = False, random_state = 0)
             list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
             list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
             if fold is not None:
