@@ -438,7 +438,9 @@ class BaseModel():
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
         columns = X.columns
-        y = y.values
+        print(y)
+        y = np.ravel(y.values)
+        print(y)
         list_test_folds_id_index = [np.array([X.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
         test_folds = np.zeros(len(X), dtype = 'int')
         for fold_count in range(len(list_test_folds_id)):
@@ -457,7 +459,6 @@ class BaseModel():
 
                 X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
                 column_ = columns[0]
-                print(X_test[column_].values, y_test)
                 list_corr = [np.abs(stat.pearsonr(X_test[column].values, y_test)[0]) for column in columns]
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
