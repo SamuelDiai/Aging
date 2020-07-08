@@ -20,6 +20,8 @@ import scipy.stats as stat
 from sklearn.metrics import r2_score, f1_score
 from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 
+path_eid_split = '/n/groups/patel/samuel/eids/'
+
 
 
 MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork', 'Correlation'}
@@ -130,9 +132,138 @@ class BaseModel():
                         'alpha': np.geomspace(1e-5, 1e3, 30)
                 }
 
+    # def optimize_hyperparameters_fold_(self, X, y, scoring, fold):
+    #     """
+    #     input X  : dataframe with features + eid
+    #     input y : dataframe with target + eid
+    #     """
+    #
+    #     if self.inner_splits != self.outer_splits - 1:
+    #         raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
+    #
+    #
+    #     X_eid = X.drop_duplicates('eid')
+    #     y_eid = y.drop_duplicates('eid')
+    #     #
+    #     outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
+    #     #
+    #     #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
+    #     #         # test_fold contain all test list_test_folds
+    #     #         # train_fold contain all the input dataset except the test fold
+    #     #
+    #     list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
+    #     list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
+    #     #
+    #     #
+    #     list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
+    #     list_train_folds_eid = X_eid.eid[list_train_folds].values
+    #     #
+    #     list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
+    #     list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
+    #     #
+    #     index_train, index_test = list_train_fold_id, list_test_folds_id[fold]
+    #     list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
+    #     X = X.drop(columns = ['eid'])
+    #     y = y.drop(columns =['eid'])
+    #     print(X.columns, y.columns)
+    #     X_train, X_test, y_train, y_test = X.loc[index_train], X.loc[index_test], y.loc[index_train], y.loc[index_test]
+    #
+    #     ## Create custom Splits
+    #     list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
+    #     test_folds = np.zeros(len(X_train), dtype = 'int')
+    #     for fold_count in range(len(list_test_folds_id)):
+    #         test_folds[list_test_folds_id_index[fold_count]] = fold_count
+    #     inner_cv = PredefinedSplit(test_fold = test_folds)
+    #     #
+    #     ## RandomizedSearch :
+    #     if self.model_validate == 'RandomizedSearch':
+    #         clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = False)
+    #         clf.fit(X_train.values, y_train.values)
+    #         best_estim = copy.deepcopy(clf.best_estimator_)
+    #         best_params = copy.deepcopy(clf.best_params_)
+    #         results = clf.cv_results_
+    #         results = pd.DataFrame(data = results)
+    #
+    #         params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
+    #         params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+    #
+    #     ## HyperOpt :
+    #     elif self.model_validate == 'HyperOpt':
+    #         def objective(hyperparameters):
+    #             estimator_ = self.get_model()
+    #             ## Set hyperparameters to the model :
+    #             for key, value in hyperparameters.items():
+    #                 if hasattr(estimator_, key):
+    #                     setattr(estimator_, key, value)
+    #                 else :
+    #                     continue
+    #             scores = cross_validate(estimator_, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
+    #             return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
+    #         space = self.get_hyper_distribution()
+    #         trials = Trials()
+    #         best = fmin(objective, space, algo = tpe.suggest, max_evals=self.n_iter, trials = trials)
+    #         best_params = space_eval(space, best)
+    #         ## Recreate best estim :
+    #         estim = self.get_model()
+    #         for key, value in best_params.items():
+    #             if hasattr(estim, key):
+    #                 setattr(estim, key, value)
+    #             else :
+    #                 continue
+    #         best_estim = estim.fit(X_train.values, y_train.values)
+    #         results = pd.DataFrame(columns = ['params'] + ['split%s_test_score' % elem for elem in range(self.inner_splits)]) # nsplits
+    #         for idx, value in trials.attachments.items():
+    #             print(idx, value)
+    #             d = dict()
+    #             for split in range(self.inner_splits):
+    #                 d['split%s_test_score' % split] = value[0][split]
+    #             d['params'] = value[1]
+    #             results = results.append(d, ignore_index = True)
+    #         params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
+    #         params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+    #
+    #
+    #     list_train_val = []
+    #     list_train_train = []
+    #     for inner_fold in range(self.inner_splits):
+    #         index_train_val = list_test_folds_id[inner_fold]
+    #         index_train_train = np.concatenate(list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])
+    #         X_train_train, X_train_val, y_train_train, y_train_val = X.loc[index_train_train], X.loc[index_train_val], y.loc[index_train_train], y.loc[index_train_val]
+    #
+    #         model_ = self.get_model()
+    #         for key, value in params_per_fold_opt[inner_fold].items():
+    #             if hasattr(model_, key):
+    #                 setattr(model_, key, value)
+    #             else :
+    #                 continue
+    #         model_.fit(X_train_train.values, y_train_train.values)
+    #
+    #         y_predict_train_val_fold = model_.predict(X_train_val.values)
+    #
+    #         df_train_val = pd.DataFrame(data = {'id' : index_train_val, 'outer_fold' : np.nan, 'pred' : y_predict_train_val_fold })
+    #         list_train_val.append(df_train_val)
+    #
+    #
+    #     df_val = pd.concat(list_train_val)
+    #
+    #     y_predict_test = best_estim.predict(X_test)
+    #     y_predict_train = best_estim.predict(X_train)
+    #     df_test = pd.DataFrame(data = {'id' : index_test, 'outer_fold' : fold, 'pred' : y_predict_test} )
+    #     df_train = pd.DataFrame(data = {'id' : index_train, 'outer_fold' : fold, 'pred' : y_predict_train })
+    #
+    #
+    #     best_params_flat = []
+    #     for elem in best_params.values():
+    # 	    if type(elem) == tuple:
+    #             for sub_elem in elem:
+    #         	    best_params_flat.append(sub_elem)
+    # 	    else:
+    #             best_params_flat.append(elem)
+    #     self.best_params = best_params_flat
+    #
+    #     return df_test, df_val, df_train
 
-
-    def optimize_hyperparameters_fold_(self, X, y, scoring, fold):
+    def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ):
         """
         input X  : dataframe with features + eid
         input y : dataframe with target + eid
@@ -141,32 +272,50 @@ class BaseModel():
         if self.inner_splits != self.outer_splits - 1:
             raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
 
-
         X_eid = X.drop_duplicates('eid')
         y_eid = y.drop_duplicates('eid')
+        eids = X_eid.eid
+        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular']:
+            ### READ EIDS
+            ## Compute list_test_folds_eid, and list_train_folds_eid
+            if organ in ['Brain', 'Carotids', 'Heart']:
+                list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(self.outer_splits)]
+            else :
+                list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(self.outer_splits)]
+            list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
+            list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
+        else :
+            outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
+            #
+            #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
+            #         # test_fold contain all test list_test_folds
+            #         # train_fold contain all the input dataset except the test fold
+            #
+            list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
+            list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
+
+            list_test_folds_eid = [eids[elem].values for elem in list_test_folds]
+            list_train_folds_eid = eids[list_train_folds].values
         #
-        outer_cv = KFold(n_splits = self.outer_splits, shuffle = False, random_state = 0)
+        list_train_fold_id = X.index[eids.isin(list_train_folds_eid)]
+        list_test_folds_id = [X.index[eids.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
         #
-        #        # if outer_splits = 10, split 1/10 for testing and 9/10 for training
-        #         # test_fold contain all test list_test_folds
-        #         # train_fold contain all the input dataset except the test fold
-        #
-        list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
-        list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
-        #
-        #
-        list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
-        list_train_folds_eid = X_eid.eid[list_train_folds].values
-        #
-        list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
-        list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
-        #
-        index_train, index_test = list_train_fold_id, list_test_folds_id[fold]
+        test_fold = (fold + 1)%self.outer_splits
+        val_fold = fold
+        index_train, index_test, index_val = list_train_fold_id, list_test_folds_id[test_fold], list_test_folds_id[val_fold]
+        ## Create train train indexes ie 8 fold dataset
+        if test_fold < val_fold :
+            index_train_train = list_test_folds_id[test_fold + 1 : val_fold]
+        else :
+            if test_fold == self.outer_splits - 1 :
+                index_train_train = list_test_folds_id[ : val_fold] + list_test_folds_id[test_fold + 1 : ]
+            else :
+                index_train_train = list_test_folds_id[ : val_fold]
         list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
         print(X.columns, y.columns)
-        X_train, X_test, y_train, y_test = X.loc[index_train], X.loc[index_test], y.loc[index_train], y.loc[index_test]
+        X_train, X_test, X_val, y_train, y_test, y_val = X.loc[index_train], X.loc[index_test], X.loc[index_val], y.loc[index_train], y.loc[index_test], y.loc[index_val]
 
         ## Create custom Splits
         list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
@@ -205,51 +354,25 @@ class BaseModel():
             best_params = space_eval(space, best)
             ## Recreate best estim :
             estim = self.get_model()
+            estim_train = self.get_model()
             for key, value in best_params.items():
                 if hasattr(estim, key):
                     setattr(estim, key, value)
+                elif hasattr(estim_train, key):
+                    setattr(estim_train, key, value)
                 else :
                     continue
             best_estim = estim.fit(X_train.values, y_train.values)
-            results = pd.DataFrame(columns = ['params'] + ['split%s_test_score' % elem for elem in range(self.inner_splits)]) # nsplits
-            for idx, value in trials.attachments.items():
-                print(idx, value)
-                d = dict()
-                for split in range(self.inner_splits):
-                    d['split%s_test_score' % split] = value[0][split]
-                d['params'] = value[1]
-                results = results.append(d, ignore_index = True)
-            params_per_fold_opt = results.params[results[['split%s_test_score' % elem for elem in range(self.inner_splits)]].idxmax()]
-            params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
+            best_estim_only_train = estim_train.fit(X_train_train.values, y_train_train.values)
 
 
-        list_train_val = []
-        list_train_train = []
-        for inner_fold in range(self.inner_splits):
-            index_train_val = list_test_folds_id[inner_fold]
-            index_train_train = np.concatenate(list_test_folds_id[:inner_fold] + list_test_folds_id[inner_fold + 1:])
-            X_train_train, X_train_val, y_train_train, y_train_val = X.loc[index_train_train], X.loc[index_train_val], y.loc[index_train_train], y.loc[index_train_val]
 
-            model_ = self.get_model()
-            for key, value in params_per_fold_opt[inner_fold].items():
-                if hasattr(model_, key):
-                    setattr(model_, key, value)
-                else :
-                    continue
-            model_.fit(X_train_train.values, y_train_train.values)
-
-            y_predict_train_val_fold = model_.predict(X_train_val.values)
-
-            df_train_val = pd.DataFrame(data = {'id' : index_train_val, 'outer_fold' : np.nan, 'pred' : y_predict_train_val_fold })
-            list_train_val.append(df_train_val)
-
-
-        df_val = pd.concat(list_train_val)
-
+        y_predict_val = best_estim.predict(X_val)
         y_predict_test = best_estim.predict(X_test)
-        y_predict_train = best_estim.predict(X_train)
+        y_predict_train = best_estim_only_train.predict(X_train)
         df_test = pd.DataFrame(data = {'id' : index_test, 'outer_fold' : fold, 'pred' : y_predict_test} )
         df_train = pd.DataFrame(data = {'id' : index_train, 'outer_fold' : fold, 'pred' : y_predict_train })
+        df_val = pd.DataFrame(data = {'id' : index_val, 'outer_fold' : fold, 'pred' : y_predict_val} )
 
 
         best_params_flat = []

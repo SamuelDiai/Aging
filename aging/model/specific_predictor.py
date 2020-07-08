@@ -1,6 +1,6 @@
 
 from .general_predictor import *
-from .load_and_save_data import load_data, save_features_to_csv, save_predictions_to_csv
+from .load_and_save_data import load_data, save_features_to_csv, save_predictions_to_csv, dict_dataset_to_organ_and_view
 
 
 class GeneralPredictor(BaseModel):
@@ -41,6 +41,9 @@ class GeneralPredictor(BaseModel):
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
 
+    def set_organ_view(self, organ, view):
+        self.organ = organ
+        self.view = view
 
     def load_dataset(self, **kwargs):
         return load_data(self.dataset, **kwargs)
@@ -55,19 +58,19 @@ class GeneralPredictor(BaseModel):
             y = df[['Age when attended assessment centre', 'eid']]
         else :
             raise ValueError('GeneralPredictor not instancied')
-        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ)
 
 
     def feature_importance(self, df):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid'])
             y = df['Sex']
-            self.features_importance_(X, y, self.scoring)
+            self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
         elif self.target == 'Age':
             X = df.drop(columns = ['Age when attended assessment centre', 'eid'])
             y = df['Age when attended assessment centre']
-            self.features_importance_(X, y, self.scoring)
+            self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
         else :
             raise ValueError('GeneralPredictor not instancied')

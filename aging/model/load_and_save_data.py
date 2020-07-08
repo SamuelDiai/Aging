@@ -18,6 +18,9 @@ from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_d
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
 from ..processing.hearing_tests_processing import read_hearing_test_data
+from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion, read_tower_rearranging_data,
+                                                    read_symbol_digit_substitution_data, read_paired_associative_learning_data, read_prospective_memory_data, read_numeric_memory_data,
+                                                    read_fluid_intelligence_data
 
 
 
@@ -53,8 +56,55 @@ map_dataset_to_field_and_dataloader = {
                     'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
                     'BoneDensitometryOfHeel' : (100018, read_bone_densitometry_data),
                     'HandGripStrength' : (100019, read_hand_grip_strength_data),
-                    'HearingTest' : (100049, read_hearing_test_data)
+                    'HearingTest' : (100049, read_hearing_test_data),
+                    'CognitiveReactionTime' : (100032, read_reaction_time_data),
+                    'CognitiveMatrixPatternCompletion' : (501, read_matrix_pattern_completion),
+                    'CognitiveTowerRearranging' : (503, read_tower_rearranging_data),
+                    'CognitiveSymbolDigitSubstitution' : (502, read_symbol_digit_substitution_data),
+                    'CognitivePairedAssociativeLearning' : (506, read_paired_associative_learning_data),
+                    'CognitiveProspectiveMemory' : (100031, read_prospective_memory_data),
+                    'CognitiveNumericMemory' : (100029, read_numeric_memory_data),
+                    'CognitiveFluidIntelligence' : (100027, read_fluid_intelligence_data)
                     }
+
+
+dict_dataset_to_organ_and_view = {
+    'BrainGreyMatterVolumes' : ('Brain', 'GreyMatterVolumes'),
+    'BrainSubcorticalVolumes': ('Brain', 'SubcorticalVolumes'),
+    'BrainAllBiomarkers' : ('Brain', 'AllBiomarkers'),
+    'HeartAllBiomarkers' : ('Heart', 'HeartAllBiomarkers'),
+    'HeartSize' : ('Heart', 'Size'),
+    'HeartPWA' : ('Heart', 'PWA'),
+    'BodyComposition' : ('BodyComposition', 'main'),
+    'BoneComposition' : ('BoneComposition', 'main'),
+    'ECGAtRest' : ('ECG', 'BiomarkersAtRest'),
+    'AnthropometryImpedance' : ('Anthropometry', 'Impedance'),
+    'UrineBiochemestry' : ('Urine', 'Biochemistry'),
+    'BloodBiochemestry' : ('Blood', 'Biochemistry'),
+    'BloodCount' : ('ImmuneSystem', 'BloodCount'),  # Need to do blood infection
+    'EyeAutorefraction' : ('Eyes', 'Autorefraction'),
+    'EyeAcuity' : ('Eyes', 'Acuity'),
+    'EyeIntraoculaPressure' : ('Eyes', 'IntraocularPressure'),
+    'EyesAllBiomarkers' : ('Eyes', 'AllBiomarkers'),
+    'BraindMRIWeightedMeans' : ('Brain', 'dMRIWeightedMeans'),
+    'Spirometry' :  ('Lungs', 'Spirometry'),
+    'BloodPressure' : ('BloodPressure', 'main'),
+    'AnthropometryBodySize' : ('Anthropometry', 'BodySize'),
+    'AnthropometryAllBiomarkers' : ('Anthropometry', 'AllBiomarkers'),
+    'ArterialStiffness' : ('Vascular', 'BiomarkersArterialStiffness'),
+    'CarotidUltrasound' : ('Cartotids', 'BiomarkersUltrasound'),
+    'BoneDensitometryOfHeel' : ('Heel', 'BoneDensitometry'),
+    'HandGripStrength' : ('Hand', 'GripStrenght'),
+    'HearingTest' : ('Hearing', 'HearingTest'),
+    'CognitiveReactionTime' : ('Cognitive', 'ReactionTime'),
+    'CognitiveMatrixPatternCompletion' : ('Cognitive', 'MatrixPatternCompletion'),
+    'CognitiveTowerRearranging' : ('Cognitive', 'TowerRearranging'),
+    'CognitiveSymbolDigitSubstitution' : ('Cognitive', 'SymbolDigitSubstitution'),
+    'CognitivePairedAssociativeLearning' : ('Cognitive', 'PairedAssociativeLearning'),
+    'CognitiveProspectiveMemory' : ('Cognitive', 'ProspectiveMemory'),
+    'CognitiveNumericMemory' : ('Cognitive', 'NumericMemory'),
+    'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence')
+}
 
 # def load_data(dataset, **kwargs):
 #     selected_inputs = glob.glob(path_inputs + '%s.csv' % dataset)
@@ -83,13 +133,15 @@ map_dataset_to_field_and_dataloader = {
 def load_data(dataset, **kwargs):
     if 'Cluster' in dataset :
         df = pd.read_csv(dataset).set_index('id')
+        organ, view = 'Cluster', 'main'
     elif '/n' not in dataset:
         path_dataset = path_inputs + dataset + '.csv'
         df = pd.read_csv(path_dataset).set_index('id')
         df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
         df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
         df = df[df.columns[~df.columns.str.contains('_r')]]
-    return df.dropna()
+        organ, view = dict_dataset_to_organ_and_view[dataset]
+    return df.dropna(), organ, view 
 
 def create_data(dataset, **kwargs):
     if dataset not in map_dataset_to_field_and_dataloader.keys():
