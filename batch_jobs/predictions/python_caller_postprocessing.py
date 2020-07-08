@@ -2,7 +2,6 @@ import numpy as np
 import sys
 import os
 import glob
-from sklearn.model_selection import GridSearchCV, cross_val_score, KFold, cross_val_predict, StratifiedKFold, RandomizedSearchCV
 import pandas as pd
 
 if sys.platform == 'linux':
@@ -10,7 +9,7 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
 	sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.model.load_and_save_data import load_data, map_dataset_to_field_and_dataloader
+from aging.model.load_and_save_data import load_data, map_dataset_to_field_and_dataloader, dict_dataset_to_organ_and_view
 from aging.processing.base_processing import path_predictions
 model = sys.argv[1]
 target = sys.argv[2]
@@ -49,8 +48,10 @@ print(hyperparameters)
 if 'Cluster' in dataset:
     dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
     field = 'Cluster'
+	organ = 'Cluster'
+	view = 'main'
 else :
-    dataset_proper = dataset
+	organ, view =  dict_dataset_to_organ_and_view[dataset_proper]
     field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
 list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset_proper, model))
@@ -65,41 +66,12 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
     df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
-    # Avg df_val
-    df_val = df_val.groupby('id').agg({'pred' : 'mean'})
     if target == 'Sex':
         df_val['pred'] = 1*(df_val['pred'] > 0.5)
-    if 'outer_fold' not in df_val.columns :
-        df_val['outer_fold'] = np.nan
 
 
-
-
-    #map_eid_to_fold = dataset_map_fold(dataset, target, outer_splits)
-    #df_val['fold'] = df_val.index.map(map_eid_to_fold)
-
-    ## Save datasets :
-    #Predictions_Sex_UrineBiochemestry_100083_main_raw_GradientBoosting_0_0_0_0_test.csv
-
-    view = 'main'
-    if 'Heart' in dataset_proper:
-        view = dataset_proper.split('Heart')[1]
-        organ = 'Heart'
-    elif 'Anthropometry' in dataset_proper:
-        view = dataset_proper.split('Anthropometry')[1]
-        organ = 'Anthropometry'
-    elif 'Brain' in dataset_proper :
-        view = dataset_proper.split('Brain')[1]
-        organ = 'Brain'
-    elif 'Brain' in dataset_proper :
-        view = dataset_proper.split('Brain')[1]
-        organ = 'Brain'
-
-    else :
-        view = 'main'
-        organ = dataset_proper
-        if 'chemestry' in organ:
-            organ = organ.replace('chemestry', 'chemistry')
+    if 'chemestry' in organ:
+        organ = organ.replace('chemestry', 'chemistry')
 
 
         #print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
