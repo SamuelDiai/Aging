@@ -330,9 +330,9 @@ class BaseModel():
             index_train_train = list_test_folds_id[test_fold + 1 : val_fold]
         else :
             if test_fold == self.outer_splits - 1 :
-                index_train_train = list_test_folds_id[ : val_fold] + list_test_folds_id[test_fold + 1 : ]
-            else :
                 index_train_train = list_test_folds_id[ : val_fold]
+            else :
+                index_train_train = list_test_folds_id[ : val_fold] + list_test_folds_id[test_fold + 1 : ]
 
         print(index_train_train)
         index_train_train = np.concatenate(index_train_train)
