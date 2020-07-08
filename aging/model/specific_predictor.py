@@ -64,12 +64,12 @@ class GeneralPredictor(BaseModel):
     def feature_importance(self, df):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre'])
-            y = df['Sex', 'eid']
+            y = df[['Sex', 'eid']]
             self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
         elif self.target == 'Age':
             X = df.drop(columns = ['Age when attended assessment centre'])
-            y = df['Age when attended assessment centre', 'eid']
+            y = df[['Age when attended assessment centre', 'eid']]
             self.features_importance_(X, y, self.scoring, self.organ)
             return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
         else :
