@@ -280,9 +280,9 @@ class BaseModel():
                 list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             else :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
-            print("list_test_folds", list_test_folds)
+
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
-            print("list_test_folds_eid", list_test_folds_eid)
+
             if fold is not None:
                 list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
         else :
@@ -380,14 +380,14 @@ class BaseModel():
                     continue
             pipeline_best_on_train_and_val = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
             pipeline_best_on_train = Pipeline([('scaler', StandardScaler()), ('estimator', estim_train)])
-            best_estim_train_val = pipeline_best_on_train_and_val.fit(X_train.values, y_train.values)
-            best_estim_train = pipeline_best_on_train.fit(X_train_train.values, y_train_train.values)
+            pipeline_best_on_train_and_val.fit(X_train.values, y_train.values)
+            pipeline_best_on_train.fit(X_train_train.values, y_train_train.values)
 
 
 
-        y_predict_val = best_estim_train.predict(X_val)
-        y_predict_test = best_estim_train_val.predict(X_test)
-        y_predict_train = best_estim_train.predict(X_train)
+        y_predict_val = pipeline_best_on_train.predict(X_val)
+        y_predict_test = pipeline_best_on_train_and_val.predict(X_test)
+        y_predict_train = pipeline_best_on_train.predict(X_train)
         df_test = pd.DataFrame(data = {'id' : index_test, 'outer_fold' : fold, 'pred' : y_predict_test} )
         df_train = pd.DataFrame(data = {'id' : index_train, 'outer_fold' : fold, 'pred' : y_predict_train })
         df_val = pd.DataFrame(data = {'id' : index_val, 'outer_fold' : fold, 'pred' : y_predict_val} )
@@ -481,7 +481,8 @@ class BaseModel():
                             setattr(estimator_, key, value)
                         else :
                             continue
-                    scores = cross_validate(estimator_, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
+                    pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
+                    scores = cross_validate(pipeline, X.values, y, scoring = scoring, cv = cv, verbose = 10, return_estimator = True)
                     if hasattr(trials, 'attachments') and 'ATTACH::0::best_score' in trials.attachments.keys():
                         old_best_score = trials.attachments['ATTACH::0::best_score']
                         if scores['test_score'].mean() > old_best_score:
@@ -498,6 +499,8 @@ class BaseModel():
                 best_params = space_eval(space, best)
                 print(trials.attachments)
                 best_estimators = trials.attachments['ATTACH::0::best_models']
+                best_pipelines = [Pipeline([('scaler', StandardScaler()), ('estimator', estimator_best)]) for estimator_best in best_estimators]
+
                 matrix_std = np.zeros((self.inner_splits, len(columns)))
                 ## Recreate best estim :
                 estim = self.get_model()
@@ -506,14 +509,15 @@ class BaseModel():
                         setattr(estim, key, value)
                     else :
                         continue
-                best_estim = estim.fit(X.values, y)
+                pipeline_best = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
+                pipeline_best.fit(X.values, y)
 
-            self.features_imp = self.Create_feature_imps_for_estimator(best_estim = best_estim, X = X, y = y, scoring = scoring, columns = columns)
+            self.features_imp = self.Create_feature_imps_for_estimator(best_estim = pipeline_best, X = X, y = y, scoring = scoring, columns = columns)
             matrix = np.zeros((self.inner_splits, len(columns)))
             for fold, indexes in enumerate(list(cv.split(X.values, y))):
                 train_index, test_index = indexes
                 X_train, X_test, y_train, y_test = X.iloc[train_index], X.iloc[test_index], y[train_index], y[test_index]
-                list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test, scoring = scoring, columns = columns)
+                list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_pipelines[fold], X = X_test, y = y_test, scoring = scoring, columns = columns)
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
 
