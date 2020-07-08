@@ -333,6 +333,7 @@ class BaseModel():
                 index_train_train = list_test_folds_id[ : val_fold] + list_test_folds_id[test_fold + 1 : ]
             else :
                 index_train_train = list_test_folds_id[ : val_fold]
+        X_train_train, y_train_train = X.loc[index_train_train], y.loc[index_train_train]
         list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
