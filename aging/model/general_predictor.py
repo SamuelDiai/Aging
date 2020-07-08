@@ -274,6 +274,7 @@ class BaseModel():
                 list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(self.outer_splits)]
             else :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(self.outer_splits)]
+            print("list_test_folds", list_test_folds)
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
             print("list_test_folds_eid", list_test_folds_eid)
             if fold is not None:
