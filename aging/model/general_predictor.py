@@ -336,9 +336,11 @@ class BaseModel():
 
         print(index_train_train)
         index_train_train = np.concatenate(index_train_train)
+        print(index_train_train)
 
 
         X_train_train, y_train_train = X.loc[index_train_train], y.loc[index_train_train]
+        print(X_train_train)
         list_test_folds_id = list_test_folds_id[:fold] + list_test_folds_id[fold + 1 :]
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
