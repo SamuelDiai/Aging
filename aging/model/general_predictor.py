@@ -297,8 +297,8 @@ class BaseModel():
             list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
             list_train_folds_eid = X_eid.eid[list_train_folds].values
         #
-        list_train_fold_id = X.index[X_eid.eid.isin(list_train_folds_eid)]
-        list_test_folds_id = [X.index[X_eid.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
+        list_train_fold_id = X.index[X.eid.eid.isin(list_train_folds_eid)]
+        list_test_folds_id = [X.index[X.eid.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
         #
         test_fold = (fold + 1)%self.outer_splits
         val_fold = fold
