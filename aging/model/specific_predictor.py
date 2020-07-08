@@ -90,39 +90,39 @@ class GeneralPredictor(BaseModel):
     #         raise ValueError('GeneralPredictor not instancied')
 
 
-    def normalise_dataset(self, df):
-        # Save old data
-        df_without_sex_and_eid = df.drop(columns = ['Sex', 'eid'])
-        sex_and_eid_columns = df[['Sex', 'eid']]
-        cols = df_without_sex_and_eid.columns
-        indexes = df_without_sex_and_eid.index
-
-        # save scaler
-        scaler = StandardScaler()
-        scaler.fit(df_without_sex_and_eid)
-
-        scaler_age = StandardScaler()
-        scaler_age.fit(df['Age when attended assessment centre'].values.reshape(-1, 1))
-        self.scaler = scaler_age
-
-        # Scale and create Dataframe
-        array_rescaled =  scaler.transform(df_without_sex_and_eid)
-        df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(sex_and_eid_columns)
-
-        return df_rescaled
-
-
-    def inverse_normalise_dataset(self, df_rescaled):
-        if self.target == 'Sex':
-            return df_rescaled
-        elif self.target == 'Age':
-            df_noscaled = df_rescaled
-            if hasattr(self, 'scaler'):
-                df_noscaled['pred'] = self.scaler.inverse_transform(df_noscaled['pred'].values.reshape(-1, 1))
-                #df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
-            return df_noscaled
-        else :
-            raise ValueError('dataframe is not rescaled')
+    # def normalise_dataset(self, df):
+    #     # Save old data
+    #     df_without_sex_and_eid = df.drop(columns = ['Sex', 'eid'])
+    #     sex_and_eid_columns = df[['Sex', 'eid']]
+    #     cols = df_without_sex_and_eid.columns
+    #     indexes = df_without_sex_and_eid.index
+    #
+    #     # save scaler
+    #     scaler = StandardScaler()
+    #     scaler.fit(df_without_sex_and_eid)
+    #
+    #     scaler_age = StandardScaler()
+    #     scaler_age.fit(df['Age when attended assessment centre'].values.reshape(-1, 1))
+    #     self.scaler = scaler_age
+    #
+    #     # Scale and create Dataframe
+    #     array_rescaled =  scaler.transform(df_without_sex_and_eid)
+    #     df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(sex_and_eid_columns)
+    #
+    #     return df_rescaled
+    #
+    #
+    # def inverse_normalise_dataset(self, df_rescaled):
+    #     if self.target == 'Sex':
+    #         return df_rescaled
+    #     elif self.target == 'Age':
+    #         df_noscaled = df_rescaled
+    #         if hasattr(self, 'scaler'):
+    #             df_noscaled['pred'] = self.scaler.inverse_transform(df_noscaled['pred'].values.reshape(-1, 1))
+    #             #df_noscaled['real'] = self.scaler.inverse_transform(df_noscaled['real'].values.reshape(-1, 1))
+    #         return df_noscaled
+    #     else :
+    #         raise ValueError('dataframe is not rescaled')
 
 
     def save_features(self, cols):
