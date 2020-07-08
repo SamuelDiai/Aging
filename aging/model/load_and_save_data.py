@@ -18,9 +18,9 @@ from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_d
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
 from ..processing.hearing_tests_processing import read_hearing_test_data
-from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion, read_tower_rearranging_data,
-                                                    read_symbol_digit_substitution_data, read_paired_associative_learning_data, read_prospective_memory_data, read_numeric_memory_data,
-                                                    read_fluid_intelligence_data
+from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion, read_tower_rearranging_data, \
+                                                    read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
+                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data
 
 
 
@@ -141,7 +141,7 @@ def load_data(dataset, **kwargs):
         df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
         df = df[df.columns[~df.columns.str.contains('_r')]]
         organ, view = dict_dataset_to_organ_and_view[dataset]
-    return df.dropna(), organ, view 
+    return df.dropna(), organ, view
 
 def create_data(dataset, **kwargs):
     if dataset not in map_dataset_to_field_and_dataloader.keys():
