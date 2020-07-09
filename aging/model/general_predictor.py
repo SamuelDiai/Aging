@@ -290,10 +290,6 @@ class BaseModel():
             list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
             list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
             if fold is not None:
-                if 'Cluster' not in organ :
-                    for fold in range(10):
-                        df = pd.DataFrame(list_test_folds_eid[fold])
-                        df.to_csv(path_eid_split + '%s_eids.csv' % organ)
                 list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
                 list_train_folds_eid = X_eid.eid[list_train_folds].values
         if fold is not None:

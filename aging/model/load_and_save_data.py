@@ -92,7 +92,7 @@ dict_dataset_to_organ_and_view = {
     'AnthropometryBodySize' : ('Anthropometry', 'BodySize'),
     'AnthropometryAllBiomarkers' : ('Anthropometry', 'AllBiomarkers'),
     'ArterialStiffness' : ('Vascular', 'BiomarkersArterialStiffness'),
-    'CarotidUltrasound' : ('Cartotids', 'BiomarkersUltrasound'),
+    'CarotidUltrasound' : ('Carotids', 'BiomarkersUltrasound'),
     'BoneDensitometryOfHeel' : ('Heel', 'BoneDensitometry'),
     'HandGripStrength' : ('Hand', 'GripStrenght'),
     'HearingTest' : ('Hearing', 'HearingTest'),
