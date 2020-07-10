@@ -132,8 +132,8 @@ class GeneralPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'features_imp') and self.model_name != 'Correlation' :
             raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.target, dataset_proper, self.model_name, sd = False)
-        save_features_to_csv(cols, self.features_imp_sd, self.target, dataset_proper, self.model_name, sd = True)
+        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, self.model_name, sd = False)
+        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, self.model_name, sd = True)
 
 
     def save_predictions(self, predicts_df, step):
