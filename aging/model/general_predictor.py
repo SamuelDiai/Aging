@@ -21,16 +21,6 @@ from sklearn.metrics import r2_score, f1_score
 from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 from sklearn.pipeline import Pipeline
 
-map_organ_view = {'Anthropometry' : ['AnthropometryImpedance', 'AnthropometryBodySize', 'AnthropometryAllBiomarkers'],
-                  'Urine' : ['UrineBiochemestry'],
-                  'BloodB' : ['BloodBiochemistry'],
-                  'BloodC' : ['BloodCount'],
-                  'Lungs' : ['Spirometry'],
-                  'BloodPressure' : ['Biomarkers'],
-                  'Heel' : ['BoneDensitometryOfHeel'],
-                  'Hand' : ['HandGripStrength'],
-                  'Hearing' : ['HearingTest'],
-                  'Cognitive' : ['CognitiveReactionTime', 'CognitiveMatrixPatternCompletion', 'CognitiveTowerRearranging', 'CognitiveSymbolDigitSubstitution', 'CognitivePairedAssociativeLearning', 'CognitiveProspectiveMemory', 'CognitiveNumericMemory', 'CognitiveFluidIntelligence']}
 path_eid_split = '/n/groups/patel/Alan/Aging/Medical_Images/eids_split/'
 
 
