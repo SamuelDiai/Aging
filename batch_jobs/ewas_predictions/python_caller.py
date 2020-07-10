@@ -37,11 +37,8 @@ else :
     print("Loading Dataset")
     df = gp.load_dataset()
     print("Dataset Loaded, optimizing hyper")
-    #df_scaled = gp.normalise_dataset(df)
-    #df_predicts_rescaled_test, df_predicts_rescaled_val, df_predicts_rescaled_train = gp.optimize_hyperparameters_fold(df_scaled)
-    #df_predicts_no_scaled_train = gp.inverse_normalise_dataset(df_predicts_rescaled_train)
-    #df_predicts_no_scaled_test = gp.inverse_normalise_dataset(df_predicts_rescaled_test)
-    #df_predicts_no_scaled_val = gp.inverse_normalise_dataset(df_predicts_rescaled_val)
+    df_predicts_no_scaled_test, df_predicts_no_scaled_val, df_predicts_no_scaled_train = gp.optimize_hyperparameters_fold(df)
+
     #print("Hyper Opt over, saving file")
     #gp.save_predictions(df_predicts_no_scaled_val, 'val')
     #gp.save_predictions(df_predicts_no_scaled_test, 'test')

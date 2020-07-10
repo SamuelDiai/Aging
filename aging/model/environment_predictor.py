@@ -30,63 +30,63 @@ class EnvironmentPredictor(BaseModel):
 
 
     def optimize_hyperparameters_fold(self, df):
-        X = df.drop(columns = ['eid', 'residual'])
-        y = df[['residual', 'eid']]
+        X = df.drop(columns = ['eid', 'residuals'])
+        y = df[['residuals', 'eid']]
         print(X.index, X.columns)
         return self.optimize_hyperparameters_fold_(X, y, 'r2', self.fold, organ = None)
 
 
     def feature_importance(self, df):
-        X = df.drop(columns = ['eid', 'residual'])
-        y = df[['residual', 'eid']]
+        X = df.drop(columns = ['eid', 'residuals'])
+        y = df[['residuals', 'eid']]
         self.features_importance_(X, y, 'r2', organ = None)
-        return df.drop(columns = ['eid', 'residual']).columns
+        return df.drop(columns = ['eid', 'residuals']).columns
 
 
-    def normalise_dataset(self, df):
+    # def normalise_dataset(self, df):
+    #
+    #     if self.model_name in ['ElasticNet', 'NeuralNetwork', 'GradientBoosting', 'RandomForest'] :
+    #         old_size = df.shape[0]
+    #         df = df.dropna(how = 'any')
+    #         new_size = df.shape[0]
+    #         print("removing NaNs, sample size before dropping %s, after dropping %s " % (old_size, new_size))
+    #
+    #
+    #     scaler_residual = StandardScaler()
+    #     scaler_residual.fit(df['residual'].values.reshape(-1, 1))
+    #     self.scaler = scaler_residual
+    #
+    #     # if self.model_name == 'ElasticNet':
+    #     #     cols = df.columns
+    #     #     indexes = df.index
+    #     #     scaler = StandardScaler()
+    #     #     scaler.fit(df)
+    #     #     array_rescaled = scaler.transform(df)
+    #     #     return pd.DataFrame(array_rescaled, columns = cols, index = indexes)
+    #     #else :
+    #         # Get categorical data apart from continous ones
+    #     df_cat = df.select_dtypes(include=['int', 'int8', 'Int64'])
+    #     df_cont = df.drop(columns = df_cat.columns)
+    #
+    #     cols = df_cont.columns
+    #     indexes = df_cont.index
+    #
+    #     # save scaler
+    #     scaler = StandardScaler()
+    #     scaler.fit(df_cont)
+    #
+    #     # Scale and create Dataframe
+    #     array_rescaled =  scaler.transform(df_cont)
+    #     df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(df_cat)
+    #
+    #     return df_rescaled
 
-        if self.model_name in ['ElasticNet', 'NeuralNetwork', 'GradientBoosting', 'RandomForest'] :
-            old_size = df.shape[0]
-            df = df.dropna(how = 'any')
-            new_size = df.shape[0]
-            print("removing NaNs, sample size before dropping %s, after dropping %s " % (old_size, new_size))
-
-
-        scaler_residual = StandardScaler()
-        scaler_residual.fit(df['residual'].values.reshape(-1, 1))
-        self.scaler = scaler_residual
-
-        # if self.model_name == 'ElasticNet':
-        #     cols = df.columns
-        #     indexes = df.index
-        #     scaler = StandardScaler()
-        #     scaler.fit(df)
-        #     array_rescaled = scaler.transform(df)
-        #     return pd.DataFrame(array_rescaled, columns = cols, index = indexes)
-        #else :
-            # Get categorical data apart from continous ones
-        df_cat = df.select_dtypes(include=['int', 'int8', 'Int64'])
-        df_cont = df.drop(columns = df_cat.columns)
-
-        cols = df_cont.columns
-        indexes = df_cont.index
-
-        # save scaler
-        scaler = StandardScaler()
-        scaler.fit(df_cont)
-
-        # Scale and create Dataframe
-        array_rescaled =  scaler.transform(df_cont)
-        df_rescaled = pd.DataFrame(array_rescaled, columns = cols, index = indexes).join(df_cat)
-
-        return df_rescaled
-
-    def inverse_normalise_dataset(self, df_rescaled):
-        if hasattr(self, 'scaler'):
-            df_rescaled['pred'] = self.scaler.inverse_transform(df_rescaled['pred'].values.reshape(-1, 1))
-            return df_rescaled
-        else :
-            raise ValueError('dataframe is not rescaled')
+    # def inverse_normalise_dataset(self, df_rescaled):
+    #     if hasattr(self, 'scaler'):
+    #         df_rescaled['pred'] = self.scaler.inverse_transform(df_rescaled['pred'].values.reshape(-1, 1))
+    #         return df_rescaled
+    #     else :
+    #         raise ValueError('dataframe is not rescaled')
 
     def save_features(self, cols):
         if not hasattr(self, 'features_imp'):
