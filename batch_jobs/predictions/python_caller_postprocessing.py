@@ -51,6 +51,7 @@ if 'Cluster' in dataset:
 	organ = 'Cluster'
 	view = 'main'
 else :
+	dataset_proper = dataset
 	organ, view =  dict_dataset_to_organ_and_view[dataset_proper]
 	field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
