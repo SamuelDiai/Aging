@@ -46,13 +46,13 @@ print(hyperparameters)
 #     return map_eid_to_fold
 
 if 'Cluster' in dataset:
-    dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
-    field = 'Cluster'
+	dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
+	field = 'Cluster'
 	organ = 'Cluster'
 	view = 'main'
 else :
 	organ, view =  dict_dataset_to_organ_and_view[dataset_proper]
-    field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
+	field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
 list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset_proper, model))
 
@@ -62,19 +62,19 @@ list_val = [elem for elem in list_files if 'val' in elem]
 
 if len(list_train) == outer_splits and len(list_test) == outer_splits and len(list_val) == outer_splits :
 
-    df_train = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_train])
-    df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
-    df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
+	df_train = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_train])
+	df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
+	df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
-    if 'chemestry' in organ:
-        organ = organ.replace('chemestry', 'chemistry')
+	if 'chemestry' in organ:
+		organ = organ.replace('chemestry', 'chemistry')
 
 
-        #print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-    df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-    df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
-    df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
+	#print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
+	df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
+	df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
+	df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
 
 
 else :
-    raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
+	raise ValueError("ONE OF THE OUTER JOB HAS FAILED ! ")
