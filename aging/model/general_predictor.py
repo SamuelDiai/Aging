@@ -21,6 +21,16 @@ from sklearn.metrics import r2_score, f1_score
 from hyperopt import fmin, tpe, space_eval, Trials, hp, STATUS_OK
 from sklearn.pipeline import Pipeline
 
+map_organ_view = {'Anthropometry' : ['AnthropometryImpedance', 'AnthropometryBodySize', 'AnthropometryAllBiomarkers'],
+                  'Urine' : ['UrineBiochemestry'],
+                  'BloodB' : ['BloodBiochemistry'],
+                  'BloodC' : ['BloodCount'],
+                  'Lungs' : ['Spirometry'],
+                  'BloodPressure' : ['Biomarkers'],
+                  'Heel' : ['BoneDensitometryOfHeel'],
+                  'Hand' : ['HandGripStrength'],
+                  'Hearing' : ['HearingTest'],
+                  'Cognitive' : ['CognitiveReactionTime', 'CognitiveMatrixPatternCompletion', 'CognitiveTowerRearranging', 'CognitiveSymbolDigitSubstitution', 'CognitivePairedAssociativeLearning', 'CognitiveProspectiveMemory', 'CognitiveNumericMemory', 'CognitiveFluidIntelligence']}
 path_eid_split = '/n/groups/patel/Alan/Aging/Medical_Images/eids_split/'
 
 
@@ -273,18 +283,18 @@ class BaseModel():
         else :
             splits = self.outer_splits
 
-        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular']:
+        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
             if organ in ['Brain', 'Carotids', 'Heart']:
                 list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
-            else :
+            elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive'] :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
-
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
 
             if fold is not None:
                 list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
+
         else :
             outer_cv = KFold(n_splits = splits, shuffle = False, random_state = 0)
             list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
