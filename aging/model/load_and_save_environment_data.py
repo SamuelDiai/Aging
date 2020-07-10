@@ -180,8 +180,11 @@ def load_target_residuals(target_dataset, **kwargs):
 
 def load_data(env_dataset, target_dataset, **kwargs):
     df_env = load_data_env(env_dataset, **kwargs)
+    print(df_env)
     df_residuals = load_target_residuals(target_dataset, **kwargs)
+    print(df_residuals)
     final_df = df_env.join(df_residuals, how = 'outer')
+    print(final_df)
     return final_df[~final_df['residuals'].isna()]
 
 # ## SUB LOADS : ETHNICITY, TARGET RESIDUALS, ENV DATA
