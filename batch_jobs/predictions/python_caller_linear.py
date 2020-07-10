@@ -20,7 +20,8 @@ hyperparameters = dict()
 hyperparameters['dataset'] = dataset
 
 
-df, organ, view = load_data(dataset).drop(columns = ['eid'])
+df, organ, view = load_data(dataset)
+df = df.drop(columns = ['eid'])
 
 
 

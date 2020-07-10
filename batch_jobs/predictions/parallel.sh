@@ -1,14 +1,14 @@
 #!/bin/bash
-#targets=( "Age" "Sex" )
-targets=( "Age" )
-models=( "LightGbm" )
-#models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
-#datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
+targets=( "Age" "Sex" )
+#targets=( "Age" )
+#models=( "LightGbm" )
+models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
+datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "HeartPWA" )
+#datasets=( "HeartPWA" )
 outer_splits=10
 inner_splits=9
-n_iter=2
+n_iter=30
 n_splits=10
 
 memory=8G
