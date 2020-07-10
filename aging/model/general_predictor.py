@@ -277,7 +277,7 @@ class BaseModel():
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
             if organ in ['Brain', 'Carotids', 'Heart']:
-                list_test_folds = [pd.read_csv(path_eid_split + 'images_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
+                list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             else :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
 
