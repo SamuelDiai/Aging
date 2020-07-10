@@ -146,9 +146,7 @@ def create_data(env_dataset, **kwargs):
     df.to_csv(path_inputs_env + env_dataset + '.csv')
 
 def load_sex_age_ethnicity_data(**kwargs):
-    sex_age = pd.read_csv('/n/groups/patel/samuel/df_sex_age.csv').set_index('id')
-    ethnicity = pd.read_csv('/n/groups/patel/samuel/ethnicities.csv').set_index('eid')
-    df_sex_age_ethnicity_eid = sex_age.reset_index().merge(ethnicity, on = 'eid').set_index('id')
+    df_sex_age_ethnicity_eid = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
     return df_sex_age_ethnicity_eid
 
 

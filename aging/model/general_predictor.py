@@ -465,6 +465,7 @@ class BaseModel():
                 list_corr = [np.abs(stat.pearsonr(X_test[column].values, y_test)[0]) for column in columns]
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
+            self.features_imp_mean = np.mean(matrix, axis = 0)
             self.features_imp = [np.abs(stat.pearsonr(X[column].values, y)[0]) for column in columns]
         ## Else More Complex Models :
         else :
@@ -521,6 +522,7 @@ class BaseModel():
                 list_corr =  self.Create_feature_imps_for_estimator(best_estim = best_estimators[fold], X = X_test, y = y_test, scoring = scoring, columns = columns)
                 matrix[fold] = list_corr
             self.features_imp_sd = np.std(matrix, axis = 0)
+            self.features_imp_mean = np.mean(matrix, axis = 0)
 
 
     # def features_importance_(self, X, y, scoring):
