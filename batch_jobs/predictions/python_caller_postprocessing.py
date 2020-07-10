@@ -66,10 +66,6 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
     df_test = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_test])
     df_val = pd.concat([pd.read_csv(elem).set_index('id') for elem in list_val])
 
-    if target == 'Sex':
-        df_val['pred'] = 1*(df_val['pred'] > 0.5)
-
-
     if 'chemestry' in organ:
         organ = organ.replace('chemestry', 'chemistry')
 
