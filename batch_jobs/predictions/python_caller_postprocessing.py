@@ -72,9 +72,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
 
 
 	#print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-	df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-	df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
-	df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
+	df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan2/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
+	df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan2/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
+	df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/preds_alan2/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
 
 
 else :
