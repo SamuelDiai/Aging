@@ -8,7 +8,7 @@ target_datasets=( "Brain" "Heart" )
 #input_datasets=( "Alcohol" "Anthropometry" "AnthropometryBodySize" "AnthropometryImpedance" "ArterialAndBloodPressure" "ArterialStiffness" "Blood" "BloodBiochemestry" "BloodCount" "BloodPressure" "Brain" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Breathing" "CancerScreening" "ChestPain" "Claudification" "Diet" "ECGAtRest" "Education" "ElectronicDevices" "Employment" "Eye" "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eyesight" "FamilyHistory" "GeneralHealth" "GeneralPain" "Hearing" "Heart" "HeartPWA" "HeartSize" "Household" "Medication" "MentalHealth" "Mouth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SpiroAndArterialAndBp" "Spirometry" "SunExposure" "UrineAndBlood" "UrineBiochemestry" )
 
 #input_datasets=( 'Medication' )
-input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' )
+input_datasets=( 'AnthropometryAllBiomarkers' )
 search_dir_clusters='/n/groups/patel/samuel/EWAS/AutomaticClusters/'
 search_dir_inputs='/n/groups/patel/samuel/EWAS/inputs_final'
 outer_splits=10
