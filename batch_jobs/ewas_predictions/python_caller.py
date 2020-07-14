@@ -40,7 +40,7 @@ else :
     df_predicts_no_scaled_test, df_predicts_no_scaled_val, df_predicts_no_scaled_train = gp.optimize_hyperparameters_fold(df)
 
     #print("Hyper Opt over, saving file")
-    #gp.save_predictions(df_predicts_no_scaled_val, 'val')
-    #gp.save_predictions(df_predicts_no_scaled_test, 'test')
-    #gp.save_predictions(df_predicts_no_scaled_train, 'train')
+    gp.save_predictions(df_predicts_no_scaled_val, 'val')
+    gp.save_predictions(df_predicts_no_scaled_test, 'test')
+    gp.save_predictions(df_predicts_no_scaled_train, 'train')
     #print("task complete")
