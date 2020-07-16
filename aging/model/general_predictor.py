@@ -359,6 +359,7 @@ class BaseModel():
         if y_train.dtype == 'O':
             y_train = y_train.astype('?, <f8')
             y_train_train = y_train_train.astype('?, <f8')
+            print(y_train)
         ## RandomizedSearch :
         if self.model_validate == 'RandomizedSearch':
             clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = False)
