@@ -356,6 +356,8 @@ class BaseModel():
         inner_cv = PredefinedSplit(test_fold = test_folds)
         y_train = y_train.values
         y_train_train = y_train_train.values
+        y_train = y_train.reshape(y_train.shape[0], )
+        y_train_train = y_train_train.reshape(y_train_train.shape[0], )
         if y_train.dtype == 'O':
             y_train = y_train.astype('?, <f8')
             y_train_train = y_train_train.astype('?, <f8')
