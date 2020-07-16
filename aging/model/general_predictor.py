@@ -9,7 +9,6 @@ from sklearn.linear_model import ElasticNet, SGDClassifier
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, RandomForestClassifier, GradientBoostingClassifier
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMRegressor, LGBMClassifier
@@ -88,6 +87,23 @@ class BaseModel():
                 return {
                         'learning_rate_init': hp.loguniform('learning_rate_init', low = np.log(5e-5), high = np.log(2e-2)),
                         'alpha': hp.uniform('alpha', low = 1e-6, high = 1e3)
+                }
+            elif self.model_name == 'CoxPh':
+                return {
+                    'alpha' : hp.loguniform('alpha', low = np.log(0.01), high = np.log(10))
+                }
+            elif self.model_name == 'CoxRf' :
+                return {
+                    'n_estimators': hp.randint('n_estimators', upper = 300) + 150,
+                    'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4]),
+                    'max_depth': hp.choice('max_depth', [None, 10, 8, 6])
+                }
+            elif self.model_name == 'CoxGbm':
+                return {
+                    'n_estimators': hp.randint('n_estimators', upper = 300) + 150,
+                    'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]),
+                    'learning_rate': hp.uniform('learning_rate', low = 0.01, high = 0.3),
+                    'max_depth': hp.randint('max_depth', 10) + 5
                 }
         elif self.model_validate == 'RandomizedSearch':
             if self.model_name == 'ElasticNet':
@@ -418,12 +434,14 @@ class BaseModel():
             features_imp = best_estim['estimator'].feature_importances_
         elif self.model_name == 'LightGbm':
             features_imp = best_estim['estimator'].feature_importances_ / np.sum(best_estim['estimator'].feature_importances_)
-        elif self.model_name == 'NeuralNetwork'  :
+        elif self.model_name == 'NeuralNetwork'  or self.model_name == 'CoxRf' or self.model_name == 'CoxGbm':
             list_scores = []
             if scoring == 'r2':
                 score_max = r2_score(y, best_estim.predict(X.values))
-            else :
+            elif scoring == 'f1' :
                 score_max = f1_score(y, best_estim.predict(X.values))
+            else :
+                score_max = best_estim.score(X.values, y)
             for column in columns :
                 X_copy = copy.deepcopy(X)
                 X_copy[column] = np.random.permutation(X_copy[column])
@@ -432,9 +450,11 @@ class BaseModel():
                 elif scoring == 'f1' :
                     score = f1_score(y, best_estim.predict(X_copy.values))
                 else :
-                    raise ValueError(' Wrong scoring fonction ')
+                    score = best_estim.score(X.values, y)
                 list_scores.append(score_max - score)
             features_imp = list_scores
+        elif self.model_name == 'CoxPh':
+            features_imp = best_estim['estimator'].coef_
         else :
             raise ValueError('Wrong model name')
         return features_imp
