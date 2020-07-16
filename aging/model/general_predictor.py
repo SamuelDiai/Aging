@@ -371,8 +371,8 @@ class BaseModel():
         y_train = y_train.values
         y_train_train = y_train_train.values
         if y_train.dtype == 'O':
-            y_train = y_train.values.astype('?, <f8')
-            y_train_train = y_train_train.values.astype('?, <f8')
+            y_train = y_train.astype('?, <f8')
+            y_train_train = y_train_train.astype('?, <f8')
         elif self.model_validate == 'HyperOpt':
             def objective(hyperparameters):
                 estimator_ = self.get_model()
