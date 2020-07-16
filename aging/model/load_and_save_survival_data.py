@@ -33,16 +33,16 @@ def read_death_record(instances = [0, 1, 2, 3], **kwargs):
     return df[['Follow up time', 'Is dead']]
 
 def load_data_survival(dataset, **kwargs):
-    df = load_data(dataset, **kwargs)
+    df, organ, view = load_data(dataset, **kwargs)
     try :
-        df_survival = pd.read_csv('/n/groups/patel/samuel/survival.csv').set_index('id')
+        df_survival = pd.read_csv('/n/groups/patel/samuel/Survival/survival.csv').set_index('id')
     except FileNotFoundError:
         df_survival = read_death_record(**kwargs)
-        df_survival.to_csv('/n/groups/patel/samuel/survival.csv')
+        df_survival.to_csv('/n/groups/patel/samuel/Survival/survival.csv')
     df_full = df.join(df_survival)
     df_full['y'] = list(zip(df_full['Is dead'], df_full['Follow up time']))
     df_full = df_full.drop(columns = ['Is dead', 'Follow up time'])
-    return df_full
+    return df_full, organ, view
 
 
 def save_features_to_csv(cols, features_imp, organ, view, model_name, method):
