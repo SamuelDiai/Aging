@@ -94,13 +94,13 @@ class BaseModel():
                 }
             elif self.model_name == 'CoxRf' :
                 return {
-                    'n_estimators': hp.randint('n_estimators', 150) + 150,
+                    'n_estimators': hp.randint('n_estimators', 1) + 9,
                     'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4]),
                     'max_depth': hp.choice('max_depth', [None, 10, 8, 6])
                 }
             elif self.model_name == 'CoxGbm':
                 return {
-                    'n_estimators': hp.randint('n_estimators', 150) + 150,
+                    'n_estimators': hp.randint('n_estimators', 1) + 9,
                     'max_features': hp.choice('max_features', ['auto', 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3]),
                     'learning_rate': hp.uniform('learning_rate', low = 0.01, high = 0.3),
                     'max_depth': hp.randint('max_depth', 10) + 5
