@@ -368,6 +368,11 @@ class BaseModel():
             params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
 
         ## HyperOpt :
+        y_train = y_train.values
+        y_train_train = y_train_train.values
+        if y_train.dtype == 'O':
+            y_train = y_train.values.astype('?, <f8')
+            y_train_train = y_train_train.values.astype('?, <f8')
         elif self.model_validate == 'HyperOpt':
             def objective(hyperparameters):
                 estimator_ = self.get_model()
@@ -378,7 +383,7 @@ class BaseModel():
                     else :
                         continue
                 pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
-                scores = cross_validate(pipeline, X_train.values, y_train.values, scoring = scoring, cv = inner_cv, verbose = 10 )
+                scores = cross_validate(pipeline, X_train.values, y_train, scoring = scoring, cv = inner_cv, verbose = 10 )
                 return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
             space = self.get_hyper_distribution()
             trials = Trials()
@@ -396,8 +401,8 @@ class BaseModel():
                     continue
             pipeline_best_on_train_and_val = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
             pipeline_best_on_train = Pipeline([('scaler', StandardScaler()), ('estimator', estim_train)])
-            pipeline_best_on_train_and_val.fit(X_train.values, y_train.values)
-            pipeline_best_on_train.fit(X_train_train.values, y_train_train.values)
+            pipeline_best_on_train_and_val.fit(X_train.values, y_train)
+            pipeline_best_on_train.fit(X_train_train.values, y_train_train)
 
 
 
