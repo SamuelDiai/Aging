@@ -24,7 +24,7 @@ path_eid_split = '/n/groups/patel/Alan/Aging/Medical_Images/eids_split/'
 
 
 
-MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork', 'Correlation'}
+MODELS = {'ElasticNet', 'RandomForest', 'GradientBoosting', 'Xgboost', 'LightGbm', 'NeuralNetwork', 'Correlation', 'CoxPh', 'CoxGbm', 'CoxRf'}
 
 
 
