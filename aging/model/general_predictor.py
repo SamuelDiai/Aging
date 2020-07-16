@@ -354,7 +354,11 @@ class BaseModel():
         for fold_count in range(len(list_test_folds_id)):
             test_folds[list_test_folds_id_index[fold_count]] = fold_count
         inner_cv = PredefinedSplit(test_fold = test_folds)
-        #
+        y_train = y_train.values
+        y_train_train = y_train_train.values
+        if y_train.dtype == 'O':
+            y_train = y_train.astype('?, <f8')
+            y_train_train = y_train_train.astype('?, <f8')
         ## RandomizedSearch :
         if self.model_validate == 'RandomizedSearch':
             clf = RandomizedSearchCV(estimator = self.get_model(), param_distributions = self.get_hyper_distribution(), cv = inner_cv, n_jobs = -1, scoring = scoring, verbose = 10, n_iter = self.n_iter, return_train_score = False)
@@ -368,11 +372,6 @@ class BaseModel():
             params_per_fold_opt = dict(params_per_fold_opt.reset_index(drop = True))
 
         ## HyperOpt :
-        y_train = y_train.values
-        y_train_train = y_train_train.values
-        if y_train.dtype == 'O':
-            y_train = y_train.astype('?, <f8')
-            y_train_train = y_train_train.astype('?, <f8')
         elif self.model_validate == 'HyperOpt':
             def objective(hyperparameters):
                 estimator_ = self.get_model()
