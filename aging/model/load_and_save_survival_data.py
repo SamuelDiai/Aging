@@ -1,6 +1,7 @@
 import pandas as pd
 import glob
 from .load_and_save_data import load_data
+from ..processing.base_processing import path_data
 
 path_features_survival = '/n/groups/patel/samuel/Survival/feature_importances/'
 path_predictions_survival = '/n/groups/patel/samuel/Survival/predictions'
