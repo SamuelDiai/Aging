@@ -2,6 +2,7 @@
 from sklearn.base import BaseEstimator, ClassifierMixin
 import xgboost as xgb
 from sksurv.metrics import concordance_index_censored
+import numpy as np
 class CoxXgboost(BaseEstimator):
     def __init__(self, colsample_bytree=0, gamma=0, learning_rate=0, max_depth=0, n_estimators=0, subsample = 0):
         self.colsample_bytree = colsample_bytree
