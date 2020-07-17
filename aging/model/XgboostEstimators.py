@@ -95,5 +95,6 @@ class AftXgboost(BaseEstimator):
 
     def score(self, X, y):
         HR = self.predict(X)
+        print(HR)
         y_is_dead, y_time = list(zip(*y))
         return concordance_index_censored(y_is_dead, y_time, HR)[0]
