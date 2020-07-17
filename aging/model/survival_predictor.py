@@ -2,7 +2,7 @@ from .general_predictor import *
 from sksurv.ensemble import RandomSurvivalForest, GradientBoostingSurvivalAnalysis
 from sksurv.linear_model import CoxPHSurvivalAnalysis
 from .load_and_save_survival_data import load_data_survival
-from .XgboostEstimators import CoxXgboost
+from .XgboostEstimators import CoxXgboost, AftXgboost
 
 class SurvivalPredictor(BaseModel):
     def __init__(self, model, outer_splits, inner_splits, n_iter, dataset, fold, model_validate = 'HyperOpt'):
@@ -18,6 +18,8 @@ class SurvivalPredictor(BaseModel):
             self.model = GradientBoostingSurvivalAnalysis()
         elif model == 'CoxXgboost':
             self.model = CoxXgboost()
+        elif model == 'AftXgboost':
+            self.model = AftXgboost()
         else :
             raise ValueError('model : "%s" not valid, please enter "CoxPh" or "CoxRf" or "CoxGbm"' % model)
 
