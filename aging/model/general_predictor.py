@@ -70,7 +70,7 @@ class BaseModel():
                         'learning_rate': hp.uniform('learning_rate', low = 0.02, high = 0.2),
                         'max_depth': hp.randint('max_depth', 10) + 5,
                         'n_estimators': hp.randint('n_estimators', 300) + 150,
-                        'subsample': hp.uniform('subsample', 0.6, 0.4)
+                        'subsample': hp.uniform('subsample', 0.2, 0.8)
                 }
             elif self.model_name == 'LightGbm':
                 return {
