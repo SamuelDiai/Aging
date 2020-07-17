@@ -41,7 +41,7 @@ class CoxXgboost(BaseEstimator):
             getattr(self, "booster_")
         except AttributeError:
             raise RuntimeError("You must train estimator before predicting data!")
-        return self.booster_.predict(X)
+        return self.booster_.predict(xgb.DMatrix(X))
 
     def score(self, X, y):
         HR = self.predict(X)
