@@ -69,13 +69,13 @@ class AftXgboost(BaseEstimator):
         y_is_dead, y_time = list(zip(*y))
         y_is_dead, y_time = np.array(y_is_dead), np.array(y_time)
         y_lower_bound = copy.deepcopy(y_time)
-        y_upper_bound = (~y_is_dead) * y_time
-        print(y_upper_bound)
+        y_upper_bound = y_is_dead * y_time
         y_upper_bound[(y_upper_bound == 0)] = np.inf
         dtrain = xgb.DMatrix(X)
         dtrain.set_float_info('label_lower_bound', y_lower_bound)
         dtrain.set_float_info('label_upper_bound', y_upper_bound)
         params = {'objective': 'survival:aft',
+                  'aft_loss_distribution' : 'logistic',
                   'colsample_bytree' : self.colsample_bytree,
                   'gamma' : self.gamma,
                   'learning_rate' : self.learning_rate,
