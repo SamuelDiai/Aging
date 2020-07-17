@@ -63,7 +63,7 @@ class BaseModel():
                         'learning_rate': hp.uniform('learning_rate', low = 0.01, high = 0.3),
                         'max_depth': hp.randint('max_depth', 10) + 5
                         }
-            elif self.model_name == 'Xgboost':
+            elif self.model_name == 'Xgboost' or self.model_name == 'CoxXgboost':
                 return {
                         'colsample_bytree': hp.uniform('colsample_bytree', low = 0.2, high = 0.7),
                         'gamma': hp.uniform('gamma', low = 0.1, high = 0.5),
