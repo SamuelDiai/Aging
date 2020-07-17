@@ -31,7 +31,7 @@ class CoxXgboost(BaseEstimator):
                   'learning_rate' : self.learning_rate,
                   'max_depth' : self.max_depth,
                   'subsample' : self.subsample}
-        print(params)
+        print(params, "n_estimators", self.n_estimators)
         bst = xgb.train(params, dtrain, num_boost_round=self.n_estimators)
         self.booster_ = bst
         return self
