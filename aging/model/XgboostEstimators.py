@@ -3,6 +3,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 import xgboost as xgb
 from sksurv.metrics import concordance_index_censored
 import numpy as np
+import copy
 class CoxXgboost(BaseEstimator):
     def __init__(self, colsample_bytree=0, gamma=0, learning_rate=0, max_depth=0, n_estimators=0, subsample = 0):
         self.colsample_bytree = colsample_bytree
@@ -67,8 +68,9 @@ class AftXgboost(BaseEstimator):
         #transform y for xgboost formatting
         y_is_dead, y_time = list(zip(*y))
         y_is_dead, y_time = np.array(y_is_dead), np.array(y_time)
-        y_lower_bound = y_time
+        y_lower_bound = copy.deepcopy(y_time)
         y_upper_bound = (~y_is_dead) * y_time
+        print(y_upper_bound)
         y_upper_bound[(y_upper_bound == 0)] = np.inf
         dtrain = xgb.DMatrix(X)
         dtrain.set_float_info('label_lower_bound', y_lower_bound)
