@@ -132,7 +132,7 @@ def read_paired_associative_learning_data(**kwargs):
     cont_fill_na = []
     cols_half_binary = {}
 
-    df = read_complex_data(instances = instances,
+    df = read_complex_data(instances = [2, 3],
                            dict_onehot = dict_onehot,
                            cols_numb_onehot = cols_numb_onehot,
                            cols_ordinal_ = cols_ordinal,
@@ -164,7 +164,7 @@ def read_prospective_memory_data(**kwargs):
     cont_fill_na = []
     cols_half_binary = {}
 
-    df = read_complex_data(instances = instances,
+    df = read_complex_data(instances = [0, 1, 2, 3],
                            dict_onehot = dict_onehot,
                            cols_numb_onehot = cols_numb_onehot,
                            cols_ordinal_ = cols_ordinal,
