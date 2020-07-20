@@ -65,12 +65,12 @@ class GeneralPredictor(BaseModel):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre'])
             y = df[['Sex', 'eid']]
-            self.features_importance_(X, y, self.scoring, self.organ)
+            self.features_importance_(X, y, self.scoring, self.organ, self.view)
             return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
         elif self.target == 'Age':
             X = df.drop(columns = ['Age when attended assessment centre'])
             y = df[['Age when attended assessment centre', 'eid']]
-            self.features_importance_(X, y, self.scoring, self.organ)
+            self.features_importance_(X, y, self.scoring, self.organ, self.view)
             return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
         else :
             raise ValueError('GeneralPredictor not instancied')
