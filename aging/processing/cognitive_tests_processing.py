@@ -183,7 +183,7 @@ def read_numeric_memory_data(**kwargs):
     4285 : Time to complete test
 
     """
-    cols_features = list(4282, 4285)
+    cols_features = [4282, 4285]
     cols_filter = [ ]
     instance = [0, 2, 3]
     return read_data(cols_features, cols_filter, instance, **kwargs)
