@@ -18,7 +18,7 @@ from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_d
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
 from ..processing.hearing_tests_processing import read_hearing_test_data
-from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion, read_tower_rearranging_data, \
+from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion_data, read_tower_rearranging_data, \
                                                     read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
                                                     read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data
 
@@ -58,7 +58,7 @@ map_dataset_to_field_and_dataloader = {
                     'HandGripStrength' : (100019, read_hand_grip_strength_data),
                     'HearingTest' : (100049, read_hearing_test_data),
                     'CognitiveReactionTime' : (100032, read_reaction_time_data),
-                    'CognitiveMatrixPatternCompletion' : (501, read_matrix_pattern_completion),
+                    'CognitiveMatrixPatternCompletion' : (501, read_matrix_pattern_completion_data),
                     'CognitiveTowerRearranging' : (503, read_tower_rearranging_data),
                     'CognitiveSymbolDigitSubstitution' : (502, read_symbol_digit_substitution_data),
                     'CognitivePairedAssociativeLearning' : (506, read_paired_associative_learning_data),
