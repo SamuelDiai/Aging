@@ -113,8 +113,11 @@ def read_data(cols_features, cols_filter, instances, **kwargs):
         age_col = '21003-' + str(instance) + '.0'
         cols_features_ = [str(feature) + '-%s.0' % instance for feature in cols_features]
         cols_filter_ = [str(filter) + '-%s.0' % instance for filter in cols_filter]
-        temp = pd.read_csv(path_data, usecols = ['eid', age_col, '31-0.0'] + cols_features_ + cols_filter_, nrows = nrows)
-        temp.set_index('eid', inplace = True)
+        try :
+            temp = pd.read_csv(path_data, usecols = ['eid', age_col, '31-0.0'] + cols_features_ + cols_filter_, nrows = nrows)
+        except ValueError :
+			temp = pd.read_csv(path_data2, usecols = ['eid', age_col, '31-0.0'] + cols_features_ + cols_filter_, nrows = nrows)
+		temp.set_index('eid', inplace = True)
         temp.index = temp.index.rename('id')
 
         ## remove rows which contains any values for features in cols_features and then select only features in cols_abdominal
