@@ -97,23 +97,22 @@ def read_pairs_matching_data(**kwargs):
 
     for instance in [0, 1, 2, 3]:
         cols_age_eid_sex = ['eid']
-        other_cols = ['399-%s.1' % instance, '399-%s.2' % instance, '399-%s.3' % instance] + \
-                     ['400-%s.1' % instance, '400-%s.2' % instance, '400-%s.3' % instance] + \
-                     ['396-%s.1' % instance, '396-%s.2' % instance, '396-%s.3' % instance] + \
-                     ['397-%s.1' % instance, '397-%s.2' % instance, '397-%s.3' % instance] + \
-                     ['398-%s.1' % instance, '398-%s.2' % instance, '398-%s.3' % instance]
+        other_cols = ['399-%s.1' % instance, '399-%s.2' % instance] + \
+                     ['400-%s.1' % instance, '400-%s.2' % instance] + \
+                     ['396-%s.1' % instance, '396-%s.2' % instance] + \
+                     ['397-%s.1' % instance, '397-%s.2' % instance] + \
+                     ['398-%s.1' % instance, '398-%s.2' % instance]
 
 
         d = pd.read_csv(path_data2, usecols = cols_age_eid_sex + other_cols, **kwargs)
         d = d[~d[other_cols].isna().all(axis = 1)]
-        list_round = ['First round', 'Second round', 'Last round']
+        list_round = ['First round', 'Second round']
         for idx, elem in enumerate(list_round, 1):
             d['Number of incorrect matches in round.%s' % elem] = d['399-%s.%s' % (instance, idx)]
             d['Time to complete round.%s' % elem] = d['400-%s.%s' % (instance, idx)]
             d['Number of columns displayed in round.%s' % elem] = d['396-%s.%s' % (instance, idx)]
-            d['Number of rows displayed in round.%s' % elem] = d['397-%s.%s' % (instance, idx)]
             d['Number of correct matches in round.%s' % elem] = d['398-%s.%s' % (instance, idx)]
-
+            d['Number of rows displayed in round.%s' % elem] = d['397-%s.%s' % (instance, idx)]
         d['id'] = d['eid'].astype(str) + '_%s' % instance
         d = d.set_index('id')
         list_df.append(d)
