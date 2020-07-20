@@ -435,7 +435,7 @@ class BaseModel():
         print(best_estim)
         print(best_estim['estimator'])
         if self.model_name == 'ElasticNet':
-            features_imp = (np.abs(best_estim['estimator'].coef_) / np.sum(np.abs(best_estim['estimator'].coef_))).flatten()
+            features_imp = best_estim['estimator'].coef_
         elif self.model_name == 'RandomForest':
             features_imp = best_estim['estimator'].feature_importances_
         elif self.model_name == 'GradientBoosting':
