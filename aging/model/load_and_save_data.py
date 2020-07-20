@@ -20,7 +20,7 @@ from ..processing.hand_grip_strength_processing import read_hand_grip_strength_d
 from ..processing.hearing_tests_processing import read_hearing_test_data
 from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion_data, read_tower_rearranging_data, \
                                                     read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
-                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data
+                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data, read_trail_making_data
 
 
 
@@ -64,7 +64,8 @@ map_dataset_to_field_and_dataloader = {
                     'CognitivePairedAssociativeLearning' : (506, read_paired_associative_learning_data),
                     'CognitiveProspectiveMemory' : (100031, read_prospective_memory_data),
                     'CognitiveNumericMemory' : (100029, read_numeric_memory_data),
-                    'CognitiveFluidIntelligence' : (100027, read_fluid_intelligence_data)
+                    'CognitiveFluidIntelligence' : (100027, read_fluid_intelligence_data),
+                    'CognitiveTrailMaking' : (505, read_trail_making_data)
                     }
 
 
@@ -103,7 +104,8 @@ dict_dataset_to_organ_and_view = {
     'CognitivePairedAssociativeLearning' : ('Cognitive', 'PairedAssociativeLearning'),
     'CognitiveProspectiveMemory' : ('Cognitive', 'ProspectiveMemory'),
     'CognitiveNumericMemory' : ('Cognitive', 'NumericMemory'),
-    'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence')
+    'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence'),
+    'CognitiveTrailMaking' : ('Cognitive', 'TrailMaking')
 }
 
 # def load_data(dataset, **kwargs):

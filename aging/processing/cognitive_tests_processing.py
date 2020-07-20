@@ -4,6 +4,24 @@ from ..processing.base_processing import path_data2
 import pandas as pd
 
 
+def read_trail_making_data(instances = [2, 3], **kwargs):
+    """
+    6348	Duration to complete numeric path (trail #1)
+    6350	Duration to complete alphanumeric path (trail #2)
+    6349	Total errors traversing numeric path (trail #1)
+    6351	Total errors traversing alphanumeric path (trail #2)
+    """
+    df = read_complex_data(instances = [2, 3],
+                           dict_onehot = {},
+                           cols_numb_onehot = {},
+                           cols_ordinal_ = [],
+                           cols_continuous_ = [6348, 6349, 6350, 6351],
+                           cont_fill_na_ = [],
+                           cols_half_binary_ = [],
+                           **kwargs)
+    return df
+
+
 def read_reaction_time_data(instances = [0, 1, 2, 3], **kwargs):
     """
     Reaction Time
