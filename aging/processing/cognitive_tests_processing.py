@@ -115,8 +115,8 @@ def read_paired_associative_learning_data(**kwargs):
     6547	Word associated with "new"
     """
 
-    dict_onehot = {'6448' : 1, '6459' : 1, '6470' : 1,  '6481' : 1, '6492' : 1, '6514' : 1, '6525' : 1, '6536' : 1, '6547' : 1}
-    cols_numb_onehot = {'6448' : {1 : 'car', 2 : 'plant', 3 : 'house', 4 : 'trousers', -3 : 'Prefer not to answer'},
+    cols_numb_onehot = {'6448' : 1, '6459' : 1, '6470' : 1,  '6481' : 1, '6492' : 1, '6514' : 1, '6525' : 1, '6536' : 1, '6547' : 1}
+    dict_onehot = {'6448' : {1 : 'car', 2 : 'plant', 3 : 'house', 4 : 'trousers', -3 : 'Prefer not to answer'},
                         '6459' : {1 : 'dog', 2 : 'elephant', 3 : 'cat', 4 : 'clown', -3 : 'Prefer not to answer'},
                         '6470' : {1 : 'dress', 2 : 'house', 3 : 'plant', 4 : 'curtains', -3 : 'Prefer not to answer'},
                         '6481' : {1 : 'car', 2 : 'cat', 3 : 'house', 4 : 'elephant', -3 : 'Prefer not to answer'},
@@ -153,8 +153,8 @@ def read_prospective_memory_data(**kwargs):
     4291	Number of attempts
     4288	Time to answer
     """
-    dict_onehot = {'4292' : 1, '4293' : 1}
-    cols_numb_onehot = {
+    cols_numb_onehot = {'4292' : 1, '4293' : 1}
+    dict_onehot = {
                         '4292' : {-1 : 'Participant skipped/abandonded', 0 : 'Blue square', 1 : 'Pink star', 2 : 'Grey cross', 3 : 'Orange circle'},
                         '4293' : {-1 : 'Participant skipped/abandonded', 0 : 'Blue square', 1 : 'Pink star', 2 : 'Grey cross', 3 : 'Orange circle'}
                         }
@@ -208,8 +208,8 @@ def read_fluid_intelligence_data(**kwargs):
     5790	FI12 : square sequence recognition
     5866	FI13 : subset inclusion logic
     """
-    dict_onehot = {'4935' : 1, '4946' : 1, '4957' : 1,  '4968' : 1, '4979' : 1, '4990' : 1, '5001' : 1, '5012' : 1, '5556' : 1, '5699': 1, '5779' : 1, '5790' : 1, '5866' : 1}
-    cols_numb_onehot = {'4935' : {13 : '13', 14  : '14', 15 : '15', 16 : '16', 17 : '17',-1 : 'Do not know', -3 : 'Prefer not to answer'},
+    cols_numb_onehot = {'4935' : 1, '4946' : 1, '4957' : 1,  '4968' : 1, '4979' : 1, '4990' : 1, '5001' : 1, '5012' : 1, '5556' : 1, '5699': 1, '5779' : 1, '5790' : 1, '5866' : 1}
+    dict_onehot = {'4935' : {13 : '13', 14  : '14', 15 : '15', 16 : '16', 17 : '17',-1 : 'Do not know', -3 : 'Prefer not to answer'},
                         '4946': {642 : '642', 308 : '308', 987 : '987', 714 : '714', 253 : '253', -1 : 'Do not know',-3 : 'Prefer not to answer'},
                         '4957' : {1 : 'Grow', 2 : 'Develop', 3 :  'Improve', 4 : 'Adult', 5 : 'Old', -1 : 'Do not know', -3 : 'Prefer not to answer'},
                         '4968' : {5 : '5', 6 : '6', 7 : '7', 8 : '8', -1 : 'Do not know', -3 : 'Prefer not to answer'},
