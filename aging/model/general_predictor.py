@@ -280,7 +280,7 @@ class BaseModel():
     #
     #     return df_test, df_val, df_train
 
-    def create_list_test_train_folds(self, X, y, fold, organ):
+    def create_list_test_train_folds(self, X, y, fold, organ, view):
         X_eid = X.drop_duplicates('eid')
         y_eid = y.drop_duplicates('eid')
         eids = X_eid.eid
@@ -296,6 +296,8 @@ class BaseModel():
                 list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive'] :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
+            elif organ in ['Cognitive'] :
+                list_test_folds = [pd.read_csv(path_eid_split + '%s_%s_eids_%s.csv' % (organ, view, fold)).columns.astype(int) for fold in range(splits)]
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
 
             if fold is not None:
@@ -317,7 +319,7 @@ class BaseModel():
         print('list_test_folds_id', list_test_folds_id)
         return list_train_fold_id, list_test_folds_id
 
-    def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ):
+    def optimize_hyperparameters_fold_(self, X, y, scoring, fold, organ, view):
         """
         input X  : dataframe with features + eid
         input y : dataframe with target + eid
@@ -326,7 +328,7 @@ class BaseModel():
         if self.inner_splits != self.outer_splits - 1:
             raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
 
-        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X, y, fold, organ)
+        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X, y, fold, organ, view)
         #
         test_fold = (fold + 1)%self.outer_splits
         val_fold = fold
@@ -466,8 +468,8 @@ class BaseModel():
             raise ValueError('Wrong model name')
         return features_imp
 
-    def features_importance_(self, X, y, scoring, organ):
-        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X = X, y = y, fold = None, organ = organ)
+    def features_importance_(self, X, y, scoring, organ, view):
+        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X = X, y = y, fold = None, organ = organ, view = view)
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
         columns = X.columns

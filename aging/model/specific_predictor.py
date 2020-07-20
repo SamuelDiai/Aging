@@ -58,7 +58,7 @@ class GeneralPredictor(BaseModel):
             y = df[['Age when attended assessment centre', 'eid']]
         else :
             raise ValueError('GeneralPredictor not instancied')
-        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, self.view)
 
 
     def feature_importance(self, df):

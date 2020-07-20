@@ -33,10 +33,10 @@ class SurvivalPredictor(BaseModel):
     def optimize_hyperparameters_fold(self, df):
         X = df.drop(columns = ['y'])
         y = df[['y', 'eid']]
-        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, view = None)
 
     def feature_importance(self, df):
         X = df.drop(columns = ['y'])
         y = df[['y', 'eid']]
-        self.features_importance_(X, y, self.scoring, self.organ)
+        self.features_importance_(X, y, self.scoring, self.organ, view = None)
         return df.drop(columns = ['y', 'eid']).columns
