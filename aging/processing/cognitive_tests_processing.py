@@ -97,10 +97,10 @@ def read_pairs_matching_data(**kwargs):
 
     for instance in [0, 1, 2, 3]:
         cols_age_eid_sex = ['eid']
-        other_cols = ['399-%s.0' % instance, '399-%s.1' % instance, '399-%s.2' % instance] +
-                     ['400-%s.0' % instance, '400-%s.1' % instance, '400-%s.2' % instance] +
-                     ['396-%s.0' % instance, '396-%s.1' % instance, '396-%s.2' % instance] +
-                     ['397-%s.0' % instance, '397-%s.1' % instance, '397-%s.2' % instance] +
+        other_cols = ['399-%s.0' % instance, '399-%s.1' % instance, '399-%s.2' % instance] + \
+                     ['400-%s.0' % instance, '400-%s.1' % instance, '400-%s.2' % instance] + \
+                     ['396-%s.0' % instance, '396-%s.1' % instance, '396-%s.2' % instance] + \
+                     ['397-%s.0' % instance, '397-%s.1' % instance, '397-%s.2' % instance] + \
                      ['398-%s.0' % instance, '398-%s.1' % instance, '398-%s.2' % instance]
 
 
