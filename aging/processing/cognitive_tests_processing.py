@@ -1,5 +1,6 @@
 from .base_processing import read_data
 from ..environment_processing.base_processing import read_complex_data
+from ..processing.base_processing import path_data2
 import pandas as pd
 
 
@@ -19,7 +20,7 @@ def read_reaction_time_data(instances = [0, 1, 2, 3], **kwargs):
         age_col = '21003-' + str(instance) + '.0'
         cols_age_eid_sex = ['eid', age_col]
         cols = ['401', '402', '404']
-        d = pd.read_csv(path_data, usecols = cols_age_eid_sex + ['20023-%s.0' % instance] +  [elem  + '-%s.%s' % (instance, int_) for int_ in range(12) for elem in cols], **kwargs)
+        d = pd.read_csv(path_data2, usecols = cols_age_eid_sex + ['20023-%s.0' % instance] +  [elem  + '-%s.%s' % (instance, int_) for int_ in range(12) for elem in cols], **kwargs)
         dict_rename = dict(zip(cols_age_eid_sex + ['20023-%s.0' % instance], ['eid', 'Age when attended assessment centre', 'Mean time to correctly identify matches']))
         d = d.rename(columns = dict_rename)
         for step in range(12):
@@ -54,7 +55,7 @@ def read_matrix_pattern_completion_data(**kwargs):
         age_col = '21003-' + str(instance) + '.0'
         cols_age_eid_sex = ['eid', age_col]
         other_cols = ['6373-%s.0' % instance, '6374-%s.0' % instance] +  ['6333-%s.%s' % (instance, int_) for int_ in range(15)]
-        d = pd.read_csv(path_data, usecols = cols_age_eid_sex + other_cols, **kwargs)
+        d = pd.read_csv(path_data2, usecols = cols_age_eid_sex + other_cols, **kwargs)
         d = d[~d[other_cols].isna().all(axis = 1)]
         d['Number of puzzles correctly solved'] = d['6373-%s.0' % instance]
         d['Number of puzzles viewed'] = d['6374-%s.0' % instance]

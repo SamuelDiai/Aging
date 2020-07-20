@@ -5,6 +5,7 @@ import numpy as np
 # To edit for dev
 if sys.platform == 'linux':
 	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
+	path_data2 = "/n/groups/patel/uk_biobank/project_52887_42640/ukb42640.csv"
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
 	path_features = "/n/groups/patel/samuel/EWAS/feature_importances_final/"
 	path_predictions = "/n/groups/patel/samuel/EWAS/predictions_final/"
@@ -90,8 +91,10 @@ def read_complex_data(instances, dict_onehot, cols_numb_onehot, cols_ordinal_, c
                 cols_continuous[idx] = elem + '-%s.0' % instance
             elif isinstance(elem, (int)):
                 cols_continuous[idx] = str(elem) + '-%s.0' % instance
-
-        temp = pd.read_csv(path_data, usecols = ['eid'] + cols_onehot + cols_ordinal + cols_continuous, **kwargs).set_index('eid')
+        try :
+            temp = pd.read_csv(path_data, usecols = ['eid'] + cols_onehot + cols_ordinal + cols_continuous, **kwargs).set_index('eid')
+        except ValueError :
+            temp = pd.read_csv(path_data2, usecols = ['eid'] + cols_onehot + cols_ordinal + cols_continuous, **kwargs).set_index('eid')
         temp = temp.dropna(how = 'all')
         for column in cols_onehot + cols_ordinal:
             temp[column] = temp[column].astype('Int32')
