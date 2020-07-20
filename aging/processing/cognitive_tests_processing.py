@@ -186,7 +186,7 @@ def read_numeric_memory_data(**kwargs):
     cols_numb_onehot = {}
     dict_onehot = {}
     cols_ordinal = []
-    cols_continuous = ['4282', '4285']
+    cols_continuous = ['4282', '4283', '4285']
     cont_fill_na = []
     cols_half_binary = {}
 
