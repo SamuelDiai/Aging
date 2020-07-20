@@ -1,5 +1,6 @@
 from .base_processing import read_data
 from ..environment_processing.base_processing import read_complex_data
+import pandas as pd
 
 
 def read_reaction_time_data(instances = [0, 1, 2, 3], **kwargs):
@@ -33,7 +34,7 @@ def read_reaction_time_data(instances = [0, 1, 2, 3], **kwargs):
     return pd.concat(list_df)
 
 
-def read_matrix_pattern_completion(**kwargs):
+def read_matrix_pattern_completion_data(**kwargs):
     """
     6373	Number of puzzles correctly solved
     6374	Number of puzzles viewed
