@@ -183,10 +183,22 @@ def read_numeric_memory_data(**kwargs):
     4285 : Time to complete test
 
     """
-    cols_features = [4282, 4285]
-    cols_filter = [ ]
-    instance = [0, 2, 3]
-    return read_data(cols_features, cols_filter, instance, **kwargs)
+    cols_numb_onehot = {}
+    dict_onehot = {}
+    cols_ordinal = []
+    cols_continuous = ['4282', '4285']
+    cont_fill_na = []
+    cols_half_binary = {}
+
+    df = read_complex_data(instances = [0, 2, 3],
+                           dict_onehot = dict_onehot,
+                           cols_numb_onehot = cols_numb_onehot,
+                           cols_ordinal_ = cols_ordinal,
+                           cols_continuous_ = cols_continuous,
+                           cont_fill_na_ = cont_fill_na,
+                           cols_half_binary_ = cols_half_binary,
+                           **kwargs)
+    return df
 
 def read_fluid_intelligence_data(**kwargs):
     instances = [0, 1, 2, 3]
