@@ -29,8 +29,10 @@ def read_reaction_time_data(instances = [0, 1, 2, 3], **kwargs):
         d['id'] = d['eid'].astype(str) + '_%s' % instance
         d = d.set_index('id')
         d = d[['eid', 'Age when attended assessment centre', 'Mean time to correctly identify matches'] +
-              ['Cards are matching.%s' % step for step in range(12)] +
-              ['Duration to first press of snap-button in each round.%s' % step for step in range(12)]]
+              ['Cards are matching.%s' % step for step in range(12)]
+        d = d[~d[Mean time to correctly identify matches].isna()]
+        d['Mean time to press snap-button'] = d[['Duration to first press of snap-button in each round.%s' % step for step in range(12)]].mean(axis = 1)
+        d = d.drop(columns = ['Duration to first press of snap-button in each round.%s' % step for step in range(12)])
         list_df.append(d)
     return pd.concat(list_df)
 
