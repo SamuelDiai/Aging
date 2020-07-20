@@ -292,12 +292,13 @@ class BaseModel():
         if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
-            if organ in ['Brain', 'Carotids', 'Heart']:
+            if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning']:
                 list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive'] :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
-            elif organ in ['Cognitive'] :
+            elif organ in ['Cognitive'] and view in ['ReactionTime', 'PairsMatching', 'ProspectiveMemory', 'NumericMemory']:
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_%s_eids_%s.csv' % (organ, view, fold)).columns.astype(int) for fold in range(splits)]
+
             list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
 
             if fold is not None:
