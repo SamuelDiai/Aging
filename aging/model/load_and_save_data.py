@@ -20,7 +20,8 @@ from ..processing.hand_grip_strength_processing import read_hand_grip_strength_d
 from ..processing.hearing_tests_processing import read_hearing_test_data
 from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion_data, read_tower_rearranging_data, \
                                                     read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
-                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data, read_trail_making_data , read_pairs_matching_data
+                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data, read_trail_making_data , \
+                                                    read_pairs_matching_data, read_all_cognitive_data
 
 
 
@@ -67,7 +68,8 @@ map_dataset_to_field_and_dataloader = {
                     'CognitiveFluidIntelligence' : (100027, read_fluid_intelligence_data),
                     'CognitiveTrailMaking' : (505, read_trail_making_data),
                     'CognitivePairsMatching' : (100030, read_pairs_matching_data),
-                    
+                    'CognitiveAllBiomarkers' : ('Custom', read_all_cognitive_data)
+
                     }
 
 
@@ -109,15 +111,7 @@ dict_dataset_to_organ_and_view = {
     'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence'),
     'CognitiveTrailMaking' : ('Cognitive', 'TrailMaking'),
     'CognitivePairsMatching' : ('Cognitive', 'PairsMatching'),
-    'CognitiveFluidIntelligence5' : ('Cognitive', 'FluidIntelligence5'),
-    'CognitiveFluidIntelligence6' : ('Cognitive', 'FluidIntelligence6'),
-    'CognitiveFluidIntelligence7' : ('Cognitive', 'FluidIntelligence7'),
-    'CognitiveFluidIntelligence8' : ('Cognitive', 'FluidIntelligence8'),
-    'CognitiveFluidIntelligence9' : ('Cognitive', 'FluidIntelligence9'),
-    'CognitiveFluidIntelligence10' : ('Cognitive', 'FluidIntelligence10'),
-    'CognitiveFluidIntelligence11' : ('Cognitive', 'FluidIntelligence11'),
-    'CognitiveFluidIntelligence12' : ('Cognitive', 'FluidIntelligence12')
-
+    'CognitiveAllBiomarkers' : ('Cognitive', 'AllBiomarkers')
 }
 
 # def load_data(dataset, **kwargs):

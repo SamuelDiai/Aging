@@ -289,10 +289,10 @@ class BaseModel():
         else :
             splits = self.outer_splits
 
-        if False:#organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
+        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
-            if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning']:
+            if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning', 'AllBiomarkers']:
                 list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
             elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing'] :
                 list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]

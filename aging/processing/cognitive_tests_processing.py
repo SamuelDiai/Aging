@@ -4,6 +4,9 @@ from ..processing.base_processing import path_data2
 import pandas as pd
 
 
+def read_all_cognitive_data(instances = [2, 3], **kwargs):
+    return None
+
 def read_trail_making_data(instances = [2, 3], **kwargs):
     """
     6348	Duration to complete numeric path (trail #1)
