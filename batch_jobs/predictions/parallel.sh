@@ -1,11 +1,11 @@
 #!/bin/bash
-targets=( "Age" )
+targets=( "Age" "Sex" )
 #targets=( "Age" )
 #models=( "LightGbm" )
-models=( "ElasticNet" )
+models=( "ElasticNet" "LightGbm" "NeuralNetwork" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "CognitiveFluidIntelligence5" "CognitiveFluidIntelligence6" "CognitiveFluidIntelligence7" "CognitiveFluidIntelligence8" "CognitiveFluidIntelligence9" "CognitiveFluidIntelligence10" "CognitiveFluidIntelligence11" "CognitiveFluidIntelligence12" "CognitiveFluidIntelligence" )
+datasets=( "CognitiveFluidIntelligence" )
 outer_splits=10
 inner_splits=9
 n_iter=30
@@ -91,14 +91,14 @@ do
 				IDs+=($ID)
 			done
 
-			# job_name="${target}_${model}_${dataset}_features.job"
-			# out_file="./logs/${target}_${model}_${dataset}_features.out"
-			# err_file="./logs/${target}_${model}_${dataset}_features.err"
-			#
-			# # To del :
-			#
-			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-			# #sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			job_name="${target}_${model}_${dataset}_features.job"
+			out_file="./logs/${target}_${model}_${dataset}_features.out"
+			err_file="./logs/${target}_${model}_${dataset}_features.err"
+
+			# To del :
+
+			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 
 			job_name="${target}_${model}_${dataset}_postprocessing.job"
 			out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"

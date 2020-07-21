@@ -263,14 +263,14 @@ def read_fluid_intelligence_data(**kwargs):
     4957	FI3 : word interpolation
     4968	FI4 : positional arithmetic
     4979	FI5 : family relationship calculation
-    4990	FI6 : conditional arithmetic
-    5001	FI7 : synonym
-    5012	FI8 : chained arithmetic
-    5556	FI9 : concept interpolation
-    5699	FI10 : arithmetic sequence recognition
-    5779	FI11 : antonym
-    5790	FI12 : square sequence recognition
-    5866	FI13 : subset inclusion logic
+    #4990	FI6 : conditional arithmetic
+    #5001	FI7 : synonym
+    #5012	FI8 : chained arithmetic
+    #5556	FI9 : concept interpolation
+    #5699	FI10 : arithmetic sequence recognition
+    #5779	FI11 : antonym
+    #5790	FI12 : square sequence recognition
+    #5866	FI13 : subset inclusion logic
     """
     cols_numb_onehot = {'4935' : 1, '4946' : 1, '4957' : 1,  '4968' : 1, '4979' : 1, '4990' : 1, '5001' : 1, '5012' : 1, '5556' : 1, '5699': 1, '5779' : 1, '5790' : 1, '5866' : 1}
     dict_onehot = {'4935' : {13 : '13', 14  : '14', 15 : '15', 16 : '16', 17 : '17',-1 : 'Do not know', -3 : 'Prefer not to answer'},
@@ -278,14 +278,14 @@ def read_fluid_intelligence_data(**kwargs):
                         '4957' : {1 : 'Grow', 2 : 'Develop', 3 :  'Improve', 4 : 'Adult', 5 : 'Old', -1 : 'Do not know', -3 : 'Prefer not to answer'},
                         '4968' : {5 : '5', 6 : '6', 7 : '7', 8 : '8', -1 : 'Do not know', -3 : 'Prefer not to answer'},
                         '4979' : {1 : 'Aunt', 2 : 'Sister', 3 : 'Niece', 4 : 'Cousin', 5 : 'No relation', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '4990' : {68 : '68', 69 : '69', 70 : '70', 71 : '71', 72 : '72', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5001' : {1 : 'Pause', 2 :'Close', 3 : 'Cease', 4 : 'Break', 5 : 'Rest', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5012' : {25 : '25', 26 : '26', 27 : '27', 28 : '28', 29 : '29', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5556' : {1 : 'Long', 2 : 'Deep', 3 : 'Top', 4 : 'Metres', 5 : 'Tall', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5699' : {96 : '96', 95 : '95', 94 : '94', 93 : '93', 92 : '92', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5779' : {1 : 'Calm', 2 : 'Anxious', 3 : 'Cool', 4 : 'Worried', 5 : 'Tense', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5790' : {50 : '50', 49 : '49', 48 : '48', 47 : '47', 46 : '46', 45 : '45', -1 : 'Do not know', -3 : 'Prefer not to answer'},
-                        '5866' : {1 : 'False', 2 : 'True', 3 : 'Neither true nor false', -5 : 'Not sure', -1 : 'Do not know', -3 : 'Prefer not to answer'}
+                        #'4990' : {68 : '68', 69 : '69', 70 : '70', 71 : '71', 72 : '72', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5001' : {1 : 'Pause', 2 :'Close', 3 : 'Cease', 4 : 'Break', 5 : 'Rest', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5012' : {25 : '25', 26 : '26', 27 : '27', 28 : '28', 29 : '29', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5556' : {1 : 'Long', 2 : 'Deep', 3 : 'Top', 4 : 'Metres', 5 : 'Tall', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5699' : {96 : '96', 95 : '95', 94 : '94', 93 : '93', 92 : '92', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5779' : {1 : 'Calm', 2 : 'Anxious', 3 : 'Cool', 4 : 'Worried', 5 : 'Tense', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5790' : {50 : '50', 49 : '49', 48 : '48', 47 : '47', 46 : '46', 45 : '45', -1 : 'Do not know', -3 : 'Prefer not to answer'},
+                        #'5866' : {1 : 'False', 2 : 'True', 3 : 'Neither true nor false', -5 : 'Not sure', -1 : 'Do not know', -3 : 'Prefer not to answer'}
                         }
     cols_ordinal = ['4924']
     cols_continuous = ['20016', '20128']
