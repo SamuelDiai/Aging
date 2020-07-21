@@ -289,7 +289,7 @@ class BaseModel():
         else :
             splits = self.outer_splits
 
-        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
+        if False#organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
             if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning']:

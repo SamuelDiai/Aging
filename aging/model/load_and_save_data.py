@@ -107,7 +107,16 @@ dict_dataset_to_organ_and_view = {
     'CognitiveNumericMemory' : ('Cognitive', 'NumericMemory'),
     'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence'),
     'CognitiveTrailMaking' : ('Cognitive', 'TrailMaking'),
-    'CognitivePairsMatching' : ('Cognitive', 'PairsMatching')
+    'CognitivePairsMatching' : ('Cognitive', 'PairsMatching'),
+    'CognitiveFluidIntelligence5' : ('Cognitive', 'FluidIntelligence5'),
+    'CognitiveFluidIntelligence6' : ('Cognitive', 'FluidIntelligence6'),
+    'CognitiveFluidIntelligence7' : ('Cognitive', 'FluidIntelligence7'),
+    'CognitiveFluidIntelligence8' : ('Cognitive', 'FluidIntelligence8'),
+    'CognitiveFluidIntelligence9' : ('Cognitive', 'FluidIntelligence9'),
+    'CognitiveFluidIntelligence10' : ('Cognitive', 'FluidIntelligence10'),
+    'CognitiveFluidIntelligence11' : ('Cognitive', 'FluidIntelligence11'),
+    'CognitiveFluidIntelligence12' : ('Cognitive', 'FluidIntelligence12'),
+
 }
 
 # def load_data(dataset, **kwargs):
