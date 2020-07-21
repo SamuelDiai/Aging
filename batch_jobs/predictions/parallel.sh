@@ -107,14 +107,14 @@ do
 			printf -v joinedIDS '%s:' "${IDs[@]}"
 			sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
 
-# # 			if [ $target = "Age" ] && [ $model = "LightGbm" ]
-# # 			then
-# # 				job_name="Linear_${dataset}.job"
-# # 				out_file="./logs/Linear_${dataset}.out"
-# # 				err_file="./logs/Linear_${dataset}.err"
-# # 				sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
-# # 			fi
-# #
+			if [ $target = "Age" ] && [ $model = "LightGbm" ]
+			then
+				job_name="Linear_${dataset}.job"
+				out_file="./logs/Linear_${dataset}.out"
+				err_file="./logs/Linear_${dataset}.err"
+				sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
+			fi
+
 		done
 	done
 done
