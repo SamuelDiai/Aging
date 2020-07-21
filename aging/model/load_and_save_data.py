@@ -115,7 +115,7 @@ dict_dataset_to_organ_and_view = {
     'CognitiveFluidIntelligence9' : ('Cognitive', 'FluidIntelligence9'),
     'CognitiveFluidIntelligence10' : ('Cognitive', 'FluidIntelligence10'),
     'CognitiveFluidIntelligence11' : ('Cognitive', 'FluidIntelligence11'),
-    'CognitiveFluidIntelligence12' : ('Cognitive', 'FluidIntelligence12'),
+    'CognitiveFluidIntelligence12' : ('Cognitive', 'FluidIntelligence12')
 
 }
 
