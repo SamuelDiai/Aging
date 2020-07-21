@@ -114,7 +114,15 @@ def read_pairs_matching_data(**kwargs):
             d['Number of correct matches in round.%s' % elem] = d['398-%s.%s' % (instance, idx)]
             d['Number of rows displayed in round.%s' % elem] = d['397-%s.%s' % (instance, idx)]
         d['id'] = d['eid'].astype(str) + '_%s' % instance
+        res = []
+        for idx, elem in enumerate(list_round, 1):
+            res.append('Number of incorrect matches in round.%s' % elem)
+            res.append('Time to complete round.%s' % elem)
+            res.append('Number of columns displayed in round.%s' % elem)
+            res.append('Number of correct matches in round.%s' % elem)
+            res.append('Number of rows displayed in round.%s' % elem)
         d = d.set_index('id')
+        d = d[res]
         list_df.append(d)
     return pd.concat(list_df)
 

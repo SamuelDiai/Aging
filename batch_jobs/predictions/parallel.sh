@@ -5,7 +5,7 @@ targets=( "Age" "Sex" )
 models=( "ElasticNet" "LightGbm" "NeuralNetwork" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "CognitiveFluidIntelligence" )
+datasets=( "CognitivePairsMatching" )
 outer_splits=10
 inner_splits=9
 n_iter=30
@@ -107,13 +107,13 @@ do
 			printf -v joinedIDS '%s:' "${IDs[@]}"
 			sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/postprocessing.sh $model $target $dataset $outer_splits
 
-			if [ $target = "Age" ] && [ $model = "LightGbm" ]
-			then
-				job_name="Linear_${dataset}.job"
-				out_file="./logs/Linear_${dataset}.out"
-				err_file="./logs/Linear_${dataset}.err"
-				sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
-			fi
+			# if [ $target = "Age" ] && [ $model = "LightGbm" ]
+			# then
+			# 	job_name="Linear_${dataset}.job"
+			# 	out_file="./logs/Linear_${dataset}.out"
+			# 	err_file="./logs/Linear_${dataset}.err"
+			# 	sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/linear_study.sh $dataset
+			# fi
 
 		done
 	done
