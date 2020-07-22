@@ -45,7 +45,7 @@ class CoxXgboost(BaseEstimator):
         return self.booster_.predict(xgb.DMatrix(X))
 
     def score(self, X, y):
-        HR = self.predict(X)
+        HR = self.predict(X, output_margin=True)
         y_is_dead, y_time = list(zip(*y))
         return concordance_index_censored(y_is_dead, y_time, HR)[0]
 
