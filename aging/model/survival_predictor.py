@@ -45,6 +45,7 @@ class SurvivalPredictor(BaseModel):
 class SurvivalRegressionPredictor(BaseModel):
     def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt'):
         BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter, model_validate)
+        self.dataset = dataset
         self.fold = fold
         self.scoring = 'r2'
         self.target = target
