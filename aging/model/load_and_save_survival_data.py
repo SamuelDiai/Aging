@@ -32,6 +32,66 @@ def read_death_record(instances = [0, 1, 2, 3], **kwargs):
     df['Is dead'] = ~df['Age at death'].isna()
     return df[['Follow up time', 'Is dead']]
 
+
+def read_death_record_updated(instances = [0, 1, 2, 3], **kwargs):
+    path_death = '/n/groups/patel/uk_biobank/covid_death_071720/52887/death_071720.txt'
+    path_death_cause = '/n/groups/patel/uk_biobank/covid_death_071720/52887/death_cause_071720.txt'
+    df_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv')
+    list_df = []
+
+    df_death = pd.read_csv(path_death, usecols = ['date_of_death', 'eid'], delim_whitespace= True)
+    df_death = df_death.set_index('eid')
+    df_death['Date of death'] = pd.to_datetime(df_death['date_of_death'])
+
+    df_cause = pd.read_csv(path_death_cause, usecols = ['cause_icd10', 'eid'], delim_whitespace= True)
+    df_cause = df_cause.set_index('eid')
+    ## Remove accidents :
+    df_cause = df_cause[~df_cause.cause_icd10.str.contains('V') & ~df_cause.cause_icd10.str.contains('W') & ~df_cause.cause_icd10.str.contains('X') & ~df_cause.cause_icd10.str.contains('Y')]
+    def custom_apply(row):
+        if row['cause_icd10'] <= 'D48' and row['cause_icd10'] >= 'C':
+            return 'Cancer'
+        elif row['cause_icd10'] <= 'I89' and row['cause_icd10'] >= 'I05':
+            return 'CVD'
+        else :
+            return 'other'
+    df_cause['Type of death'] = df_cause.apply(custom_apply, axis = 1)
+    df_death_full = df_cause.join(df_death)
+
+    for instance in instances:
+        dict_rename = dict(zip(['eid', '53-%s.0' % instance], [ 'eid', 'Date of attending assessment centre']))
+        df_attended = pd.read_csv(path_data, usecols = ['53-%s.0' % instance, 'eid'], **kwargs)
+        df_attended = df_attended.rename(columns = dict_rename)
+        df_attended['id'] = df_attended['eid'].astype(str) + '_%s' % instance
+        df_attended = df_attended.set_index('id')
+
+        list_df.append(df_attended)
+    df = pd.concat(list_df)
+    df = df.dropna()
+    df = df.reset_index().merge(df_death_full.reset_index(), on = 'eid', how = 'outer').set_index('id')
+    df['Date of last follow up'] = pd.to_datetime(df['Date of death'].max())
+    def custom_apply(row):
+        if not pd.isna(row['Date of death']):
+            return (row['Date of death'] - row['Date of attending assessment centre']).days/365.25
+        else :
+            return (row['Date of last follow up'] - row['Date of attending assessment centre']).days/365.25
+    df['Follow up time'] = df[['Date of last follow up', 'Date of death', 'Date of attending assessment centre']].apply(custom_apply, axis = 1)
+    df['Is dead'] = ~df['Date of death'].isna()
+
+    return df[['eid', 'Follow up time', 'Is dead', 'Date of death', 'Type of death']][~df['Follow up time'].isna()]
+
+
+def load_data_survivalregression(dataset, target, **kwargs):
+    df, organ, view = load_data(dataset, **kwargs)
+    try :
+        df_survival = pd.read_csv('/n/groups/patel/samuel/Survival/survival_updated.csv').set_index('id')
+    except FileNotFoundError:
+        df_survival = read_death_record_updated(**kwargs)
+        df_survival.to_csv('/n/groups/patel/samuel/Survival/survival_updated.csv')
+    df_full = df.join(df_survival)
+    df_full = df_full[df_full['Type of death'] == self.target]
+    df_full = df_full.drop(columns = ['Is dead', 'Date of death', 'Type of death'])
+    return df_full, organ, view
+
 def load_data_survival(dataset, **kwargs):
     df, organ, view = load_data(dataset, **kwargs)
     try :
