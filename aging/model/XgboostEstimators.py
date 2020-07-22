@@ -42,10 +42,10 @@ class CoxXgboost(BaseEstimator):
             getattr(self, "booster_")
         except AttributeError:
             raise RuntimeError("You must train estimator before predicting data!")
-        return self.booster_.predict(xgb.DMatrix(X))
+        return self.booster_.predict(xgb.DMatrix(X), output_margin=True)
 
     def score(self, X, y):
-        HR = self.predict(X, output_margin=True)
+        HR = self.predict(X)
         y_is_dead, y_time = list(zip(*y))
         return concordance_index_censored(y_is_dead, y_time, HR)[0]
 
