@@ -351,6 +351,9 @@ class BaseModel():
         ## Create Datasets :
         X_train, X_test, X_val, y_train, y_test, y_val = X.loc[index_train], X.loc[index_test], X.loc[index_val], y.loc[index_train], y.loc[index_test], y.loc[index_val]
         X_train_train, y_train_train = X.loc[index_train_train], y.loc[index_train_train]
+        print("X_train", X_train)
+        print("X_test", X_test)
+        print("X_val", X_val)
 
         ## Create custom Splits
         list_test_folds_id_index = [np.array([X_train.index.get_loc(elem) for elem in list_test_folds_id[fold_num]]) for fold_num in range(len(list_test_folds_id))]
