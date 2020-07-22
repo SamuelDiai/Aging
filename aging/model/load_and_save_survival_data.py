@@ -106,7 +106,7 @@ def load_data_survival(dataset, **kwargs):
     df_survival = df_survival.drop(columns = ['eid'])
     df_full = df.join(df_survival)
     df_full['y'] = list(zip(df_full['Is dead'], df_full['Follow up time']))
-    df_full = df_full.drop(columns = ['Is dead', 'Follow up time']).drop_duplicates('eid')
+    df_full = df_full.drop(columns = ['Date of death', 'Type of death', 'Is dead', 'Follow up time']).drop_duplicates('eid')
     return df_full, organ, view
 
 
