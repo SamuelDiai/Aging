@@ -330,6 +330,7 @@ class BaseModel():
             raise ValueError('n_inner_splits should be equal to n_outer_splits - 1 ! ')
 
         list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X, y, fold, organ, view)
+        print(list_train_fold_id, list_test_folds_id)
         #
         test_fold = (fold + 1)%self.outer_splits
         val_fold = fold
