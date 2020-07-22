@@ -89,7 +89,7 @@ def load_data_survivalregression(dataset, target, **kwargs):
         df_survival.to_csv('/n/groups/patel/samuel/Survival/survival_updated.csv')
     df_survival = df_survival.drop(columns = ['eid'])
     df_full = df.join(df_survival)
-    df_full = df_full[df_full['Type of death'] == self.target]
+    df_full = df_full[df_full['Type of death'] == target]
     df_full = df_full.drop(columns = ['Is dead', 'Date of death', 'Type of death'])
     return df_full, organ, view
 
