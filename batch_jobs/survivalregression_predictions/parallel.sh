@@ -1,10 +1,10 @@
 #!/bin/bash
 
-models=( "LightGbm" )
+models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #models=( "LightGbm" "ElasticNet" "NeuralNetwork" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "CognitiveAllBiomarkers" )
+datasets=( 'HeartAllBiomarkers' 'BrainAllBiomarkers' 'ECGAtRest' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyesAllBiomarkers' 'Spirometry' 'BloodPressure' 'AnthropometryAllBiomarkers' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HandGripStrength' 'HearingTest' 'CognitiveAllBiomarkers' )
 targets=( "All" "CVD" "Cancer" )
 outer_splits=10
 inner_splits=9
