@@ -1,7 +1,7 @@
 from .general_predictor import *
 from sksurv.ensemble import RandomSurvivalForest, GradientBoostingSurvivalAnalysis
 from sksurv.linear_model import CoxPHSurvivalAnalysis
-from .load_and_save_survival_data import load_data_survival, load_data_survivalregression
+from .load_and_save_survival_data import load_data_survival, load_data_survivalregression, save_predictions_regression_to_csv
 from .XgboostEstimators import CoxXgboost, AftXgboost
 
 class SurvivalPredictor(BaseModel):
@@ -81,3 +81,23 @@ class SurvivalRegressionPredictor(BaseModel):
         y = df[['Follow up time', 'eid']]
         self.features_importance_(X, y, self.scoring, self.organ, view = self.view)
         return df.drop(columns = ['Follow up time', 'eid']).columns
+
+    def save_features(self, cols):
+        if 'Cluster' in self.dataset:
+            dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
+        else :
+            dataset_proper = self.dataset
+        if not hasattr(self, 'features_imp') and self.model_name != 'Correlation' :
+            raise ValueError('Features importance not trained')
+        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, self.model_name, method = None)
+        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, self.model_name, method = 'sd')
+        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, self.model_name, method = 'mean')
+
+    def save_predictions(self, predicts_df, step):
+        if 'Cluster' in self.dataset:
+            dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
+        else :
+            dataset_proper = self.dataset
+        if not hasattr(self, 'best_params'):
+            raise ValueError('Predictions not trained')
+        save_predictions_regression_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)
