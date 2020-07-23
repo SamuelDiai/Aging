@@ -92,7 +92,8 @@ def load_data_survivalregression(dataset, target, **kwargs):
     if target in ['CVD', 'Cancer']:
         df_full = df_full[df_full['Type of death'] == target]
     else :
-        df_full = df_full.drop_duplicates('eid')
+        df_full = df_full[df_full['Is dead']].drop_duplicates('eid')
+
     df_full = df_full.drop(columns = ['Is dead', 'Date of death', 'Type of death']).drop_duplicates('eid')
     return df_full, organ, view
 
