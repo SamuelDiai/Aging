@@ -137,9 +137,5 @@ def save_predictions_regression_to_csv(predicts_df, step, target, dataset, model
     hyper_parameters_name = '_'.join([str(elem) for elem in best_params])
     if len(best_params) != 7:
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
-    try :
-        field, dataloader = map_dataset_to_field_and_dataloader[dataset]
-    except KeyError:
-        field = 'Cluster'
     filename = 'PredictionsSurvivalRegression_' + '_' + dataset + '_' +  target + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
     predicts_df.set_index('id').to_csv(path_predictions_survival_regression + '/' + filename)
