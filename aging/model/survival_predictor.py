@@ -5,7 +5,7 @@ from .load_and_save_survival_data import load_data_survival, load_data_survivalr
 from .XgboostEstimators import CoxXgboost, AftXgboost
 
 class SurvivalPredictor(BaseModel):
-    def __init__(self, model, outer_splits, inner_splits, target, n_iter, dataset, fold, model_validate = 'HyperOpt'):
+    def __init__(self, model, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt'):
         BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter, model_validate)
         self.fold = fold
         self.dataset = dataset
