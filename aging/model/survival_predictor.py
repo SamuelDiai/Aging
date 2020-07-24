@@ -5,11 +5,12 @@ from .load_and_save_survival_data import load_data_survival, load_data_survivalr
 from .XgboostEstimators import CoxXgboost, AftXgboost
 
 class SurvivalPredictor(BaseModel):
-    def __init__(self, model, outer_splits, inner_splits, n_iter, dataset, fold, model_validate = 'HyperOpt'):
+    def __init__(self, model, outer_splits, inner_splits, target, n_iter, dataset, fold, model_validate = 'HyperOpt'):
         BaseModel.__init__(self, model, outer_splits, inner_splits, n_iter, model_validate)
         self.fold = fold
         self.dataset = dataset
         self.scoring = None
+        self.target = target
         if model == 'CoxPh':
             self.model = CoxPHSurvivalAnalysis()
         elif model == 'CoxRf':
@@ -28,7 +29,7 @@ class SurvivalPredictor(BaseModel):
         self.view = view
 
     def load_dataset(self, **kwargs):
-        return load_data_survival(self.dataset, **kwargs)
+        return load_data_survival(self.dataset, self.target, **kwargs)
 
     def optimize_hyperparameters_fold(self, df):
         X = df.drop(columns = ['y'])
@@ -40,6 +41,15 @@ class SurvivalPredictor(BaseModel):
         y = df[['y', 'eid']]
         self.features_importance_(X, y, self.scoring, self.organ, view = None)
         return df.drop(columns = ['y', 'eid']).columns
+
+    def save_predictions(self, predicts_df, step):
+        if 'Cluster' in self.dataset:
+            dataset_proper = self.dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
+        else :
+            dataset_proper = self.dataset
+        if not hasattr(self, 'best_params'):
+            raise ValueError('Predictions not trained')
+        save_predictions_regression_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)
 
 
 class SurvivalRegressionPredictor(BaseModel):

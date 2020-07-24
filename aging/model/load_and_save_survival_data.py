@@ -98,13 +98,21 @@ def load_data_survivalregression(dataset, target, **kwargs):
     df_full = df_full.drop(columns = ['Is dead', 'Date of death', 'Type of death']).drop_duplicates('eid')
     return df_full, organ, view
 
-def load_data_survival(dataset, **kwargs):
+def load_data_survival(dataset, target, **kwargs):
     df, organ, view = load_data(dataset, **kwargs)
     try :
         df_survival = pd.read_csv('/n/groups/patel/samuel/Survival/survival_updated.csv').set_index('id')
     except FileNotFoundError:
         df_survival = read_death_record_updated(**kwargs)
         df_survival.to_csv('/n/groups/patel/samuel/Survival/survival_updated.csv')
+
+    if target == 'CVD':
+        df_survival = df_survival[df_survival['Type of death'].isin([np.nan, 'CVD'])]
+    elif target == 'Cancer' :
+        df_survival = df_survival[df_survival['Type of death'].isin([np.nan, 'Cancer'])]
+    else :
+        df_survival = df_survival[df_survival['Type of death'].isin([np.nan])]
+
     df_survival = df_survival.drop(columns = ['eid'])
     df_full = df.join(df_survival)
     df_full['y'] = list(zip(df_full['Is dead'], df_full['Follow up time']))
