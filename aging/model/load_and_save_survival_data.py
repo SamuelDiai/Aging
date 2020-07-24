@@ -130,17 +130,12 @@ def save_features_to_csv(cols, features_imp, organ, view, model_name, method):
         full_name += 'mean_'
     final_df.set_index('features').to_csv(path_features_survival + '/' + full_name + '_' + organ + '_' + view + '_' + model_name + '.csv')
 
-def save_predictions_to_csv(predicts_df, step, dataset, model_name, fold, best_params):
+def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold, best_params):
     hyper_parameters_name = '_'.join([str(elem) for elem in best_params])
     if len(best_params) != 7:
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
-    try :
-        field, dataloader = map_dataset_to_field_and_dataloader[dataset]
-    except KeyError:
-        field = 'Cluster'
-    filename = 'PredictionsSurvival_' + '_' + dataset + '_' + str(field) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
+    filename = 'PredictionsSurvival_' + dataset + '_' +  target + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
     predicts_df.set_index('id').to_csv(path_predictions_survival + '/' + filename)
-
 
 def save_predictions_regression_to_csv(predicts_df, step, target, dataset, model_name, fold, best_params):
     hyper_parameters_name = '_'.join([str(elem) for elem in best_params])
