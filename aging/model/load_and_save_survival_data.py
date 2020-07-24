@@ -116,6 +116,7 @@ def load_data_survival(dataset, target, **kwargs):
     df_survival = df_survival.reset_index().drop_duplicates(['eid', 'id']).set_index('id')
     df_survival = df_survival.drop(columns = ['eid'])
     df_full = df.join(df_survival)
+    df_full = df_full[~df_full['Follow up time'].isna()]
     df_full['y'] = list(zip(df_full['Is dead'], df_full['Follow up time']))
     df_full = df_full.drop(columns = ['Date of death', 'Type of death', 'Is dead', 'Follow up time'])
     return df_full, organ, view
