@@ -288,7 +288,7 @@ class BaseModel():
             splits = self.inner_splits
         else :
             splits = self.outer_splits
-
+        print(organ, view)
         if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
