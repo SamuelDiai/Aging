@@ -23,7 +23,7 @@ do
 			declare -a IDs=()
 			for ((fold=0; fold <= $outer_splits-1; fold++))
 			do
-				job_name="${model}_${dataset}_${fold}.job"
+				job_name="${model}_${dataset}_${fold}_${target}.job"
 				out_file="./logs/${model}_${dataset}_${fold}_${target}.out"
 				err_file="./logs/${model}_${dataset}_${fold}_${target}.err"
 
