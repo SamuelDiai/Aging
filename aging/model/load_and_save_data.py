@@ -68,7 +68,8 @@ map_dataset_to_field_and_dataloader = {
                     'CognitiveFluidIntelligence' : (100027, read_fluid_intelligence_data),
                     'CognitiveTrailMaking' : (505, read_trail_making_data),
                     'CognitivePairsMatching' : (100030, read_pairs_matching_data),
-                    'CognitiveAllBiomarkers' : ('Custom', read_all_cognitive_data)
+                    'CognitiveAllBiomarkers' : ('Custom', read_all_cognitive_data),
+
 
                     }
 
@@ -111,7 +112,8 @@ dict_dataset_to_organ_and_view = {
     'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence'),
     'CognitiveTrailMaking' : ('Cognitive', 'TrailMaking'),
     'CognitivePairsMatching' : ('Cognitive', 'PairsMatching'),
-    'CognitiveAllBiomarkers' : ('Cognitive', 'AllBiomarkers')
+    'CognitiveAllBiomarkers' : ('Cognitive', 'AllBiomarkers'),
+    'Demographics' : ('Demographics', 'Main')
 }
 
 # def load_data(dataset, **kwargs):
@@ -143,12 +145,16 @@ def load_data(dataset, **kwargs):
         df = pd.read_csv(dataset).set_index('id')
         organ, view = 'Cluster', 'main'
     elif '/n' not in dataset:
-        path_dataset = path_inputs + dataset + '.csv'
-        df = pd.read_csv(path_dataset).set_index('id')
-        df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
-        df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
-        df = df[df.columns[~df.columns.str.contains('_r')]]
-        organ, view = dict_dataset_to_organ_and_view[dataset]
+        if dataset != 'Demographics':
+            path_dataset = path_inputs + dataset + '.csv'
+            df = pd.read_csv(path_dataset).set_index('id')
+            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
+            df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
+            df = df[df.columns[~df.columns.str.contains('_r')]]
+            organ, view = dict_dataset_to_organ_and_view[dataset]
+        else :
+            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
+            organ, view = dict_dataset_to_organ_and_view[dataset]
     return df.dropna(), organ, view
 
 def create_data(dataset, **kwargs):
