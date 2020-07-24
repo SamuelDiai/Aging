@@ -1,7 +1,7 @@
 from .general_predictor import *
 from sksurv.ensemble import RandomSurvivalForest, GradientBoostingSurvivalAnalysis
 from sksurv.linear_model import CoxPHSurvivalAnalysis
-from .load_and_save_survival_data import load_data_survival, load_data_survivalregression, save_predictions_regression_to_csv
+from .load_and_save_survival_data import load_data_survival, load_data_survivalregression, save_predictions_regression_to_csv, save_predictions_to_csv
 from .XgboostEstimators import CoxXgboost, AftXgboost
 
 class SurvivalPredictor(BaseModel):
