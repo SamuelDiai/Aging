@@ -50,7 +50,7 @@ class SurvivalPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
-        save_predictions_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)
+        save_predictions_to_csv(predicts_df, step, self.target, self.organ, self.view, self.transformation , self.model_name, self.fold, self.best_params)
 
 
 class SurvivalRegressionPredictor(BaseModel):
@@ -111,4 +111,4 @@ class SurvivalRegressionPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'best_params'):
             raise ValueError('Predictions not trained')
-        save_predictions_regression_to_csv(predicts_df, step, self.target, dataset_proper, self.model_name, self.fold, self.best_params)
+        save_predictions_regression_to_csv(predicts_df, step, self.target, self.organ, self.view, self.transformation , self.model_name, self.fold, self.best_params)
