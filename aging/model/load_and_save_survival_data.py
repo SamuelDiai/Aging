@@ -83,7 +83,7 @@ def read_death_record_updated(instances = [0, 1, 2, 3], **kwargs):
 
 
 def load_data_survivalregression(dataset, target, **kwargs):
-    df, organ, view = load_data(dataset, **kwargs)
+    df, organ, view, transformation = load_data(dataset, **kwargs)
     try :
         df_survival = pd.read_csv('/n/groups/patel/samuel/Survival/survival_updated.csv').set_index('id')
     except FileNotFoundError:
@@ -97,10 +97,10 @@ def load_data_survivalregression(dataset, target, **kwargs):
         df_full = df_full[df_full['Is dead']].drop_duplicates('eid')
 
     df_full = df_full.drop(columns = ['Is dead', 'Date of death', 'Type of death']).drop_duplicates('eid')
-    return df_full, organ, view
+    return df_full, organ, view, transformation
 
 def load_data_survival(dataset, target, **kwargs):
-    df, organ, view = load_data(dataset, **kwargs)
+    df, organ, view, transformation = load_data(dataset, **kwargs)
     try :
         df_survival = pd.read_csv('/n/groups/patel/samuel/Survival/survival_updated.csv').set_index('id')
     except FileNotFoundError:
@@ -119,7 +119,7 @@ def load_data_survival(dataset, target, **kwargs):
     df_full = df_full[~df_full['Follow up time'].isna()]
     df_full['y'] = list(zip(df_full['Is dead'], df_full['Follow up time']))
     df_full = df_full.drop(columns = ['Date of death', 'Type of death', 'Is dead', 'Follow up time'])
-    return df_full, organ, view
+    return df_full, organ, view, transformation
 
 
 def save_features_to_csv(cols, features_imp, organ, view, model_name, method):
