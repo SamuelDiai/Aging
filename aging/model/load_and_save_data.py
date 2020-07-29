@@ -75,45 +75,69 @@ map_dataset_to_field_and_dataloader = {
 
 
 dict_dataset_to_organ_and_view = {
-    'BrainGreyMatterVolumes' : ('Brain', 'GreyMatterVolumes'),
-    'BrainSubcorticalVolumes': ('Brain', 'SubcorticalVolumes'),
-    'BrainAllBiomarkers' : ('Brain', 'AllBiomarkers'),
-    'HeartAllBiomarkers' : ('Heart', 'HeartAllBiomarkers'),
-    'HeartSize' : ('Heart', 'Size'),
-    'HeartPWA' : ('Heart', 'PWA'),
-    'BodyComposition' : ('BodyComposition', 'main'),
-    'BoneComposition' : ('BoneComposition', 'main'),
-    'ECGAtRest' : ('ECG', 'BiomarkersAtRest'),
-    'AnthropometryImpedance' : ('Anthropometry', 'Impedance'),
-    'UrineBiochemestry' : ('Urine', 'Biochemistry'),
-    'BloodBiochemestry' : ('BloodB', 'BloodBiochemistry'),
-    'BloodCount' : ('BloodC', 'BloodCount'),  # Need to do blood infection
-    'EyeAutorefraction' : ('Eyes', 'Autorefraction'),
-    'EyeAcuity' : ('Eyes', 'Acuity'),
-    'EyeIntraoculaPressure' : ('Eyes', 'IntraocularPressure'),
-    'EyesAllBiomarkers' : ('Eyes', 'AllBiomarkers'),
-    'BraindMRIWeightedMeans' : ('Brain', 'dMRIWeightedMeans'),
-    'Spirometry' :  ('Lungs', 'Spirometry'),
-    'BloodPressure' : ('BloodPressure', 'Biomarkers'),
-    'AnthropometryBodySize' : ('Anthropometry', 'BodySize'),
-    'AnthropometryAllBiomarkers' : ('Anthropometry', 'AllBiomarkers'),
-    'ArterialStiffness' : ('Vascular', 'BiomarkersArterialStiffness'),
-    'CarotidUltrasound' : ('Carotids', 'BiomarkersUltrasound'),
-    'BoneDensitometryOfHeel' : ('Heel', 'BoneDensitometry'),
-    'HandGripStrength' : ('Hand', 'GripStrenght'),
-    'HearingTest' : ('Hearing', 'HearingTest'),
-    'CognitiveReactionTime' : ('Cognitive', 'ReactionTime'),
-    'CognitiveMatrixPatternCompletion' : ('Cognitive', 'MatrixPatternCompletion'),
-    'CognitiveTowerRearranging' : ('Cognitive', 'TowerRearranging'),
-    'CognitiveSymbolDigitSubstitution' : ('Cognitive', 'SymbolDigitSubstitution'),
-    'CognitivePairedAssociativeLearning' : ('Cognitive', 'PairedAssociativeLearning'),
-    'CognitiveProspectiveMemory' : ('Cognitive', 'ProspectiveMemory'),
-    'CognitiveNumericMemory' : ('Cognitive', 'NumericMemory'),
-    'CognitiveFluidIntelligence' : ('Cognitive', 'FluidIntelligence'),
-    'CognitiveTrailMaking' : ('Cognitive', 'TrailMaking'),
-    'CognitivePairsMatching' : ('Cognitive', 'PairsMatching'),
-    'CognitiveAllBiomarkers' : ('Cognitive', 'AllBiomarkers'),
-    'Demographics' : ('Demographics', 'Main')
+    ## Brain
+    'BrainGreyMatterVolumes' : ('Brain', 'MRI', 'GreyMatterVolumes'),
+    'BrainSubcorticalVolumes': ('Brain', 'MRI', 'SubcorticalVolumes'),
+    'BraindMRIWeightedMeans' : ('Brain', 'MRI', 'dMRIWeightedMeans'),
+    'BrainAllBiomarkers' : ('Brain', 'MRI', 'AllBiomarkers'),
+    'CognitiveReactionTime' : ('Brain', 'Cognitive', 'ReactionTime'),
+    'CognitiveMatrixPatternCompletion' : ('Brain', 'Cognitive', 'MatrixPatternCompletion'),
+    'CognitiveTowerRearranging' : ('Brain', 'Cognitive', 'TowerRearranging'),
+    'CognitiveSymbolDigitSubstitution' : ('Brain', 'Cognitive', 'SymbolDigitSubstitution'),
+    'CognitivePairedAssociativeLearning' : ('Brain', 'Cognitive', 'PairedAssociativeLearning'),
+    'CognitiveProspectiveMemory' : ('Brain', 'Cognitive', 'ProspectiveMemory'),
+    'CognitiveNumericMemory' : ('Brain', 'Cognitive', 'NumericMemory'),
+    'CognitiveFluidIntelligence' : ('Brain', 'Cognitive', 'FluidIntelligence'),
+    'CognitiveTrailMaking' : ('Brain', 'Cognitive', 'TrailMaking'),
+    'CognitivePairsMatching' : ('Brain', 'Cognitive', 'PairsMatching'),
+    'CognitiveAllBiomarkers' : ('Brain', 'Cognitive', 'AllBiomarkers'),
+    ## Eyes
+    'EyeAutorefraction' : ('Eyes', 'Autorefraction', 'Biomarkers'),
+    'EyeAcuity' : ('Eyes', 'Acuity', 'Biomarkers'),
+    'EyeIntraoculaPressure' : ('Eyes', 'IntraocularPressure', 'Biomarkers'),
+    'EyesAllBiomarkers' : ('Eyes', 'All', 'Biomarkers'),
+    # Hearing
+    'HearingTest' : ('Hearing', 'HearingTest', 'Biomarkers'),
+    # Lungs
+    'Spirometry' :  ('Lungs', 'Spirometry', 'Biomarkers'),
+    # Vascular
+    'BloodPressure' : ('Vascular', 'BloodPressure', 'Biomarkers'),
+    'CarotidUltrasound' : ('Vascular', 'Carotids', 'Biomarkers'),
+    'ArterialStiffness' : ('Vascular', 'PWA', 'Biomarkers'),
+    'CarotidAndArterialAndBP' : ('Vascular', 'All', 'Biomarkers'),
+    # Heart
+    'HeartAllBiomarkers' : ('Heart', 'All', 'Biomarkers'),
+    'HeartSize' : ('Heart', 'MRI', 'Size'),
+    'HeartPWA' : ('Heart', 'MRI', 'PWA'),
+    'ECGAtRest' : ('Heart', 'ECG', 'Biomarkers'),
+
+    # Anthropometry
+    'AnthropometryImpedance' : ('Anthropometry', 'Impedance', 'Biomarkers'),
+    'AnthropometryBodySize' : ('Anthropometry', 'BodySize', 'Biomarkers'),
+    'AnthropometryAllBiomarkers' : ('Anthropometry', 'All', 'Biomarkers'),
+
+    # Heel
+    'BoneDensitometryOfHeel' : ('Heel', 'BoneDensitometry', 'Biomarkers'),
+    # Hand
+    'HandGripStrength' : ('Hand', 'GripStrength', 'Biomarkers'),
+
+    # Blood
+    'BloodBiochemestry' : ('Blood', 'Biochemistry', 'Biomarkers'),
+    'BloodCount' : ('Blood', 'BloodCount', 'Biomarkers'),  # Need to do blood infection
+
+    'UrineBiochemestry' : ('Urine', 'Biochemistry', 'Biomarkers'),
+    'Demographics' : ('Demographics', 'All', 'Biomarkers')
+
+
+
+
+
+     #'ArterialStiffness' : ('Vascular', 'ArterialStiffness', 'Biomarkers'),
+
+
+
+
+
 }
 
 # def load_data(dataset, **kwargs):
@@ -151,11 +175,11 @@ def load_data(dataset, **kwargs):
             df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
             df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
             df = df[df.columns[~df.columns.str.contains('_r')]]
-            organ, view = dict_dataset_to_organ_and_view[dataset]
+            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
         else :
             df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
-            organ, view = dict_dataset_to_organ_and_view[dataset]
-    return df.dropna(), organ, view
+            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
+    return df.dropna(), organ, view, transformation
 
 def create_data(dataset, **kwargs):
     if dataset not in map_dataset_to_field_and_dataloader.keys():

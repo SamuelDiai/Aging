@@ -24,9 +24,10 @@ class SurvivalPredictor(BaseModel):
         else :
             raise ValueError('model : "%s" not valid, please enter "CoxPh" or "CoxRf" or "CoxGbm"' % model)
 
-    def set_organ_view(self, organ, view):
+    def set_organ_view(self, organ, view, transformation):
         self.organ = organ
         self.view = view
+        self.transformation = transformation
 
     def load_dataset(self, **kwargs):
         return load_data_survival(self.dataset, self.target, **kwargs)
@@ -34,12 +35,12 @@ class SurvivalPredictor(BaseModel):
     def optimize_hyperparameters_fold(self, df):
         X = df.drop(columns = ['y'])
         y = df[['y', 'eid']]
-        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, view = self.view)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, view = self.view, transformation = self.transformation)
 
     def feature_importance(self, df):
         X = df.drop(columns = ['y'])
         y = df[['y', 'eid']]
-        self.features_importance_(X, y, self.scoring, self.organ, view = None)
+        self.features_importance_(X, y, self.scoring, self.organ, view = None, transformation = None)
         return df.drop(columns = ['y', 'eid']).columns
 
     def save_predictions(self, predicts_df, step):
@@ -99,9 +100,9 @@ class SurvivalRegressionPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'features_imp') and self.model_name != 'Correlation' :
             raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, self.model_name, method = None)
-        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, self.model_name, method = 'sd')
-        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, self.model_name, method = 'mean')
+        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, self.transformation, self.model_name, method = None)
+        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, self.transformation, self.model_name, method = 'sd')
+        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, self.transformation, self.model_name, method = 'mean')
 
     def save_predictions(self, predicts_df, step):
         if 'Cluster' in self.dataset:

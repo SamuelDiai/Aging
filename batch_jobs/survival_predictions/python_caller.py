@@ -33,8 +33,8 @@ if fold not in list(range(outer_splits)):
 else :
 	gp = SurvivalPredictor(name, outer_splits, inner_splits, n_iter, target, dataset, fold, model_validate = 'HyperOpt')
 	print("Loading Dataset")
-	df, organ, view = gp.load_dataset()
-	gp.set_organ_view(organ, view)
+	df, organ, view, transformation = gp.load_dataset()
+	gp.set_organ_view(organ, view, transformation)
 	print("Dataset Loaded, optimizing hyper")
 	df_predicts_no_scaled_test, df_predicts_no_scaled_val, df_predicts_no_scaled_train = gp.optimize_hyperparameters_fold(df)
 	print("Hyper Opt over, saving file")
