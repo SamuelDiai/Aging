@@ -177,7 +177,7 @@ def load_data(dataset, **kwargs):
             df = df[df.columns[~df.columns.str.contains('_r')]]
             organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
         else :
-            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
+            df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
             organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
     return df.dropna(), organ, view, transformation
 
