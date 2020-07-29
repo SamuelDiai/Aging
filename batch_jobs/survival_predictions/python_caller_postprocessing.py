@@ -32,9 +32,9 @@ if 'Cluster' in dataset:
 	view = 'main'
 else :
 	dataset_proper = dataset
-	organ, view =  dict_dataset_to_organ_and_view[dataset_proper]
+	organ, view, transformation =  dict_dataset_to_organ_and_view[dataset_proper]
 
-list_files = glob.glob(path_predictions_survival + '/*%s*%s*%s*.csv' % (dataset_proper, target, model))
+list_files = glob.glob(path_predictions_survival + '/*%s_%s_%s*%s*%s*.csv' % (organ, view, transformation, target, model))
 
 list_train = [elem for elem in list_files if 'train.csv' in elem]
 list_test = [elem for elem in list_files if 'test.csv' in elem]
@@ -51,9 +51,9 @@ if len(list_train) == outer_splits and len(list_test) == outer_splits and len(li
 
 
 	#print('/n/groups/patel/samuel/preds_alan/Predictions_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-	df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, model))
-	df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, model))
-	df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, model))
+	df_train[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_train.csv' % ( target, organ, view, transformation, model))
+	df_test[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_test.csv' % ( target, organ, view, transformation, model))
+	df_val[['pred', 'outer_fold']].to_csv('/n/groups/patel/samuel/Survival/preds/PredictionsSurvival_instances_%s_%s_%s_%s_raw_%s_0_0_0_0_0_0_0_val.csv' % ( target, organ, view, transformation, model))
 
 
 else :

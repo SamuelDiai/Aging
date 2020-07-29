@@ -104,7 +104,7 @@ dict_dataset_to_organ_and_view = {
     'BloodPressure' : ('Vascular', 'BloodPressure', 'Biomarkers'),
     'CarotidUltrasound' : ('Vascular', 'Carotids', 'Biomarkers'),
     'ArterialStiffness' : ('Vascular', 'PWA', 'Biomarkers'),
-    'CarotidAndArterialAndBP' : ('Vascular', 'All', 'Biomarkers'),
+    'VascularAllBiomarkers' : ('Vascular', 'All', 'Biomarkers'),
     # Heart
     'HeartAllBiomarkers' : ('Heart', 'All', 'Biomarkers'),
     'HeartSize' : ('Heart', 'MRI', 'Size'),
@@ -124,19 +124,11 @@ dict_dataset_to_organ_and_view = {
     # Blood
     'BloodBiochemestry' : ('Blood', 'Biochemistry', 'Biomarkers'),
     'BloodCount' : ('Blood', 'BloodCount', 'Biomarkers'),  # Need to do blood infection
-
+    'BloodAllBiomarkers' : ('Blood', 'All', 'Biomarkers'),
+    # Urine
     'UrineBiochemestry' : ('Urine', 'Biochemistry', 'Biomarkers'),
+
     'Demographics' : ('Demographics', 'All', 'Biomarkers')
-
-
-
-
-
-     #'ArterialStiffness' : ('Vascular', 'ArterialStiffness', 'Biomarkers'),
-
-
-
-
 
 }
 
