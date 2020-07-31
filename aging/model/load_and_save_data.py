@@ -79,7 +79,7 @@ dict_dataset_to_organ_and_view = {
     'BrainGreyMatterVolumes' : ('Brain', 'MRI', 'GreyMatterVolumes'),
     'BrainSubcorticalVolumes': ('Brain', 'MRI', 'SubcorticalVolumes'),
     'BraindMRIWeightedMeans' : ('Brain', 'MRI', 'dMRIWeightedMeans'),
-    'BrainAllBiomarkers' : ('Brain', 'MRI', 'AllBiomarkers'),
+    'BrainMRIAllBiomarkers' : ('Brain', 'MRI', 'AllBiomarkers'),
     'CognitiveReactionTime' : ('Brain', 'Cognitive', 'ReactionTime'),
     'CognitiveMatrixPatternCompletion' : ('Brain', 'Cognitive', 'MatrixPatternCompletion'),
     'CognitiveTowerRearranging' : ('Brain', 'Cognitive', 'TowerRearranging'),
@@ -91,10 +91,11 @@ dict_dataset_to_organ_and_view = {
     'CognitiveTrailMaking' : ('Brain', 'Cognitive', 'TrailMaking'),
     'CognitivePairsMatching' : ('Brain', 'Cognitive', 'PairsMatching'),
     'CognitiveAllBiomarkers' : ('Brain', 'Cognitive', 'AllBiomarkers'),
+    'BrainAndCognitive' : ('Brain', 'All', 'Biomarkers'),
     ## Eyes
     'EyeAutorefraction' : ('Eyes', 'Autorefraction', 'Biomarkers'),
     'EyeAcuity' : ('Eyes', 'Acuity', 'Biomarkers'),
-    'EyeIntraoculaPressure' : ('Eyes', 'IntraocularPressure', 'Biomarkers'),
+    'EyeIntraocularPressure' : ('Eyes', 'IntraocularPressure', 'Biomarkers'),
     'EyesAllBiomarkers' : ('Eyes', 'All', 'Biomarkers'),
     # Hearing
     'HearingTest' : ('Hearing', 'HearingTest', 'Biomarkers'),
@@ -109,27 +110,24 @@ dict_dataset_to_organ_and_view = {
     'HeartAllBiomarkers' : ('Heart', 'All', 'Biomarkers'),
     'HeartSize' : ('Heart', 'MRI', 'Size'),
     'HeartPWA' : ('Heart', 'MRI', 'PWA'),
+    'HeartMRIAll' : ('Heart', 'MRI', 'AllBiomarkers'),
     'ECGAtRest' : ('Heart', 'ECG', 'Biomarkers'),
 
-    # Anthropometry
-    'AnthropometryImpedance' : ('Anthropometry', 'Impedance', 'Biomarkers'),
-    'AnthropometryBodySize' : ('Anthropometry', 'BodySize', 'Biomarkers'),
-    'AnthropometryAllBiomarkers' : ('Anthropometry', 'All', 'Biomarkers'),
+    # Musculoskeletal
+    'AnthropometryImpedance' : ('Musculoskeletal', 'Biomarkers', 'Impedance'),
+    'AnthropometryBodySize' : ('Musculoskeletal', 'Biomarkers', 'BodySize'),
+    'BoneDensitometryOfHeel' : ('Musculoskeletal', 'Biomarkers', 'HeelBoneDensitometry'),
+    'HandGripStrength' : ('Musculoskeletal', 'Biomarkers', 'HandGripStrength'),
+    'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Biomarkers', 'AllBiomarkers'),
 
-    # Heel
-    'BoneDensitometryOfHeel' : ('Heel', 'BoneDensitometry', 'Biomarkers'),
-    # Hand
-    'HandGripStrength' : ('Hand', 'GripStrength', 'Biomarkers'),
-
-    # Blood
-    'BloodBiochemestry' : ('Blood', 'Biochemistry', 'Biomarkers'),
-    'BloodCount' : ('Blood', 'BloodCount', 'Biomarkers'),  # Need to do blood infection
-    'BloodAllBiomarkers' : ('Blood', 'All', 'Biomarkers'),
-    # Urine
-    'UrineBiochemestry' : ('Urine', 'Biochemistry', 'Biomarkers'),
-
+    #Biochemistry
+    'BloodBiochemestry' : ('Biochemistry', 'Blood', 'Biomarkers'),
+    'UrineBiochemestry' : ('Biochemistry', 'Urine', 'Biomarkers'),
+    'Biochemistry' : ('Biochemistry', 'All', 'Biomarkers'),
+    #ImmuneSystem
+    'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Biomarkers'),  # Need to do blood infection
+    'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Biomarkers'),
     'Demographics' : ('Demographics', 'All', 'Biomarkers')
-
 }
 
 # def load_data(dataset, **kwargs):
@@ -161,15 +159,23 @@ def load_data(dataset, **kwargs):
         df = pd.read_csv(dataset).set_index('id')
         organ, view = 'Cluster', 'main'
     elif '/n' not in dataset:
-        if dataset != 'Demographics':
+        if dataset == 'Demographics':
+            df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
+            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
+
+        elif dataset == 'PhysicalActivity' :
+            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id').drop(columns = ['Age when attended assessment centre'])
+            df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id']).set_index('id')
+            df_age_new = df_age_new.rename({'Age' : 'Age when attended assessment centre'})
+            df = df_ethnicity_sex_age.join(df_age_new).dropna()
+            df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv')
+
+        else :
             path_dataset = path_inputs + dataset + '.csv'
             df = pd.read_csv(path_dataset).set_index('id')
             df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
             df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
             df = df[df.columns[~df.columns.str.contains('_r')]]
-            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
-        else :
-            df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
             organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
     return df.dropna(), organ, view, transformation
 
