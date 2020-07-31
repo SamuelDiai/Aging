@@ -289,32 +289,32 @@ class BaseModel():
         else :
             splits = self.outer_splits
         print(organ, view)
-        if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
+        #if organ in ['Eyes', 'Heart', 'Brain', 'ECG', 'Carotids', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing', 'Cognitive']:
             ### READ EIDS
             ## Compute list_test_folds_eid, and list_train_folds_eid
-            if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning', 'AllBiomarkers']:
-                list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
-            elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing'] :
-                list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
-            elif organ in ['Cognitive'] and view in ['ReactionTime', 'PairsMatching', 'ProspectiveMemory', 'NumericMemory']:
-                list_test_folds = [pd.read_csv(path_eid_split + '%s_%s_eids_%s.csv' % (organ, view, fold)).columns.astype(int) for fold in range(splits)]
-
-            list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
-
-            if fold is not None:
-                list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
-
-        else :
-            outer_cv = KFold(n_splits = splits, shuffle = False, random_state = 0)
-            list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
-            list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
-            if fold is not None:
-                list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
-                list_train_folds_eid = X_eid.eid[list_train_folds].values
+            # if organ in ['Brain', 'Carotids', 'Heart'] or view in ['TrailMaking', 'MatrixPatternCompletion', 'TowerRearranging', 'SymbolDigitSubstitution', 'PairedAssociativeLearning', 'AllBiomarkers']:
+            #     list_test_folds = [pd.read_csv(path_eid_split + 'instances23_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
+            # elif organ in ['Eyes', 'ECG', 'Vascular', 'Anthropometry', 'Urine', 'BloodB', 'BloodC', 'Lungs', 'Hand', 'Heel', 'BloodPressure', 'Hearing'] :
+            #     list_test_folds = [pd.read_csv(path_eid_split + '%s_eids_%s.csv' % (organ, fold)).columns.astype(int) for fold in range(splits)]
+            # elif organ in ['Cognitive'] and view in ['ReactionTime', 'PairsMatching', 'ProspectiveMemory', 'NumericMemory']:
+            #     list_test_folds = [pd.read_csv(path_eid_split + '%s_%s_eids_%s.csv' % (organ, view, fold)).columns.astype(int) for fold in range(splits)]
+            #
+            # list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
+        list_test_folds = [pd.read_csv(path_eid_split + 'All_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
         if fold is not None:
-            list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
-        else :
-            list_train_fold_id = None
+            list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
+
+        # else :
+        #     outer_cv = KFold(n_splits = splits, shuffle = False, random_state = 0)
+        #     list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
+        #     list_test_folds_eid = [X_eid.eid[elem].values for elem in list_test_folds]
+        #     if fold is not None:
+        #         list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
+        #         list_train_folds_eid = X_eid.eid[list_train_folds].values
+        # if fold is not None:
+        #     list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
+        # else :
+        #     list_train_fold_id = None
 
         list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
         print('list_test_folds_id', list_test_folds_id)
