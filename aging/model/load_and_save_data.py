@@ -161,22 +161,19 @@ def load_data(dataset, **kwargs):
     elif '/n' not in dataset:
         if dataset == 'Demographics':
             df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
-            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
-
         elif dataset == 'PhysicalActivity' :
             df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id').drop(columns = ['Age when attended assessment centre'])
             df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id']).set_index('id')
             df_age_new = df_age_new.rename({'Age' : 'Age when attended assessment centre'})
             df = df_ethnicity_sex_age.join(df_age_new).dropna()
             df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv')
-
         else :
             path_dataset = path_inputs + dataset + '.csv'
             df = pd.read_csv(path_dataset).set_index('id')
             df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
             df = df_ethnicity_sex_age.join(df, rsuffix = '_r')
             df = df[df.columns[~df.columns.str.contains('_r')]]
-            organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
+        organ, view, transformation = dict_dataset_to_organ_and_view[dataset]
     return df.dropna(), organ, view, transformation
 
 def create_data(dataset, **kwargs):
