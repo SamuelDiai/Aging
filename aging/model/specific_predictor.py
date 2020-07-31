@@ -135,7 +135,7 @@ class GeneralPredictor(BaseModel):
             raise ValueError('Features importance not trained')
         save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, , self.transformation, self.model_name, method = None)
         save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, , self.transformation, self.model_name, method = 'sd')
-        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, , self.transformation, self.model_name, method = 'mean')
+        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, self.transformation, self.model_name, method = 'mean')
 
     def save_predictions(self, predicts_df, step):
         if 'Cluster' in self.dataset:
