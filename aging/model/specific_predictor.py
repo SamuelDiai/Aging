@@ -41,9 +41,10 @@ class GeneralPredictor(BaseModel):
         else :
             raise ValueError('target : "%s" not valid, please enter "Sex" or "Age"' % target)
 
-    def set_organ_view(self, organ, view):
+    def set_organ_view(self, organ, view, transformation):
         self.organ = organ
         self.view = view
+        self.transformation = transformation
 
     def load_dataset(self, **kwargs):
         return load_data(self.dataset, **kwargs)
@@ -58,19 +59,19 @@ class GeneralPredictor(BaseModel):
             y = df[['Age when attended assessment centre', 'eid']]
         else :
             raise ValueError('GeneralPredictor not instancied')
-        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, self.view)
+        return self.optimize_hyperparameters_fold_(X, y, self.scoring, self.fold, self.organ, self.view, self.transformation)
 
 
     def feature_importance(self, df):
         if self.target == 'Sex':
             X = df.drop(columns = ['Sex', 'Age when attended assessment centre'])
             y = df[['Sex', 'eid']]
-            self.features_importance_(X, y, self.scoring, self.organ, self.view)
+            self.features_importance_(X, y, self.scoring, self.organ, self.view, self.transformation)
             return df.drop(columns = ['Sex', 'Age when attended assessment centre', 'eid']).columns
         elif self.target == 'Age':
             X = df.drop(columns = ['Age when attended assessment centre'])
             y = df[['Age when attended assessment centre', 'eid']]
-            self.features_importance_(X, y, self.scoring, self.organ, self.view)
+            self.features_importance_(X, y, self.scoring, self.organ, self.view, self.transformation)
             return df.drop(columns = ['Age when attended assessment centre', 'eid']).columns
         else :
             raise ValueError('GeneralPredictor not instancied')
@@ -132,9 +133,9 @@ class GeneralPredictor(BaseModel):
             dataset_proper = self.dataset
         if not hasattr(self, 'features_imp') and self.model_name != 'Correlation' :
             raise ValueError('Features importance not trained')
-        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, self.model_name, method = None)
-        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, self.model_name, method = 'sd')
-        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, self.model_name, method = 'mean')
+        save_features_to_csv(cols, self.features_imp, self.target, self.organ, self.view, , self.transformation, self.model_name, method = None)
+        save_features_to_csv(cols, self.features_imp_sd, self.target, self.organ, self.view, , self.transformation, self.model_name, method = 'sd')
+        save_features_to_csv(cols, self.features_imp_mean, self.target, self.organ, self.view, , self.transformation, self.model_name, method = 'mean')
 
     def save_predictions(self, predicts_df, step):
         if 'Cluster' in self.dataset:
