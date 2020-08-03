@@ -5,13 +5,13 @@ targets=( "Age" )
 models=( "ElasticNet" )
 #datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "PhysicalActivity250" "PhysicalActivity500" "PhysicalActivity750" "PhysicalActivity1000" "PhysicalActivity1250" "PhysicalActivity1500" "PhysicalActivity1750" "PhysicalActivity2000" )
+datasets=( "PhysicalActivity1250" "PhysicalActivity1500" "PhysicalActivity1750" "PhysicalActivity2000" )
 outer_splits=10
 inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=8G
+memory=16G
 n_cores=1
 
 search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
