@@ -47,13 +47,14 @@ print(hyperparameters)
 
 if 'Cluster' in dataset:
 	dataset_proper = dataset.split('/')[-1].replace('.csv', '').replace('_', '.')
-	field = 'Cluster'
+#	field = 'Cluster'
 	organ = 'Cluster'
 	view = 'main'
+	transformation = 'Raw'
 else :
 	dataset_proper = dataset
-	organ, view =  dict_dataset_to_organ_and_view[dataset_proper]
-	field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
+	organ, view, transformation =  dict_dataset_to_organ_and_view[dataset_proper]
+#	field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
 list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset_proper, model))
 
