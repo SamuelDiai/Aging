@@ -90,44 +90,44 @@ dict_dataset_to_organ_and_view = {
     'CognitiveFluidIntelligence' : ('Brain', 'Cognitive', 'FluidIntelligence'),
     'CognitiveTrailMaking' : ('Brain', 'Cognitive', 'TrailMaking'),
     'CognitivePairsMatching' : ('Brain', 'Cognitive', 'PairsMatching'),
-    'CognitiveAllBiomarkers' : ('Brain', 'Cognitive', 'AllBiomarkers'),
-    'BrainAndCognitive' : ('Brain', 'All', 'Biomarkers'),
+    'CognitiveAllBiomarkers' : ('Brain', 'Cognitive', 'AllScalars'),
+    'BrainAndCognitive' : ('Brain', 'All', 'Scalars'),
     ## Eyes
-    'EyeAutorefraction' : ('Eyes', 'Autorefraction', 'Biomarkers'),
-    'EyeAcuity' : ('Eyes', 'Acuity', 'Biomarkers'),
-    'EyeIntraocularPressure' : ('Eyes', 'IntraocularPressure', 'Biomarkers'),
-    'EyesAllBiomarkers' : ('Eyes', 'All', 'Biomarkers'),
+    'EyeAutorefraction' : ('Eyes', 'Autorefraction', 'Scalars'),
+    'EyeAcuity' : ('Eyes', 'Acuity', 'Scalars'),
+    'EyeIntraocularPressure' : ('Eyes', 'IntraocularPressure', 'Scalars'),
+    'EyesAllBiomarkers' : ('Eyes', 'All', 'Scalars'),
     # Hearing
-    'HearingTest' : ('Hearing', 'HearingTest', 'Biomarkers'),
+    'HearingTest' : ('Hearing', 'HearingTest', 'Scalars'),
     # Lungs
-    'Spirometry' :  ('Lungs', 'Spirometry', 'Biomarkers'),
+    'Spirometry' :  ('Lungs', 'Spirometry', 'Scalars'),
     # Vascular
-    'BloodPressure' : ('Vascular', 'BloodPressure', 'Biomarkers'),
-    'CarotidUltrasound' : ('Vascular', 'Carotids', 'Biomarkers'),
-    'ArterialStiffness' : ('Vascular', 'PWA', 'Biomarkers'),
-    'VascularAllBiomarkers' : ('Vascular', 'All', 'Biomarkers'),
+    'BloodPressure' : ('Vascular', 'BloodPressure', 'Scalars'),
+    'CarotidUltrasound' : ('Vascular', 'Carotids', 'Scalars'),
+    'ArterialStiffness' : ('Vascular', 'PWA', 'Scalars'),
+    'VascularAllBiomarkers' : ('Vascular', 'All', 'Scalars'),
     # Heart
-    'HeartAllBiomarkers' : ('Heart', 'All', 'Biomarkers'),
+    'HeartAllBiomarkers' : ('Heart', 'All', 'Scalars'),
     'HeartSize' : ('Heart', 'MRI', 'Size'),
     'HeartPWA' : ('Heart', 'MRI', 'PWA'),
-    'HeartMRIAll' : ('Heart', 'MRI', 'AllBiomarkers'),
-    'ECGAtRest' : ('Heart', 'ECG', 'Biomarkers'),
+    'HeartMRIAll' : ('Heart', 'MRI', 'AllScalars'),
+    'ECGAtRest' : ('Heart', 'ECG', 'Scalars'),
 
     # Musculoskeletal
-    'AnthropometryImpedance' : ('Musculoskeletal', 'Biomarkers', 'Impedance'),
-    'AnthropometryBodySize' : ('Musculoskeletal', 'Biomarkers', 'BodySize'),
-    'BoneDensitometryOfHeel' : ('Musculoskeletal', 'Biomarkers', 'HeelBoneDensitometry'),
-    'HandGripStrength' : ('Musculoskeletal', 'Biomarkers', 'HandGripStrength'),
-    'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Biomarkers', 'AllBiomarkers'),
+    'AnthropometryImpedance' : ('Musculoskeletal', 'Scalars', 'Impedance'),
+    'AnthropometryBodySize' : ('Musculoskeletal', 'Scalars', 'BodySize'),
+    'BoneDensitometryOfHeel' : ('Musculoskeletal', 'Scalars', 'HeelBoneDensitometry'),
+    'HandGripStrength' : ('Musculoskeletal', 'Scalars', 'HandGripStrength'),
+    'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Scalars', 'AllBiomarkers'),
 
     #Biochemistry
     'BloodBiochemestry' : ('Biochemistry', 'Blood', 'Biomarkers'),
     'UrineBiochemestry' : ('Biochemistry', 'Urine', 'Biomarkers'),
     'Biochemistry' : ('Biochemistry', 'All', 'Biomarkers'),
     #ImmuneSystem
-    'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Biomarkers'),  # Need to do blood infection
-    'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Biomarkers'),
-    'Demographics' : ('Demographics', 'All', 'Biomarkers')
+    'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Scalars'),  # Need to do blood infection
+    'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Scalars'),
+    'Demographics' : ('Demographics', 'All', 'Scalars')
 }
 
 # def load_data(dataset, **kwargs):

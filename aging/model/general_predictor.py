@@ -299,7 +299,7 @@ class BaseModel():
             # elif organ in ['Cognitive'] and view in ['ReactionTime', 'PairsMatching', 'ProspectiveMemory', 'NumericMemory']:
             #     list_test_folds = [pd.read_csv(path_eid_split + '%s_%s_eids_%s.csv' % (organ, view, fold)).columns.astype(int) for fold in range(splits)]
             #
-            # list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
+        list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
         list_test_folds = [pd.read_csv(path_eid_split + 'All_eids_%s.csv' % fold).columns.astype(int) for fold in range(splits)]
         if fold is not None:
             list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
