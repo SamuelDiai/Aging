@@ -166,7 +166,7 @@ def load_data(dataset, **kwargs):
             df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id']).set_index('id')
             df_age_new = df_age_new.rename(columns = {'Age' : 'Age when attended assessment centre'})
             df = df_ethnicity_sex_age.join(df_age_new).dropna().drop(columns = ['eid'])
-            df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv')
+            df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv').set_index('id')
             df = df.join(df_physical).dropna()
         else :
             path_dataset = path_inputs + dataset + '.csv'
