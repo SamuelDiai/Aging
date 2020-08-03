@@ -304,7 +304,9 @@ class BaseModel():
         list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
         if fold is not None:
             list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
-
+            list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
+        else :
+            list_train_fold_id = None
         # else :
         #     outer_cv = KFold(n_splits = splits, shuffle = False, random_state = 0)
         #     list_test_folds = [elem[1] for elem in outer_cv.split(X_eid, y_eid)]
@@ -313,9 +315,9 @@ class BaseModel():
         #         list_train_folds =  list(outer_cv.split(X_eid, y_eid))[fold][0]
         #         list_train_folds_eid = X_eid.eid[list_train_folds].values
         # if fold is not None:
-        #     list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
+        #
         # else :
-        #     list_train_fold_id = None
+        #
 
         list_test_folds_id = [X.index[X.eid.isin(list_test_folds_eid[elem])].values for elem in range(len(list_test_folds_eid))]
         print('list_test_folds_id', list_test_folds_id)
