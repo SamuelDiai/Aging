@@ -128,7 +128,17 @@ dict_dataset_to_organ_and_view = {
     #ImmuneSystem
     'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Scalars'),  # Need to do blood infection
     'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Scalars'),
-    'Demographics' : ('Demographics', 'All', 'Scalars')
+    'Demographics' : ('Demographics', 'All', 'Scalars'),
+
+    'PhysicalActivity250' : ('PhysicalActivity', 'FullWeek', 'Scalars250'),
+    'PhysicalActivity500' : ('PhysicalActivity', 'FullWeek', 'Scalars500'),
+    'PhysicalActivity750' : ('PhysicalActivity', 'FullWeek', 'Scalars750'),
+    'PhysicalActivity1000' : ('PhysicalActivity', 'FullWeek', 'Scalars1000'),
+    'PhysicalActivity1250' : ('PhysicalActivity', 'FullWeek', 'Scalars1250'),
+    'PhysicalActivity1500' : ('PhysicalActivity', 'FullWeek', 'Scalars1500'),
+    'PhysicalActivity1750' : ('PhysicalActivity', 'FullWeek', 'Scalars1750'),
+    'PhysicalActivity2000' : ('PhysicalActivity', 'FullWeek', 'Scalars2000')
+
 }
 
 # def load_data(dataset, **kwargs):
@@ -171,6 +181,10 @@ def load_data(dataset, **kwargs):
             df = df.join(df_physical).dropna()
             df = df.replace(np.inf, 0)
             df = df.replace(-np.inf, 0)
+        ## TEST PA different nb of features
+        elif dataset != 'PhysicalActivity' and 'PhysicalActivity'  in dataset :
+            path_dataset = path_inputs + dataset + '.csv'
+            df = pd.read_csv(path_dataset).set_index('id')
         else :
             path_dataset = path_inputs + dataset + '.csv'
             df = pd.read_csv(path_dataset).set_index('id')
