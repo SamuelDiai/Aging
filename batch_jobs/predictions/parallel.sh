@@ -2,16 +2,16 @@
 targets=( "Age" )
 #targets=( "Age" )
 #models=( "LightGbm" )
-models=( "ElasticNet" )
-#datasets=( 'HandGripStrength' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' 'BloodBiochemestry' 'BloodCount' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraoculaPressure' 'BraindMRIWeightedMeans' 'Spirometry' 'BloodPressure' 'AnthropometryBodySize' 'ArterialStiffness' 'CarotidUltrasound' 'BoneDensitometryOfHeel' 'HearingTest' )
+models=( "ElasticNet" "LightGbm" "NeuralNetwork" )
+datasets=( 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'BraindMRIWeightedMeans' 'BrainMRIAllBiomarkers' 'CognitiveReactionTime' 'CognitiveMatrixPatternCompletion' 'CognitiveTowerRearranging' 'CognitiveSymbolDigitSubstitution' 'CognitivePairedAssociativeLearning' 'CognitiveProspectiveMemory' 'CognitiveNumericMemory' 'CognitiveFluidIntelligence' 'CognitiveTrailMaking' 'CognitivePairsMatching' 'CognitiveAllBiomarkers' 'BrainAndCognitive' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraocularPressure' 'EyesAllBiomarkers' 'HearingTest' 'Spirometry' 'BloodPressure' 'CarotidUltrasound' 'ArterialStiffness' 'VascularAllBiomarkers' 'HeartAllBiomarkers' 'HeartSize' 'HeartPWA' 'HeartMRIAll' 'ECGAtRest' 'AnthropometryImpedance' 'AnthropometryBodySize' 'BoneDensitometryOfHeel' 'HandGripStrength' 'MusculoskeletalAllBiomarkers' 'BloodBiochemistry' 'UrineBiochemistry' 'Biochemistry' 'BloodCount' )
 #datasets=( 'HandGripStrength' 'BrainSubcorticalVolumes' 'HeartSize' 'HeartPWA' 'ECGAtRest' 'AnthropometryImpedance' 'UrineBiochemestry' )
-datasets=( "PhysicalActivity1250" "PhysicalActivity1500" "PhysicalActivity1750" "PhysicalActivity2000" )
+#datasets=( "PhysicalActivity1250" "PhysicalActivity1500" "PhysicalActivity1750" "PhysicalActivity2000" )
 outer_splits=10
 inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=16G
+memory=8G
 n_cores=1
 
 search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
@@ -91,14 +91,14 @@ do
 				IDs+=($ID)
 			done
 
-			# job_name="${target}_${model}_${dataset}_features.job"
-			# out_file="./logs/${target}_${model}_${dataset}_features.out"
-			# err_file="./logs/${target}_${model}_${dataset}_features.err"
-			#
-			# # To del :
-			#
-			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
-			# #sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			job_name="${target}_${model}_${dataset}_features.job"
+			out_file="./logs/${target}_${model}_${dataset}_features.out"
+			err_file="./logs/${target}_${model}_${dataset}_features.err"
+
+			# To del :
+
+			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
+			#sbatch --error=$err_file --dependency=afterok:$ID_raw --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/predictions/single_features.sh $model $n_iter $target $dataset $n_splits
 
 			job_name="${target}_${model}_${dataset}_postprocessing.job"
 			out_file="./logs/${target}_${model}_${dataset}_postprocessing.out"
