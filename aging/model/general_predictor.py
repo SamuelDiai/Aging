@@ -477,8 +477,8 @@ class BaseModel():
             raise ValueError('Wrong model name')
         return features_imp
 
-    def features_importance_(self, X, y, scoring, organ, view):
-        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X = X, y = y, fold = None, organ = organ, view = view)
+    def features_importance_(self, X, y, scoring, organ, view, transformation):
+        list_train_fold_id, list_test_folds_id = self.create_list_test_train_folds(X = X, y = y, fold = None, organ = organ, view = view, transformation = transformation)
         X = X.drop(columns = ['eid'])
         y = y.drop(columns =['eid'])
         columns = X.columns
