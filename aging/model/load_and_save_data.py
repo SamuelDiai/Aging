@@ -202,23 +202,19 @@ def create_data(dataset, **kwargs):
         df = dataloader(**kwargs)
     df.to_csv(path_inputs + dataset + '.csv')
 
-def save_features_to_csv(cols, features_imp, target, organ, view, model_name, method):
+def save_features_to_csv(cols, features_imp, target, organ, view, transformation, model_name, method):
     final_df = pd.DataFrame(data = {'features' : cols, 'weight' : features_imp})
     full_name = 'FeatureImp_'
     if method  == 'sd':
         full_name += 'sd_'
     elif method == 'mean':
         full_name += 'mean_'
-    final_df.set_index('features').to_csv(path_features + '/' + full_name + target + '_' + organ + '_' + view + '_' + model_name + '.csv')
+    final_df.set_index('features').to_csv(path_features + '/' + full_name + target + '_' + organ + '_' + view + '_' + transformation + '_' + model_name + '.csv')
 
 def save_predictions_to_csv(predicts_df, step, target, dataset, model_name, fold, best_params):
     hyper_parameters_name = '_'.join([str(elem) for elem in best_params])
     if len(best_params) != 7:
         hyper_parameters_name = hyper_parameters_name + '_' + '_'.join(['NA' for elem in range(7 - len(best_params))])
 
-    try :
-        field, dataloader = map_dataset_to_field_and_dataloader[dataset]
-    except KeyError:
-        field = 'Cluster'
-    filename = 'Predictions_' + target + '_' + dataset + '_' + str(field) + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
+    filename = 'Predictions_' + target + '_' + dataset + '_main' +  '_raw' + '_' + model_name + '_' + hyper_parameters_name + '_' + str(fold) + '_' + step + '.csv'
     predicts_df.set_index('id').to_csv(path_predictions + '/' + filename)
