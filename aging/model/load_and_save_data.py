@@ -122,8 +122,8 @@ dict_dataset_to_organ_and_view = {
     'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Scalars', 'AllBiomarkers'),
 
     #Biochemistry
-    'BloodBiochemestry' : ('Biochemistry', 'Blood', 'Biomarkers'),
-    'UrineBiochemestry' : ('Biochemistry', 'Urine', 'Biomarkers'),
+    'BloodBiochemistry' : ('Biochemistry', 'Blood', 'Biomarkers'),
+    'UrineBiochemistry' : ('Biochemistry', 'Urine', 'Biomarkers'),
     'Biochemistry' : ('Biochemistry', 'All', 'Biomarkers'),
     #ImmuneSystem
     'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Scalars'),  # Need to do blood infection
