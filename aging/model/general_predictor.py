@@ -396,7 +396,7 @@ class BaseModel():
                     else :
                         continue
                 pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
-                scores = cross_validate(pipeline, X_train.values, y_train, scoring = scoring, cv = inner_cv, verbose = 10 )
+                scores = cross_validate(pipeline, X_train.values, y_train, scoring = scoring, cv = inner_cv, verbose = 10, n_jobs = -1 )
                 return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
             space = self.get_hyper_distribution()
             trials = Trials()
