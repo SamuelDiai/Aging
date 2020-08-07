@@ -173,14 +173,16 @@ def load_data(dataset, **kwargs):
         if dataset == 'Demographics':
             df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
         elif dataset == 'PhysicalActivity' :
-            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id').drop(columns = ['Age when attended assessment centre'])
-            df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id']).set_index('id')
+            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').drop(columns = ['Age when attended assessment centre', 'Sex', 'id'])
+            df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id', 'eid']).set_index('id')
             df_age_new = df_age_new.rename(columns = {'Age' : 'Age when attended assessment centre'})
-            df = df_ethnicity_sex_age.join(df_age_new).dropna().drop(columns = ['eid'])
+            df_age_new.index = df_age_new.index.str.replace('_1.50', '_1.5')
+            df_sex_ethnicity = df_age_new.reset_index().merge(df_ethnicity_sex_age, on = 'eid').set_index('id')
             df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv').set_index('id')
-            df = df.join(df_physical).dropna()
-            df = df.replace(np.inf, 0)
+            df_final = df_sex_ethnicity.drop(columns = ['eid']).join(df_physical).dropna()
+            df = df_final.replace(np.inf, 0)
             df = df.replace(-np.inf, 0)
+            df = df.drop_duplicates()
         ## TEST PA different nb of features
         elif dataset != 'PhysicalActivity' and 'PhysicalActivity'  in dataset :
             path_dataset = path_inputs + dataset + '.csv'

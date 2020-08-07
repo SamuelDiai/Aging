@@ -56,7 +56,7 @@ else :
 	organ, view, transformation =  dict_dataset_to_organ_and_view[dataset_proper]
 #	field, _ = map_dataset_to_field_and_dataloader[dataset_proper]
 
-list_files = glob.glob( path_predictions + '*%s*%s*%s*.csv' % (target, dataset_proper, model))
+list_files = glob.glob( path_predictions + '*%s_%s*%s*.csv' % (target, dataset_proper, model))
 
 list_train = [elem for elem in list_files if 'train' in elem]
 list_test = [elem for elem in list_files if 'test' in elem]
