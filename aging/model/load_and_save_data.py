@@ -14,8 +14,7 @@ from ..processing.eye_processing import read_eye_autorefraction_data, read_eye_a
 from ..processing.spirometry_processing import read_spirometry_data
 from ..processing.blood_pressure_processing import read_blood_pressure_data
 from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
-from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data, read_vascular_all_data, \
-                                        read_all_brain_and_cognitive, read_heart_MRI_data, read_heart_all_data, read_biochemistry_data, read_musculoskeletal_data
+from ..processing.mix_processing import read_vascular_all_data, read_all_brain_and_cognitive, read_heart_MRI_data, read_heart_all_data, read_biochemistry_data, read_musculoskeletal_data
 from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
