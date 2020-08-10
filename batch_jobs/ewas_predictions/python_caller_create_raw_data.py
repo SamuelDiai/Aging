@@ -14,7 +14,8 @@ from aging.model.load_and_save_environment_data import map_envdataset_to_dataloa
 
 df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
 
-for df in map_envdataset_to_dataloader_and_field.keys():
+for idx, df in enumerate(map_envdataset_to_dataloader_and_field.keys()):
+    print(df)
     path = path_inputs_env + df + '.csv'
 #for idx, path in enumerate(glob.glob(path_inputs_env + '*.csv')):
     df_temp = pd.read_csv(path).set_index('id')
@@ -22,7 +23,7 @@ for df in map_envdataset_to_dataloader_and_field.keys():
     int_cols = df_temp.select_dtypes(int).columns
     df_temp[int_cols] = df_temp[int_cols].astype('Int64')
     if idx == 0:
-        final_df = df_sex_age.join(df_temp[used_cols], how = 'outer')
+        final_df = df_sex_age_ethnicity.join(df_temp[used_cols], how = 'outer')
     else :
         final_df = final_df.join(df_temp[used_cols], how = 'outer')
 print("Starting merge")

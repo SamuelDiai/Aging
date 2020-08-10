@@ -95,6 +95,7 @@ map_envdataset_to_dataloader_and_field = {
     'SocialSupport' : (read_social_support_data, 100061),
     'SunExposure' : (read_sun_exposure_data, 100055),
     'EarlyLifeFactors' : (read_early_life_factors_data, 100033),
+    'Smoking' : (read_smoking_data, 3466),
     ## Biomarkers
     # Anthropometry
     'AnthropometryImpedance' : (read_anthropometry_impedance_data, 100008),
