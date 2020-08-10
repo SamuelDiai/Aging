@@ -125,9 +125,18 @@ map_envdataset_to_dataloader_and_field = {
     # HandGripStrength :
     'HandGripStrength' : (read_hand_grip_strength_data, 100019),
     # Bone BoneDensitometryOfHeel :
-    'BoneDensitometryOfHeel' : (read_bone_densitometry_data, 100018)
-
-
+    'BoneDensitometryOfHeel' : (read_bone_densitometry_data, 100018),
+    # Cognitive
+    'CognitiveReactionTime' : (read_reaction_time_data, 100032),
+    'CognitiveMatrixPatternCompletion' : (read_matrix_pattern_completion_data, 501),
+    'CognitiveTowerRearranging' : (read_tower_rearranging_data, 503),
+    'CognitiveSymbolDigitSubstitution' : (read_symbol_digit_substitution_data, 502),
+    'CognitivePairedAssociativeLearning' : (read_paired_associative_learning_data, 506),
+    'CognitiveProspectiveMemory' : (read_prospective_memory_data, 100031),
+    'CognitiveNumericMemory' : (read_numeric_memory_data, 100029),
+    'CognitiveFluidIntelligence' : (read_fluid_intelligence_data, 100027),
+    'CognitiveTrailMaking' : (read_trail_making_data, 505),
+    'CognitivePairsMatching' : (read_pairs_matching_data, 100030),
 }
 
 ## Medical

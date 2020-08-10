@@ -4,23 +4,17 @@ import glob
 import pandas as pd
 import numpy as np
 from multiprocessing import Pool
+from aging.
 
 if sys.platform == 'linux':
     sys.path.append('/n/groups/patel/samuel/Aging')
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, path_inputs_env
+from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, path_inputs_env, ETHNICITY_COLS
 from aging.model.InputtingNans import  load_raw_data, compute_coefs_and_input
 
-
-cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
-       'Irish', 'White_Other', 'Mixed', 'White_and_Black_Caribbean',
-       'White_and_Black_African', 'White_and_Asian', 'Mixed_Other', 'Asian',
-       'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
-       'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
-       'Other']
-cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + cols_ethnicity
+cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + ETHNICITY_COLS
 
 
 n_cores = int(sys.argv[1])
@@ -60,7 +54,7 @@ def parallel_group(col):
     column_modified = compute_coefs_and_input(final_df, col)
     return column_modified
 
-pool = Pool(processes=None)
+pool = Pool(processes=n_cores)
 final_df_inputed_cols = pool.map(parallel_group, features_cols)
 pool.close()
 pool.join()
