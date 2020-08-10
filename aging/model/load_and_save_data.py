@@ -23,8 +23,7 @@ from ..processing.cognitive_tests_processing import read_reaction_time_data, rea
                                                     read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
                                                     read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data, read_trail_making_data , \
                                                     read_pairs_matching_data, read_all_cognitive_data
-
-
+from ..processing.physical_activity_processing import read_physical_activity_data
 
 map_dataset_to_field_and_dataloader = {
                     'BrainGreyMatterVolumes' : (1101, read_grey_matter_volumes_data),
