@@ -79,7 +79,7 @@ map_dataset_to_field_and_dataloader = {
                     #ImmuneSystem
                     'BloodCount' : (100081, read_blood_count_data),   # Need to do blood infection
                     'PhysicalActivity' : ('Custom', read_physical_activity_data),
-                    'Demographics' : ('Demographics',read_demographics_data)
+                    #'Demographics' : ('Demographics',read_demographics_data)
 
                     }
 

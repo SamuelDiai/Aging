@@ -75,7 +75,3 @@ def read_biochemistry_data(**kwargs):
     df = df_blood.join(df_urine, rsuffix = '_rsuffix')
     df = df[df.columns[~df.columns.str.contains('_rsuffix')]]
     return df.dropna()
-
-def read_demographics_data(**kwargs):
-    df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
-    return df
