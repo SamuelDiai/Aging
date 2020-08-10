@@ -14,7 +14,8 @@ from ..processing.eye_processing import read_eye_autorefraction_data, read_eye_a
 from ..processing.spirometry_processing import read_spirometry_data
 from ..processing.blood_pressure_processing import read_blood_pressure_data
 from ..processing.arterial_stiffness_processing import read_arterial_stiffness_data
-from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data
+from ..processing.mix_processing import read_arterial_and_bp_data, read_spiro_and_arterial_and_bp_data, read_vascular_all_data, \
+                                        read_all_brain_and_cognitive, read_heart_MRI_data, read_heart_all_data, read_biochemistry_data, read_musculoskeletal_data
 from ..processing.carotid_ultrasound_processing import read_carotid_ultrasound_data
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
@@ -27,38 +28,10 @@ from ..processing.cognitive_tests_processing import read_reaction_time_data, rea
 
 
 map_dataset_to_field_and_dataloader = {
-                    'AbdominalComposition' : (149, read_abdominal_data),
                     'BrainGreyMatterVolumes' : (1101, read_grey_matter_volumes_data),
                     'BrainSubcorticalVolumes': (1102, read_subcortical_volumes_data),
-                    'BrainAllBiomarkers' : (100, read_brain_data),
-                    'HeartAllBiomarkers' : (102, read_heart_data),
-                    'HeartSize' : (133, read_heart_size_data),
-                    'HeartPWA' : (128, read_heart_PWA_data),
-                    'BodyComposition' : (124, read_body_composition_data),
-                    'BoneComposition' : (125, read_bone_composition_data),
-                    'ECGAtRest' : (12657, read_ecg_at_rest_data),
-                    'AnthropometryImpedance' : (100008, read_anthropometry_impedance_data),
-                    'UrineBiochemestry' : (100083, read_urine_biomarkers_data),
-                    'BloodBiochemestry' : (17518, read_blood_biomarkers_data),
-                    'BloodCount' : (100081, read_blood_count_data),  # Need to do blood infection
-                    'Blood' : (100080, read_blood_data),
-                    'UrineAndBlood' : ('Custom', read_urine_and_blood_data),
-                    'EyeAutorefraction' : (100014, read_eye_autorefraction_data),
-                    'EyeAcuity' : (100017, read_eye_acuity_data),
-                    'EyeIntraoculaPressure' : (100015, read_eye_intraocular_pressure_data),
-                    'EyesAllBiomarkers' : (100013, read_eye_data),
                     'BraindMRIWeightedMeans' : (135, read_brain_dMRI_weighted_means_data),
-                    'Spirometry' :  (100020, read_spirometry_data),
-                    'BloodPressure' : (100011, read_blood_pressure_data),
-                    'AnthropometryBodySize' : (100010, read_anthropometry_body_size_data),
-                    'AnthropometryAllBiomarkers' : (100008, read_anthropometry_data),
-                    'ArterialStiffness' : (100007, read_arterial_stiffness_data),
-                    'ArterialAndBloodPressure' : ('Custom', read_arterial_and_bp_data),
-                    'SpiroAndArterialAndBp' : ('Custom', read_spiro_and_arterial_and_bp_data),
-                    'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
-                    'BoneDensitometryOfHeel' : (100018, read_bone_densitometry_data),
-                    'HandGripStrength' : (100019, read_hand_grip_strength_data),
-                    'HearingTest' : (100049, read_hearing_test_data),
+                    'BrainMRIAllBiomarkers' : (100, read_brain_data),
                     'CognitiveReactionTime' : (100032, read_reaction_time_data),
                     'CognitiveMatrixPatternCompletion' : (501, read_matrix_pattern_completion_data),
                     'CognitiveTowerRearranging' : (503, read_tower_rearranging_data),
@@ -70,7 +43,45 @@ map_dataset_to_field_and_dataloader = {
                     'CognitiveTrailMaking' : (505, read_trail_making_data),
                     'CognitivePairsMatching' : (100030, read_pairs_matching_data),
                     'CognitiveAllBiomarkers' : ('Custom', read_all_cognitive_data),
+                    'BrainAndCognitive' : ('Custom', read_all_brain_and_cognitive),
 
+
+                    'EyeAutorefraction' : (100014, read_eye_autorefraction_data),
+                    'EyeAcuity' : (100017, read_eye_acuity_data),
+                    'EyeIntraocularPressure' : (100015, read_eye_intraocular_pressure_data),
+                    'EyesAllBiomarkers' : (100013, read_eye_data),
+                    # Hearing
+                    'HearingTest' : (100049, read_hearing_test_data),
+                    # Lungs
+                    'Spirometry' :  (100020, read_spirometry_data),
+
+                    # Vascular
+                    'BloodPressure' : (100011, read_blood_pressure_data),
+                    'CarotidUltrasound' : (101, read_carotid_ultrasound_data),
+                    'ArterialStiffness' : (100007, read_arterial_stiffness_data),
+                    'VascularAllBiomarkers' : ('Custom', read_vascular_all_data),
+                    # Heart
+                    'HeartAllBiomarkers' : ('Custom', read_heart_all_data),
+                    'HeartSize' : (133, read_heart_size_data),
+                    'HeartPWA' : (128, read_heart_PWA_data),
+                    'HeartMRIAll' : ('Custom', read_heart_MRI_data),
+                    'ECGAtRest' : (104, read_ecg_at_rest_data),
+
+                    # Musculoskeletal
+                    'AnthropometryImpedance' : (100008, read_anthropometry_impedance_data),
+                    'AnthropometryBodySize' : (100010, read_anthropometry_body_size_data),
+                    'BoneDensitometryOfHeel' : (100018, read_bone_densitometry_data),
+                    'HandGripStrength' : (100019, read_hand_grip_strength_data),
+                    'MusculoskeletalAllBiomarkers' : ('Custom', read_musculoskeletal_data),
+
+                    #Biochemistry
+                    'BloodBiochemistry' : (17518, read_blood_biomarkers_data),
+                    'UrineBiochemistry' : (100083, read_urine_biomarkers_data),
+                    'Biochemistry' : ('Custom', read_biochemistry_data),
+                    #ImmuneSystem
+                    'BloodCount' : (100081, read_blood_count_data),   # Need to do blood infection
+                    'PhysicalActivity' : ('Custom', read_physical_activity_data),
+                    'Demographics' : ('Demographics',read_demographics_data)
 
                     }
 
@@ -130,14 +141,14 @@ dict_dataset_to_organ_and_view = {
     'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Scalars'),
     'Demographics' : ('Demographics', 'All', 'Scalars'),
 
-    'PhysicalActivity250' : ('PhysicalActivity', 'FullWeek', 'Scalars250'),
-    'PhysicalActivity500' : ('PhysicalActivity', 'FullWeek', 'Scalars500'),
-    'PhysicalActivity750' : ('PhysicalActivity', 'FullWeek', 'Scalars750'),
-    'PhysicalActivity1000' : ('PhysicalActivity', 'FullWeek', 'Scalars1000'),
-    'PhysicalActivity1250' : ('PhysicalActivity', 'FullWeek', 'Scalars1250'),
-    'PhysicalActivity1500' : ('PhysicalActivity', 'FullWeek', 'Scalars1500'),
-    'PhysicalActivity1750' : ('PhysicalActivity', 'FullWeek', 'Scalars1750'),
-    'PhysicalActivity2000' : ('PhysicalActivity', 'FullWeek', 'Scalars2000')
+    # 'PhysicalActivity250' : ('PhysicalActivity', 'FullWeek', 'Scalars250'),
+    # 'PhysicalActivity500' : ('PhysicalActivity', 'FullWeek', 'Scalars500'),
+    # 'PhysicalActivity750' : ('PhysicalActivity', 'FullWeek', 'Scalars750'),
+    # 'PhysicalActivity1000' : ('PhysicalActivity', 'FullWeek', 'Scalars1000'),
+    # 'PhysicalActivity1250' : ('PhysicalActivity', 'FullWeek', 'Scalars1250'),
+    # 'PhysicalActivity1500' : ('PhysicalActivity', 'FullWeek', 'Scalars1500'),
+    # 'PhysicalActivity1750' : ('PhysicalActivity', 'FullWeek', 'Scalars1750'),
+    # 'PhysicalActivity2000' : ('PhysicalActivity', 'FullWeek', 'Scalars2000')
 
 }
 
@@ -173,16 +184,8 @@ def load_data(dataset, **kwargs):
         if dataset == 'Demographics':
             df = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
         elif dataset == 'PhysicalActivity' :
-            df_ethnicity_sex_age = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').drop(columns = ['Age when attended assessment centre', 'Sex', 'id'])
-            df_age_new = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv', usecols=['Age', 'id', 'eid']).set_index('id')
-            df_age_new = df_age_new.rename(columns = {'Age' : 'Age when attended assessment centre'})
-            df_age_new.index = df_age_new.index.str.replace('_1.50', '_1.5')
-            df_sex_ethnicity = df_age_new.reset_index().merge(df_ethnicity_sex_age, on = 'eid').set_index('id')
-            df_physical = pd.read_csv('/n/groups/patel/Alan/Aging/TimeSeries/series/PhysicalActivity/90001/features/PA_all_features.csv').set_index('id')
-            df_final = df_sex_ethnicity.drop(columns = ['eid']).join(df_physical).dropna()
-            df = df_final.replace(np.inf, 0)
-            df = df.replace(-np.inf, 0)
-            df = df.drop_duplicates()
+            path_dataset = path_inputs + dataset + '.csv'
+            df = pd.read_csv(path_dataset).set_index('id')
         ## TEST PA different nb of features
         elif dataset != 'PhysicalActivity' and 'PhysicalActivity'  in dataset :
             path_dataset = path_inputs + dataset + '.csv'

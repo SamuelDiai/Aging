@@ -11,7 +11,7 @@ inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=16G
+memory=20G
 n_cores=1
 
 search_dir_clusters='/n/groups/patel/samuel/AutomaticClusters'
