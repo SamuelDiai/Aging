@@ -3,7 +3,7 @@
 # from .ecg_processing import read_ecg_at_rest_data
 # from .spirometry_processing import read_spirometry_data
 import pandas as pd
-FROM .base_processing import path_inputs
+from .base_processing import path_inputs
 
 
 # def read_arterial_and_bp_data(**kwargs):
