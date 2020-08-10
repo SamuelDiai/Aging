@@ -33,6 +33,10 @@ from ..processing.spirometry_processing import read_spirometry_data
 from ..processing.bone_densitometry_processing import read_bone_densitometry_data
 from ..processing.hand_grip_strength_processing import read_hand_grip_strength_data
 from ..processing.hearing_tests_processing import read_hearing_test_data
+from ..processing.cognitive_tests_processing import read_reaction_time_data, read_matrix_pattern_completion_data, read_tower_rearranging_data, \
+                                                    read_symbol_digit_substitution_data, read_paired_associative_learning_data, \
+                                                    read_prospective_memory_data, read_numeric_memory_data, read_fluid_intelligence_data, read_trail_making_data , \
+                                                    read_pairs_matching_data
 
 dict_target_to_instance_and_id = {"Brain" : (2, 100),
                            "UrineAndBlood" : (0, 100079),
