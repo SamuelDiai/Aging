@@ -119,7 +119,7 @@ map_envdataset_to_dataloader_and_field = {
     # Eye
     'EyeAcuity' : (read_eye_acuity_data, 100017),
     'EyeAutorefraction' : (read_eye_autorefraction_data, 100014),
-    'EyeIntraoculaPressure' : (read_eye_intraocular_pressure_data, 100015),
+    'EyeIntraocularPressure' : (read_eye_intraocular_pressure_data, 100015),
     # Heart
     'HeartPWA' : (read_heart_PWA_data, 128),
     'HeartSize' : (read_heart_size_data, 133),
