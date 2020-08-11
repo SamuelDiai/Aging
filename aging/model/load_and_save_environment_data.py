@@ -89,7 +89,7 @@ map_envdataset_to_dataloader_and_field = {
     'Household' : (read_household_data, 100066),
     'MentalHealth' : (read_mental_health_data, 100060),
     'OtherSociodemographics' : (read_other_sociodemographics_data, 100067),
-    'PhysicalActivity' : (read_physical_activity_data, 100054),
+    'PhysicalActivityQuestionnaire' : (read_physical_activity_data, 100054),
     'SexualFactors' : (read_sexual_factors_data, 100056),
     'Sleep' : (read_sleep_data, 100057),
     'SocialSupport' : (read_social_support_data, 100061),
