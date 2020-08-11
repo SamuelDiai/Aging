@@ -103,9 +103,9 @@ map_envdataset_to_dataloader_and_field = {
     # Arterial Stiffness
     'ArterialStiffness' : (read_arterial_stiffness_data, 100007),
     # Urine And Blood
-    'BloodBiochemestry' : (read_blood_biomarkers_data, 17518),
+    'BloodBiochemistry' : (read_blood_biomarkers_data, 17518),
     'BloodCount' : (read_blood_count_data, 100081),
-    'UrineBiochemestry' : (read_urine_biomarkers_data, 100083),
+    'UrineBiochemistry' : (read_urine_biomarkers_data, 100083),
     # BloodPressure
     'BloodPressure' : (read_blood_pressure_data, 100011),
     # Brain
