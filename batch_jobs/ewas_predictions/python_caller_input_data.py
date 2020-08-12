@@ -4,14 +4,14 @@ import glob
 import pandas as pd
 import numpy as np
 from multiprocessing import Pool
-from aging.
+
 
 if sys.platform == 'linux':
     sys.path.append('/n/groups/patel/samuel/Aging')
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, path_inputs_env, ETHNICITY_COLS
+from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, ETHNICITY_COLS
 from aging.model.InputtingNans import  load_raw_data, compute_coefs_and_input
 
 cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + ETHNICITY_COLS
@@ -21,7 +21,7 @@ n_cores = int(sys.argv[1])
 
 ## Load Full raw data
 #to del :
-features_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed, path_inputs = path_inputs_env)
+features_cols, final_df = load_raw_data(path_raw = path_input_env, path_output = path_input_env_inputed)
 #features_cols, final_df = load_raw_data(path_raw = '/n/groups/patel/samuel/EWAS/test_inputing.csv', path_output = path_input_env_inputed, path_inputs = path_inputs_env)
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 ## split continuous and categorical

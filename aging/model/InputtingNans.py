@@ -11,7 +11,6 @@ cols_ethnicity_full = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'Br
 
 def load_raw_data(path_raw,
                   path_output,
-                  path_inputs,
                   path_ethnicities = '/n/groups/patel/samuel/ethnicities.csv'):
     final_df = pd.read_csv(path_raw).set_index('id')
     df_ethnicity = df_ethnicity = pd.read_csv(path_ethnicities).set_index('eid')
