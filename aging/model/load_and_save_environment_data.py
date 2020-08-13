@@ -142,6 +142,7 @@ map_envdataset_to_dataloader_and_field = {
     'CognitiveFluidIntelligence' : (read_fluid_intelligence_data, 100027),
     'CognitiveTrailMaking' : (read_trail_making_data, 505),
     'CognitivePairsMatching' : (read_pairs_matching_data, 100030),
+    'PhysicalActivity' : (read_physical_activity_data, 'Sasha')
 }
 
 ## Medical

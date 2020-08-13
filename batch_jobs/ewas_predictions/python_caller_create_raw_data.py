@@ -12,8 +12,8 @@ from aging.environment_processing.base_processing import path_inputs_env, path_i
 from aging.model.load_and_save_environment_data import map_envdataset_to_dataloader_and_field
 
 
-df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/samuel/sex_age_eid_ethnicity.csv').set_index('id')
-
+df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['instance', 'Abdominal_images_quality'])
+df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
 for idx, df in enumerate(map_envdataset_to_dataloader_and_field.keys()):
     print(df)
     path = path_inputs_env + df + '.csv'
@@ -23,9 +23,10 @@ for idx, df in enumerate(map_envdataset_to_dataloader_and_field.keys()):
     int_cols = df_temp.select_dtypes(int).columns
     df_temp[int_cols] = df_temp[int_cols].astype('Int64')
     if idx == 0:
-        final_df = df_sex_age_ethnicity.join(df_temp[used_cols], how = 'outer')
+        final_df = df_sex_age_ethnicity.join(df_temp[used_cols], how = 'outer', rsuffix = '_rsuffix')
     else :
-        final_df = final_df.join(df_temp[used_cols], how = 'outer')
+        final_df = final_df.join(df_temp[used_cols], how = 'outer', rsuffix = '_rsuffix')
+    final_df = final_df[final_df.columns[~final_df.columns.str.endswith('_rsuffix')]]
 print("Starting merge")
-final_df = final_df.reset_index().merge(df_ethnicity, on = 'eid').set_index('id')
+#final_df = final_df.reset_index().merge(df_ethnicity, on = 'eid').set_index('id')
 final_df.to_csv(path_input_env)

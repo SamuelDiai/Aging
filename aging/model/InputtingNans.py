@@ -2,19 +2,23 @@ import glob
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
-cols_ethnicity_full = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
-       'Irish', 'White_Other', 'Mixed', 'White_and_Black_Caribbean',
-       'White_and_Black_African', 'White_and_Asian', 'Mixed_Other', 'Asian',
-       'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
-       'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
-       'Other']
+cols_ethnicity_full = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
+       'Ethnicity.White_Other', 'Ethnicity.Mixed',
+       'Ethnicity.White_and_Black_Caribbean',
+       'Ethnicity.White_and_Black_African', 'Ethnicity.White_and_Asian',
+       'Ethnicity.Mixed_Other', 'Ethnicity.Asian', 'Ethnicity.Indian',
+       'Ethnicity.Pakistani', 'Ethnicity.Bangladeshi', 'Ethnicity.Asian_Other',
+       'Ethnicity.Black', 'Ethnicity.Caribbean', 'Ethnicity.African',
+       'Ethnicity.Black_Other', 'Ethnicity.Chinese',
+       'Ethnicity.Other_ethnicity', 'Ethnicity.Do_not_know',
+       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA']
 
 def load_raw_data(path_raw,
                   path_output,
-                  path_ethnicities = '/n/groups/patel/samuel/ethnicities.csv'):
+                  path_ethnicities = '/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv'):
     final_df = pd.read_csv(path_raw).set_index('id')
-    df_ethnicity = df_ethnicity = pd.read_csv(path_ethnicities).set_index('eid')
-    cols_ethnicity = ['White', 'Mixed', 'Black', 'Asian', 'Other', 'Chinese']
+    df_ethnicity = pd.read_csv(path_ethnicities).set_index('eid')
+    cols_ethnicity = ['Ethnicity.White', 'Ethnicity.Mixed', 'Ethnicity.Black', 'Ethnicity.Asian', 'Ethnicity.Other_ethnicity', 'Ethnicity.Chinese']
     df_ethnicity = pd.DataFrame(df_ethnicity[cols_ethnicity].idxmax(axis = 1))
     df_ethnicity.columns = ['Ethnicity']
     final_df = final_df.reset_index().merge(df_ethnicity, on ='eid').set_index('id')
