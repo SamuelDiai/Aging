@@ -18,7 +18,7 @@ def load_raw_data(path_raw,
                   path_ethnicities = '/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv'):
     final_df = pd.read_csv(path_raw).set_index('id')
     df_ethnicity = pd.read_csv(path_ethnicities).set_index('eid')
-    cols_ethnicity = ['Ethnicity.White', 'Ethnicity.Mixed', 'Ethnicity.Black', 'Ethnicity.Asian', 'Ethnicity.Other_ethnicity', 'Ethnicity.Chinese']
+    cols_ethnicity = ['Ethnicity.White', 'Ethnicity.Mixed', 'Ethnicity.Black', 'Ethnicity.Asian', 'Ethnicity.Other', 'Ethnicity.Chinese']
     df_ethnicity = pd.DataFrame(df_ethnicity[cols_ethnicity].idxmax(axis = 1))
     df_ethnicity.columns = ['Ethnicity']
     final_df = final_df.reset_index().merge(df_ethnicity, on ='eid').set_index('id')
