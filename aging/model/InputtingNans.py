@@ -1,7 +1,7 @@
 import glob
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-
+import numpy as np
 cols_ethnicity_full = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
        'Ethnicity.White_Other', 'Ethnicity.Mixed',
        'Ethnicity.White_and_Black_Caribbean',
@@ -75,9 +75,12 @@ def compute_linear_coefficients_for_each_col(final_df, col):
                 if num_points == 2:
                     point1 = points.iloc[0]
                     point2 = points.iloc[1]
-                    coef = (point2[col] - point1[col])/(point2['Age when attended assessment centre'] - point1['Age when attended assessment centre'])
+                    if np.abs(point2['Age when attended assessment centre'] - point1['Age when attended assessment centre']) < 1e-8 :
+                        coef = 0
+                    else :
+                        coef = (point2[col] - point1[col])/(point2['Age when attended assessment centre'] - point1['Age when attended assessment centre'])
 
-                elif num_points in [3, 4]:
+                elif num_points > 2:
                     y = points[col].values.reshape(-1, 1)
                     x = points['Age when attended assessment centre'].values.reshape(-1, 1)
                     lin  = LinearRegression()
