@@ -11,7 +11,17 @@ if sys.platform == 'linux':
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
 
-from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed, ETHNICITY_COLS
+ETHNICITY_COLS = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
+       'Ethnicity.White_Other', 'Ethnicity.Mixed',
+       'Ethnicity.White_and_Black_Caribbean',
+       'Ethnicity.White_and_Black_African', 'Ethnicity.White_and_Asian',
+       'Ethnicity.Mixed_Other', 'Ethnicity.Asian', 'Ethnicity.Indian',
+       'Ethnicity.Pakistani', 'Ethnicity.Bangladeshi', 'Ethnicity.Asian_Other',
+       'Ethnicity.Black', 'Ethnicity.Caribbean', 'Ethnicity.African',
+       'Ethnicity.Black_Other', 'Ethnicity.Chinese',
+       'Ethnicity.Other_ethnicity', 'Ethnicity.Do_not_know',
+       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA']
+from aging.environment_processing.base_processing import path_input_env, path_input_env_inputed
 from aging.model.InputtingNans import  load_raw_data, compute_coefs_and_input
 
 cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + ETHNICITY_COLS
