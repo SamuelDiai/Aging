@@ -281,7 +281,8 @@ def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, pat
         print(node_id)
         features = linkage_matrix_raw.loc[node_id, 'name_ij']
         score = linkage_matrix_raw.loc[node_id, 'Score_ij']
+        num_features = linkage_matrix_raw.loc[node_id, 'num_features_ij']
         print(features)
         list_features = features.split('//')
         df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features + cols_age_sex_eid_ethnicity ).set_index('id') ## Remember to drop nas
-        df_cluster.to_csv(path_saving + 'Cluster_score_%s.csv' % score)
+        df_cluster.to_csv(path_saving + 'Cluster_score_%s_numfeatures_%s.csv' % (score, num_features))
