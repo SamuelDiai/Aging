@@ -9,16 +9,20 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.cluster import hierarchy
 from .load_and_save_environment_data import load_target_residuals
 
-sys.path.append('/home/sd375/')
 from UsefulFonctions import ComputeDistanceMatrix
 import os
 
-cols_ethnicity = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British',
-       'Irish', 'White_Other', 'Mixed', 'White_and_Black_Caribbean',
-       'White_and_Black_African', 'White_and_Asian', 'Mixed_Other', 'Asian',
-       'Indian', 'Pakistani', 'Bangladeshi', 'Asian_Other', 'Black',
-       'Caribbean', 'African', 'Black_Other', 'Chinese', 'Other_ethnicity',
-       'Other']
+cols_ethnicity = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
+       'Ethnicity.White_Other', 'Ethnicity.Mixed',
+       'Ethnicity.White_and_Black_Caribbean',
+       'Ethnicity.White_and_Black_African', 'Ethnicity.White_and_Asian',
+       'Ethnicity.Mixed_Other', 'Ethnicity.Asian', 'Ethnicity.Indian',
+       'Ethnicity.Pakistani', 'Ethnicity.Bangladeshi', 'Ethnicity.Asian_Other',
+       'Ethnicity.Black', 'Ethnicity.Caribbean', 'Ethnicity.African',
+       'Ethnicity.Black_Other', 'Ethnicity.Chinese',
+       'Ethnicity.Other_ethnicity', 'Ethnicity.Do_not_know',
+       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA', 'Ethnicity.Other']
+
 cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre'] + cols_ethnicity
 
 ## Agglomerative Clustering :
