@@ -11,7 +11,7 @@ cols_ethnicity_full = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish'
        'Ethnicity.Black', 'Ethnicity.Caribbean', 'Ethnicity.African',
        'Ethnicity.Black_Other', 'Ethnicity.Chinese',
        'Ethnicity.Other_ethnicity', 'Ethnicity.Do_not_know',
-       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA']
+       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA', 'Ethnicity.Other', 'Unnamed: 0']
 
 def load_raw_data(path_raw,
                   path_output,
@@ -88,7 +88,7 @@ def compute_linear_coefficients_for_each_col(final_df, col):
                     coef = lin.coef_[0][0]
                 else :
                     raise ValueError('not the right number of points')
-                coefs_col = coefs_col.append(pd.Series([coef, points['Sex'].mean(), points['Ethnicity'].min()], index=[col, 'Sex', 'Ethnicity'], name= eid))
+                coefs_col = coefs_col.append(pd.Series([float(coef), points['Sex'].mean(), points['Ethnicity'].min()], index=[col, 'Sex', 'Ethnicity'], name= eid))
         coefs_mean = coefs_col.groupby(['Sex', 'Ethnicity']).mean()
         if coefs_mean.shape[0] != 12:
             coefs_mean = coefs_col.groupby(['Sex']).mean()

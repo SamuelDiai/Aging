@@ -20,7 +20,7 @@ ETHNICITY_COLS = ['Ethnicity.White',
        'Ethnicity.Black', 'Ethnicity.Caribbean', 'Ethnicity.African',
        'Ethnicity.Black_Other', 'Ethnicity.Chinese', 'Ethnicity.Other',
        'Ethnicity.Other_ethnicity', 'Ethnicity.Do_not_know',
-       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA']
+       'Ethnicity.Prefer_not_to_answer', 'Ethnicity.NA', 'Ethnicty.Other']
 
 df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['instance', 'Abdominal_images_quality'])
 df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
