@@ -34,7 +34,7 @@ print("Load Data %s " %split)
 final_df = pd.read_csv('/n/groups/patel/samuel/EWAS/env_data/Dataset_%s.csv' % split).set_index('id')
 final_df = final_df[~final_df.index.duplicated(keep='first')]
 final_df['eid'] = final_df.index.str.split('_').str[0]
-cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre']
+cols_age_sex_eid_ethnicity = ['Sex', 'eid', 'Age when attended assessment centre', 'Ethnicity']
 features_cols = [elem for elem in final_df.columns if elem not in cols_age_sex_eid_ethnicity + ETHNICITY_COLS]
 col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 
