@@ -31,6 +31,7 @@ split = int(sys.argv[1])
 ## Load Full raw data
 #to del :
 print("Load Data %s " %split)
+sys.stdout.flush()
 final_df = pd.read_csv('/n/groups/patel/samuel/EWAS/env_data/Dataset_%s.csv' % split).set_index('id')
 final_df = final_df[~final_df.index.duplicated(keep='first')]
 final_df['eid'] = final_df.index.str.split('_').str[0]
@@ -42,16 +43,19 @@ col_age_id_eid_sex_ethnicty = final_df[cols_age_sex_eid_ethnicity]
 
 def parallel_group(col):
     print("Col : ", col)
+    sys.stdout.flush()
     column_modified = compute_coefs_and_input(final_df, col)
     return column_modified
 
 final_df_inputed = col_age_id_eid_sex_ethnicty
 for idx, col in enumerate(features_cols) :
     print("Start inputing %s , %s / %s" % (col, idx, len(features_cols)))
+    sys.stdout.flush()
     t1 = time.time()
     inputed_col = parallel_group(col)
     t2 = time.time()
     print("Done inputing %s , Time : %s" % (col, t2 - t1))
+    sys.stdout.flush()
     final_df_inputed = final_df_inputed.join(inputed_col, how = 'outer', rsuffix = '_rsuffix')
     final_df_inputed = final_df_inputed[final_df_inputed.columns[~final_df_inputed.columns.str.contains('_rsuffix')]]
 
