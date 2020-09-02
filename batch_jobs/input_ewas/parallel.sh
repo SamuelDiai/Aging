@@ -1,6 +1,6 @@
 memory=8G
 n_cores=1
-splits=1
+splits=200
 for ((split=0; split <= $splits-1; split++))
 	do
 		job_name="Input_data_${split}.job"
