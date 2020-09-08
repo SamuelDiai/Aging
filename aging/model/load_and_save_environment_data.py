@@ -167,7 +167,7 @@ def load_sex_age_ethnicity_data(**kwargs):
 
 def load_data_env(env_dataset, **kwargs):
     ## TO CHANGEEEEE !!!!
-    use_inputed = False
+    use_inputed = True
 
     if 'Cluster' in env_dataset:
         ## Clusters
