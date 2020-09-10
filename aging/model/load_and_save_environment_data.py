@@ -177,13 +177,13 @@ def load_data_env(env_dataset, **kwargs):
         path_env = path_inputs_env + env_dataset + '.csv'
         cols_to_read = pd.read_csv(path_env, nrows = 2).set_index('id').columns
         ## Features + eid + id / without ethnicity + age + sex
-        cols_to_read = [elem for elem in cols_to_read if elem not in ['Sex', 'Age when attended assessment centre', 'eid'] + ETHNICITY_COLS] + ['id']
+        cols_to_read = [elem for elem in cols_to_read if elem not in ['Ethnicity']] + ['id']
         if use_inputed == True:
             df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
         else :
             df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
-        df_sex_age_ethnicity = load_sex_age_ethnicity_data()
-        df = df.join(df_sex_age_ethnicity)
+        #df_sex_age_ethnicity = load_sex_age_ethnicity_data()
+        #df = df.join(df_sex_age_ethnicity)
     return df
 
 
