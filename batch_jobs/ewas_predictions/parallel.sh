@@ -5,7 +5,9 @@ models=( "ElasticNet" )
 target_datasets=( "Heart" )
 #target_datasets=( "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "Heart" "HeartSize" "HeartPWA" "AnthropometryImpedance" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" "EyeAutorefraction" "EyeAcuity" "EyeIntraoculaPressure" "Eye" "Spirometry" "BloodPressure" "AnthropometryBodySize" "Anthropometry" "ArterialStiffness" "ArterialAndBloodPressure" "SpiroAndArterialAndBp" )
 #input_datasets=( "Education" )
-input_datasets=( "Alcohol" )#"Anthropometry" "AnthropometryBodySize" "AnthropometryImpedance" "ArterialAndBloodPressure" "ArterialStiffness" "Blood" "BloodBiochemestry" "BloodCount" "BloodPressure" "Brain" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Breathing" "CancerScreening" "ChestPain" "Claudification" "Diet" "ECGAtRest" "Education" "ElectronicDevices" "Employment" "Eye" "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eyesight" "FamilyHistory" "GeneralHealth" "GeneralPain" #"Hearing" "Heart" "HeartPWA" "HeartSize" "Household" "Medication" "MentalHealth" "Mouth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SpiroAndArterialAndBp" "Spirometry" "SunExposure" "UrineAndBlood" "UrineBiochemestry" )
+input_datasets=( "Alcohol" )
+#"Anthropometry" "AnthropometryBodySize" "AnthropometryImpedance" "ArterialAndBloodPressure" "ArterialStiffness" "Blood" "BloodBiochemestry" "BloodCount" "BloodPressure" "Brain" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Breathing" "CancerScreening" "ChestPain" "Claudification" "Diet" "ECGAtRest" "Education" "ElectronicDevices" "Employment" "Eye" "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eyesight" "FamilyHistory" "GeneralHealth" "GeneralPain" #"Hearing" "Heart"
+#"HeartPWA" "HeartSize" "Household" "Medication" "MentalHealth" "Mouth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SpiroAndArterialAndBp" "Spirometry" "SunExposure" "UrineAndBlood" "UrineBiochemestry" )
 
 #input_datasets=( 'Medication' )
 #input_datasets=( 'AnthropometryAllBiomarkers' )
