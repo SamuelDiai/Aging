@@ -139,10 +139,10 @@ for input_dataset in "${input_datasets[@]}"
 				IDs+=($ID)
 			done
 
-  	  #  job_name="${target_dataset}_${model}_${input_dataset}_features.job"
-  		#  out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
-  		#  err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
-      # sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
+  	  job_name="${target_dataset}_${model}_${input_dataset}_features.job"
+  		out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
+  		err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
+      sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
 
 			job_name="${target_dataset}_${model}_${input_dataset}_postprocessing.job"
 			out_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.out"
