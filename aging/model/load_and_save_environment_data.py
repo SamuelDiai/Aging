@@ -184,6 +184,7 @@ def load_data_env(env_dataset, **kwargs):
             cols_to_read.append('Sex')
         if 'eid' not in cols_to_read:
             cols_to_read.append('eid')
+        cols_to_read = cols_to_read + ['Ethnicity.' + elem for elem in ETHNICITY_COLS]
         if use_inputed == True:
             df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
         else :
