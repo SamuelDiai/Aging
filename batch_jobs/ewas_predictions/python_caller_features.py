@@ -29,7 +29,7 @@ hyperparameters['input_dataset'] = input_dataset
 print(hyperparameters)
 gp = EnvironmentPredictor(name, -1, n_splits, n_iter, target_dataset, input_dataset, -1)
 print("Loading Dataset")
-df = gp.load_dataset()
+df = gp.load_dataset().dropna()
 print("Dataset Loaded, optimizing hyper")
 #df_scaled = gp.normalise_dataset(df)
 feature_importance_cols = gp.feature_importance(df_scaled)

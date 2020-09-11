@@ -35,7 +35,7 @@ if fold not in list(range(outer_splits)):
 else :
     gp = EnvironmentPredictor(name, outer_splits, inner_splits, n_iter, target_dataset, input_dataset, fold)
     print("Loading Dataset")
-    df = gp.load_dataset()
+    df = gp.load_dataset().dropna()
     print("Dataset Loaded, optimizing hyper")
     df_predicts_no_scaled_test, df_predicts_no_scaled_val, df_predicts_no_scaled_train = gp.optimize_hyperparameters_fold(df)
 
