@@ -177,20 +177,14 @@ def load_data_env(env_dataset, **kwargs):
         path_env = path_inputs_env + env_dataset + '.csv'
         cols_to_read = pd.read_csv(path_env, nrows = 2).set_index('id').columns
         ## Features + eid + id / without ethnicity + age + sex
-        cols_to_read = [elem for elem in cols_to_read if elem not in ['Ethnicity']] + ['id']
-        if 'Age when attended assessment centre' not in cols_to_read:
-            cols_to_read.append('Age when attended assessment centre')
-        if 'Sex' not in cols_to_read:
-            cols_to_read.append('Sex')
-        if 'eid' not in cols_to_read:
-            cols_to_read.append('eid')
-        cols_to_read = cols_to_read + ['Ethnicity.' + elem for elem in ETHNICITY_COLS]
+        cols_to_read = [elem for elem in cols_to_read if elem not in ['Ethnicity']] + ['id', 'Age when attended assessment centre', 'Sex'] + ETHNICITY_COLS + ['Ethnicity.' + elem for elem in ETHNICITY_COLS]
         if use_inputed == True:
             df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
         else :
             df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
-        #df_sex_age_ethnicity = load_sex_age_ethnicity_data()
-        #df = df.join(df_sex_age_ethnicity)
+        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        #df_age_new =
+        df = df.join(df_sex_age_ethnicity)
     return df
 
 
