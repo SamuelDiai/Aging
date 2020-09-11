@@ -107,12 +107,12 @@ n_cores=1
 # done
 
 
-n_cores_inputing=8
-job_name="Input_data.job"
-out_file="./logs/Input_data.out"
-err_file="./logs/Input_data.err"
-ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=15G -c $n_cores_inputing -p medium -t 4-23:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
-#ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c 16 -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
+# n_cores_inputing=8
+# job_name="Input_data.job"
+# out_file="./logs/Input_data.out"
+# err_file="./logs/Input_data.err"
+# ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=15G -c $n_cores_inputing -p medium -t 4-23:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
+# #ID_inputed=$(sbatch --parsable  --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=8G -c 16 -p short -t 0-11:59 batch_jobs/ewas_predictions/input_data.sh $n_cores_inputing)
 
 
 for input_dataset in "${input_datasets[@]}"
