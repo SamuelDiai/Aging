@@ -183,6 +183,7 @@ def load_data_env(env_dataset, **kwargs):
         else :
             df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
         df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
         #df_age_new =
         df = df.join(df_sex_age_ethnicity)
     return df
