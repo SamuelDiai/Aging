@@ -31,7 +31,7 @@ gp = EnvironmentPredictor(name, -1, n_splits, n_iter, target_dataset, input_data
 print("Loading Dataset")
 df = gp.load_dataset()
 print("Dataset Loaded, optimizing hyper")
-df_scaled = gp.normalise_dataset(df)
+#df_scaled = gp.normalise_dataset(df)
 feature_importance_cols = gp.feature_importance(df_scaled)
 print("Feature importance over, saving file")
 gp.save_features(feature_importance_cols)

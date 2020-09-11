@@ -20,7 +20,7 @@ hyperparameters = dict()
 hyperparameters['target_dataset'] = target_dataset
 hyperparameters['input_dataset'] = input_dataset
 print(hyperparameters)
-
+ETHNICITY_COLS = ['Ethnicity.' + elem for elem in ETHNICITY_COLS]
 
 df = load_data(input_dataset, target_dataset).drop(columns = ['eid'])
 
@@ -28,18 +28,18 @@ df = load_data(input_dataset, target_dataset).drop(columns = ['eid'])
 
 ## Linear EWAS :
 #df_rescaled, scaler_residual = normalise_dataset(df)
-columns_age_sex_ethnicity = ['Age', 'Sex'] + ETHNICITY_COLS
-cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residual', 'Age', 'Sex'] + ETHNICITY_COLS).columns
+columns_age_sex_ethnicity = ['Age when attended assessment centre', 'Sex'] + ETHNICITY_COLS
+cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residuals', 'Age when attended assessment centre', 'Sex'] + ETHNICITY_COLS).columns
 
 
 d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value', 'size_na_dropped'])
 for column in cols_except_age_sex_residual_ethnicty:
-    df_col = df[[column, 'residual'] + columns_age_sex_ethnicity]
+    df_col = df[[column, 'residuals'] + columns_age_sex_ethnicity]
     df_col = df_col.dropna()
 
     lin_residual = LinearRegression()
-    lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residual'].values)
-    res_residual = df_col['residual'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
+    lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residuals'].values)
+    res_residual = df_col['residuals'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
 
     lin_feature = LinearRegression()
     lin_feature.fit(df_col[columns_age_sex_ethnicity].values, df_col[column].values)
@@ -59,8 +59,8 @@ for column in cols_except_age_sex_residual_ethnicty:
     df_col2 = df_col2.dropna()
 
     lin_residual2 = LinearRegression()
-    lin_residual2.fit(df_col2[columns_sex_ethnicity].values, df_col2['Age'].values)
-    res_residual2 = df_col2['Age'].values - lin_residual2.predict(df_col2[columns_sex_ethnicity].values)
+    lin_residual2.fit(df_col2[columns_sex_ethnicity].values, df_col2['Age when attended assessment centre'].values)
+    res_residual2 = df_col2['Age when attended assessment centre'].values - lin_residual2.predict(df_col2[columns_sex_ethnicity].values)
 
     lin_feature2 = LinearRegression()
     lin_feature2.fit(df_col2[columns_sex_ethnicity].values, df_col2[column].values)
