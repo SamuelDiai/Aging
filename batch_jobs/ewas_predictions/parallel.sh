@@ -2,7 +2,7 @@
 #models=( "ElasticNet" )
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 #target_datasets=( "Alcohol" "Anthropometry" "AnthropometryBodySize" "AnthropometryImpedance" "ArterialAndBloodPressure" "ArterialStiffness" "Blood" "BloodBiochemestry" "BloodCount" "BloodPressure" "Brain" "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Breathing" "CancerScreening" "ChestPain" "Claudification" "Diet" "ECGAtRest" "Education" "ElectronicDevices" "Employment" "Eye" "EyeAcuity" "EyeAutorefraction" "EyeIntraoculaPressure" "Eyesight" "FamilyHistory" "GeneralHealth" "GeneralPain" "Hearing" "Heart" "HeartPWA" "HeartSize" "Household" "Medication" "MentalHealth" "Mouth" "OtherSociodemographics" "PhysicalActivity" "SexualFactors" "Sleep" "SocialSupport" "SpiroAndArterialAndBp" "Spirometry" "SunExposure" "UrineAndBlood" "UrineBiochemestry" )
-target_datasets=( "*instances01" "*instances1.5x" "*instances23" "Abdomen" "AbdomenLiver" "AbdomenPancreas" "Arterial" "ArterialPulseWaveAnalysis" "ArterialCarotids" "Biochemistry" )
+target_datasets=( 'PhysicalActivity' )
 #"Musculoskeletal" "MusculoskeletalSpine" "MusculoskeletalHips" "MusculoskeletalKnees" "MusculoskeletalFullBody" "MusculoskeletalScalars" "PhysicalActivity" )
 #target_datasets=( "BrainGreyMatterVolumes" "BrainSubcorticalVolumes" "Brain" "Heart" "HeartSize" "HeartPWA" "AnthropometryImpedance" "UrineBiochemestry" "BloodBiochemestry" "BloodCount" "Blood" "UrineAndBlood" "EyeAutorefraction" "EyeAcuity" "EyeIntraoculaPressure" "Eye" "Spirometry" "BloodPressure" "AnthropometryBodySize" "Anthropometry" "ArterialStiffness" "ArterialAndBloodPressure" "SpiroAndArterialAndBp" )
 #input_datasets=( "Education" )
@@ -123,11 +123,11 @@ for input_dataset in "${input_datasets[@]}"
 	do
 	for target_dataset in "${target_datasets[@]}"
 	do
-			#job_name="${target_dataset}_${input_dataset}.job"
-			#out_file="./logs/${target_dataset}_${input_dataset}.out"
-			#err_file="./logs/${target_dataset}_${input_dataset}.err"
+			job_name="${target_dataset}_${input_dataset}.job"
+			out_file="./logs/${target_dataset}_${input_dataset}.out"
+			err_file="./logs/${target_dataset}_${input_dataset}.err"
 
-			#sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
+			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
 
 		for model in "${models[@]}"
 		do
@@ -141,10 +141,10 @@ for input_dataset in "${input_datasets[@]}"
 				IDs+=($ID)
 			done
 
-  	  # job_name="${target_dataset}_${model}_${input_dataset}_features.job"
-  		# out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
-  		# err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
-      # sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
+  	  job_name="${target_dataset}_${model}_${input_dataset}_features.job"
+  		out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
+  		err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
+      sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
 
 			job_name="${target_dataset}_${model}_${input_dataset}_postprocessing.job"
 			out_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.out"
