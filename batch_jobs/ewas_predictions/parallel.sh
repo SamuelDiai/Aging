@@ -3,9 +3,9 @@
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 
 # Done :
-#target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialPulseWaveAnalysis' 'ArterialCarotids' )
+#target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialPulseWaveAnalysis' 'ArterialCarotids' 'Biochemistry' 'BiochemistryUrine' )
 
-target_datasets=( 'Biochemistry' 'BiochemistryUrine' )
+target_datasets=( 'BiochemistryBlood' 'Brain' 'BrainCognitive' 'BrainMRI' )
 #'BiochemistryBlood' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalSpine' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalFullBody' 'MusculoskeletalScalars' 'PhysicalActivity' )
 
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivityQuestionnaire' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' 'Smoking' )
