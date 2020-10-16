@@ -290,7 +290,11 @@ def GetInterestingNodes(tree_, linkage_matrix_raw, printing = True):
 
         return list_interesting
 
-    return recurse(tree_)
+    list_interesting =  recurse(tree_)
+    if list_interesting == [] :
+        return [linkage_matrix_raw.index.max()]
+    else :
+        return list_interesting
 
 def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target = None):
     ## EWAS :
