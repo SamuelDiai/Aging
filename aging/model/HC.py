@@ -63,7 +63,8 @@ def CreateDictSizes(path_dataset_full, target_dataset, env_dataset):
     full_df = pd.read_csv(path_dataset_full, usecols = usecols + ['id', 'eid', 'Age when attended assessment centre']).set_index('id')
     if target_dataset is not None :
         Alan_residuals = load_target_residuals(target_dataset)
-        full_df = full_df[~Alan_residuals.isna()]
+        full_df = full_df.join(Alan_residuals)
+        full_df = full_df[~full_df['residuals'].isna()]
 
     print("Starting to convert columns to vectors")
     cols = [elem for elem in full_df.columns if elem not in cols_age_sex_eid_ethnicity + ['residuals']]
