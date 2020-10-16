@@ -8,9 +8,16 @@ import sys
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.cluster import hierarchy
 from .load_and_save_environment_data import load_target_residuals
-
+from ..environment_processing.base_processing import path_inputs_env
 from UsefulFonctions import ComputeDistanceMatrix
 import os
+
+dict_ensemble_to_datasets = {
+                                'ENSEMBLE_HealthAndMedicalHistory' : ['Breathing', 'CancerScreening', 'ChestPain', 'Claudification', 'Eyesight', 'GeneralHealth', 'GeneralPain', 'Hearing', 'Medication', 'Mouth'],
+                                'ENSEMBLE_LifestyleAndEnvironment'  : ['Alcohol', 'Diet', 'ElectronicDevices', 'PhysicalActivityQuestionnaire', 'SexualFactors', 'Sleep', 'Smoking', 'SunExposure'],
+                                'ENSEMBLE_PsychosocialFactors' : ['MentalHealth', 'SocialSupport'],
+                                'ENSEMBLE_SocioDemographics' : ['Education', 'Employment', 'Household', 'OtherSociodemographics']
+                            }
 
 cols_ethnicity = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
        'Ethnicity.White_Other', 'Ethnicity.Mixed',
@@ -35,12 +42,25 @@ def NegativeIntersection(x, y):
     return -x.dot(y) #1 - x.dot(y) / np.sum(x | y)
 
 
-def CreateDictSizes(path_dataset_full, target_dataset):
+def CreateDictSizes(path_dataset_full, target_dataset, env_dataset):
     ## Load everything
     dict_name_to_df = {}
     dict_name_to_num_features = {}
     print("Loading Full raw data")
-    full_df = pd.read_csv(path_dataset_full).set_index('id')
+    if env_dataset is not None :
+        if 'ENSEMBLE' in env_dataset :
+            subdatasets = dict_ensemble_to_datasets[env_dataset]
+            usecols = []
+            for sub_envdataset in subdatasets :
+                usecol = pd.read_csv(path_inputs_env + '%s.csv' % sub_envdataset, nrows = 1).set_index('id').columns
+                usecol = [elem for elem in usecols if elem not in ['eid', 'Sex', 'Age when attended assessment centre', 'Unnamed: 0'] + cols_ethnicity]
+                usecols += usecol
+        else :
+            usecols = pd.read_csv(path_inputs_env + '%s.csv' % env_dataset, nrows = 1).set_index('id').columns
+            usecols = [elem for elem in usecols if elem not in ['eid', 'Sex', 'Age when attended assessment centre', 'Unnamed: 0'] + cols_ethnicity]
+    else :
+        usecols = None
+    full_df = pd.read_csv(path_dataset_full, usecols = usecols + ['id', 'eid']).set_index('id')
     if target_dataset is not None :
         Alan_residuals = load_target_residuals(target_dataset)
         full_df = full_df.join(Alan_residuals)
@@ -116,9 +136,9 @@ def RecomputeDistanceMatrix(full_distance_matrix, array_fill_0, argmin_i, argmin
     return full_distance_matrix
 
 
-def AglomerativeClusteringFull(path_input, target_dataset = None):
+def AglomerativeClusteringFull(path_input, target_dataset = None, env_dataset = None):
     ## Load eid and ids, compute max_size and min_size :
-    dict_name_to_df, dict_name_to_num_features, ids = CreateDictSizes(path_input, target_dataset)
+    dict_name_to_df, dict_name_to_num_features, ids = CreateDictSizes(path_input, target_dataset, env_dataset)
     ## Create Array with size vectors, and create mapping between idx and dataset names
     array_fill_0, map_name_to_idx = CreateDataArray(dict_name_to_df, ids)
     map_idx_to_name = {v : k for k, v in map_name_to_idx.items()}
