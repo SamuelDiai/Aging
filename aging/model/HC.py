@@ -53,7 +53,7 @@ def CreateDictSizes(path_dataset_full, target_dataset, env_dataset):
             usecols = []
             for sub_envdataset in subdatasets :
                 usecol = pd.read_csv(path_inputs_env + '%s.csv' % sub_envdataset, nrows = 1).set_index('id').columns
-                usecol = [elem for elem in usecols if elem not in ['eid', 'Sex', 'Age when attended assessment centre', 'Unnamed: 0'] + cols_ethnicity]
+                usecol = [elem for elem in usecol if elem not in ['eid', 'Sex', 'Age when attended assessment centre', 'Unnamed: 0'] + cols_ethnicity]
                 usecols += usecol
         else :
             usecols = pd.read_csv(path_inputs_env + '%s.csv' % env_dataset, nrows = 1).set_index('id').columns
