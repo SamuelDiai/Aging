@@ -60,7 +60,7 @@ def CreateDictSizes(path_dataset_full, target_dataset, env_dataset):
             usecols = [elem for elem in usecols if elem not in ['eid', 'Sex', 'Age when attended assessment centre', 'Unnamed: 0'] + cols_ethnicity]
     else :
         usecols = None
-    full_df = pd.read_csv(path_dataset_full, usecols = usecols + ['id', 'eid']).set_index('id')
+    full_df = pd.read_csv(path_dataset_full, usecols = usecols + ['id', 'eid', 'Age when attended assessment centre']).set_index('id')
     if target_dataset is not None :
         Alan_residuals = load_target_residuals(target_dataset)
         full_df = full_df.join(Alan_residuals)
