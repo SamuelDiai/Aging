@@ -2,9 +2,8 @@
 targets=( "Age" )
 #targets=( "Age" )
 #models=( "LightGbm" )
-models=( "Correlation" )
-datasets=( 'BrainGreyMatterVolumes' )
-#'BrainSubcorticalVolumes' 'BraindMRIWeightedMeans' 'BrainMRIAllBiomarkers' 'CognitiveReactionTime' 'CognitiveMatrixPatternCompletion' 'CognitiveTowerRearranging' 'CognitiveSymbolDigitSubstitution' 'CognitivePairedAssociativeLearning' 'CognitiveProspectiveMemory' 'CognitiveNumericMemory' 'CognitiveFluidIntelligence' 'CognitiveTrailMaking' 'CognitivePairsMatching' 'CognitiveAllBiomarkers' 'BrainAndCognitive' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraocularPressure' 'EyesAllBiomarkers' 'HearingTest' 'Spirometry' 'BloodPressure' 'CarotidUltrasound' 'ArterialStiffness' 'VascularAllBiomarkers' 'HeartAllBiomarkers' 'HeartSize' 'HeartPWA' 'HeartMRIAll' 'ECGAtRest' 'AnthropometryImpedance' 'AnthropometryBodySize' 'BoneDensitometryOfHeel' 'HandGripStrength' 'MusculoskeletalAllBiomarkers' 'BloodBiochemistry' 'UrineBiochemistry' 'Biochemistry' 'BloodCount' 'PhysicalActivity' )
+models=( "Correlation" "ElasticNet" )
+datasets=( 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'BraindMRIWeightedMeans' 'BrainMRIAllBiomarkers' 'CognitiveReactionTime' 'CognitiveMatrixPatternCompletion' 'CognitiveTowerRearranging' 'CognitiveSymbolDigitSubstitution' 'CognitivePairedAssociativeLearning' 'CognitiveProspectiveMemory' 'CognitiveNumericMemory' 'CognitiveFluidIntelligence' 'CognitiveTrailMaking' 'CognitivePairsMatching' 'CognitiveAllBiomarkers' 'BrainAndCognitive' 'EyeAutorefraction' 'EyeAcuity' 'EyeIntraocularPressure' 'EyesAllBiomarkers' 'HearingTest' 'Spirometry' 'BloodPressure' 'CarotidUltrasound' 'ArterialStiffness' 'VascularAllBiomarkers' 'HeartAllBiomarkers' 'HeartSize' 'HeartPWA' 'HeartMRIAll' 'ECGAtRest' 'AnthropometryImpedance' 'AnthropometryBodySize' 'BoneDensitometryOfHeel' 'HandGripStrength' 'MusculoskeletalAllBiomarkers' 'BloodBiochemistry' 'UrineBiochemistry' 'Biochemistry' 'BloodCount' 'PhysicalActivity' )
 #datasets=( 'PhysicalActivity' )
 #datasets=( "PhysicalActivity1250" "PhysicalActivity1500" "PhysicalActivity1750" "PhysicalActivity2000" )
 outer_splits=10
