@@ -128,12 +128,12 @@ dict_dataset_to_organ_and_view = {
     'AnthropometryBodySize' : ('Musculoskeletal', 'Scalars', 'BodySize'),
     'BoneDensitometryOfHeel' : ('Musculoskeletal', 'Scalars', 'HeelBoneDensitometry'),
     'HandGripStrength' : ('Musculoskeletal', 'Scalars', 'HandGripStrength'),
-    'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Scalars', 'AllBiomarkers'),
+    'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Scalars', 'AllScalars'),
 
     #Biochemistry
-    'BloodBiochemistry' : ('Biochemistry', 'Blood', 'Biomarkers'),
-    'UrineBiochemistry' : ('Biochemistry', 'Urine', 'Biomarkers'),
-    'Biochemistry' : ('Biochemistry', 'All', 'Biomarkers'),
+    'BloodBiochemistry' : ('Biochemistry', 'Blood', 'Scalars'),
+    'UrineBiochemistry' : ('Biochemistry', 'Urine', 'Scalars'),
+    'Biochemistry' : ('Biochemistry', 'All', 'Scalars'),
     #ImmuneSystem
     'BloodCount' : ('ImmuneSystem', 'BloodCount', 'Scalars'),  # Need to do blood infection
     'PhysicalActivity' : ('PhysicalActivity', 'FullWeek', 'Scalars'),
