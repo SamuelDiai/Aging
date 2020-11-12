@@ -6,7 +6,8 @@ import sys
 if sys.platform == 'linux':
 	path_data = "/n/groups/patel/uk_biobank/project_52887_41230/ukb41230.csv"
 	path_dictionary = "/n/groups/patel/samuel/HMS-Aging/Data_Dictionary_Showcase.csv"
-	path_features = "/n/groups/patel/samuel/feature_importances_final/"
+	path_features = "/n/groups/patel/samuel/data_final/page3_featureImp/FeatureImp/"
+	#path_features = "/n/groups/patel/samuel/feature_importances_final/"
 	path_predictions = "/n/groups/patel/samuel/predictions_final_2/"
 	path_inputs = "/n/groups/patel/samuel/final_inputs/"
 	path_input = "/n/groups/patel/samuel/Biomarkers_raw.csv"
