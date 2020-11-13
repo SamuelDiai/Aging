@@ -112,10 +112,10 @@ dict_dataset_to_organ_and_view = {
     # Lungs
     'Spirometry' :  ('Lungs', 'Spirometry', 'Scalars'),
     # Vascular
-    'BloodPressure' : ('Vascular', 'BloodPressure', 'Scalars'),
-    'CarotidUltrasound' : ('Vascular', 'Carotids', 'Scalars'),
-    'ArterialStiffness' : ('Vascular', 'PWA', 'Scalars'),
-    'VascularAllBiomarkers' : ('Vascular', 'All', 'Scalars'),
+    'BloodPressure' : ('Arterial', 'BloodPressure', 'Scalars'),
+    'CarotidUltrasound' : ('Arterial', 'Carotids', 'Scalars'),
+    'ArterialStiffness' : ('Arterial', 'PWA', 'Scalars'),
+    'VascularAllBiomarkers' : ('Arterial', 'All', 'Scalars'),
     # Heart
     'HeartAllBiomarkers' : ('Heart', 'All', 'Scalars'),
     'HeartSize' : ('Heart', 'MRI', 'Size'),
@@ -125,7 +125,7 @@ dict_dataset_to_organ_and_view = {
 
     # Musculoskeletal
     'AnthropometryImpedance' : ('Musculoskeletal', 'Scalars', 'Impedance'),
-    'AnthropometryBodySize' : ('Musculoskeletal', 'Scalars', 'BodySize'),
+    'AnthropometryBodySize' : ('Musculoskeletal', 'Scalars', 'Anthropometry'),
     'BoneDensitometryOfHeel' : ('Musculoskeletal', 'Scalars', 'HeelBoneDensitometry'),
     'HandGripStrength' : ('Musculoskeletal', 'Scalars', 'HandGripStrength'),
     'MusculoskeletalAllBiomarkers' : ('Musculoskeletal', 'Scalars', 'AllScalars'),
