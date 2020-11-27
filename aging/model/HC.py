@@ -298,6 +298,14 @@ def GetInterestingNodes(tree_, linkage_matrix_raw, printing = True):
     else :
         return list_interesting
 
+def CreateBestClusterFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target, env_df):
+    df_sorted = linkage_matrix_raw.loc[list_interesting].sort_values('Score_ij', ascending = False)
+    best_cluster = df_sorted.iloc[0]
+    list_features = best_cluster['name_ij'].split('//')
+    df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features + cols_age_sex_eid_ethnicity ).set_index('id')
+    df_cluster.to_csv(path_saving + 'Clusters_%s_%s.csv' % (env_df, target))
+
+
 def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target = None):
     ## EWAS :
     if target is not None:
