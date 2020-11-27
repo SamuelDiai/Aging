@@ -74,19 +74,19 @@ class BaseModel():
                 }
             elif self.model_name == 'LightGbm':
                 return {
-                        'num_leaves': hp.randint('num_leaves', 40) + 5,
-                        'min_child_samples': hp.randint('min_child_samples', 400) + 100,
-                        'min_child_weight': hp.choice('min_child_weight', [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]),
-                        'subsample': hp.uniform('subsample', low=0.2, high=0.8),
-                        'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
-                        'reg_alpha': hp.choice('reg_alpha', [0, 1e-1, 1, 2, 5, 7, 10, 50, 100]),
-                        'reg_lambda': hp.choice('reg_lambda', [0, 1e-1, 1, 5, 10, 20, 50, 100]),
-                        'n_estimators' : hp.randint('n_estimators', 300) + 150
+                         'num_leaves': hp.quniform('num_leaves', 5, 45, 1),
+                         'min_child_samples': hp.quniform('min_child_samples', 100, 500, 1),
+                         'min_child_weight': hp.loguniform('min_child_weight', -5, 4),
+                         'subsample': hp.uniform('subsample', low=0.2, high=0.8),
+                         'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
+                         'reg_alpha': hp.loguniform('reg_alpha', -2,2),
+                         'reg_lambda': hp.loguniform('reg_lambda', -2, 2),
+                         'n_estimators': hp.quniform('n_estimators', 150, 450, 1)
                     }
             elif self.model_name == 'NeuralNetwork':
                 return {
-                        'learning_rate_init': hp.loguniform('learning_rate_init', low = np.log(5e-5), high = np.log(2e-2)),
-                        'alpha': hp.uniform('alpha', low = 1e-6, high = 1e3)
+                         'learning_rate_init': hp.loguniform('learning_rate_init', low=-5, high=-1),
+                         'alpha': hp.loguniform('alpha', low=-6, high=3)
                 }
             elif self.model_name == 'CoxPh':
                 return {
@@ -391,8 +391,9 @@ class BaseModel():
                 estimator_ = self.get_model()
                 ## Set hyperparameters to the model :
                 for key, value in hyperparameters.items():
+                    value_ = int(value)
                     if hasattr(estimator_, key):
-                        setattr(estimator_, key, value)
+                        setattr(estimator_, key, value_)
                     else :
                         continue
                 pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
