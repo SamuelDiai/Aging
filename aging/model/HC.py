@@ -4,6 +4,7 @@ from scipy.spatial.distance import cdist, pdist, squareform
 from scipy.cluster import hierarchy
 import copy
 import sys
+sys.path.append('/home/sd375')
 
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.cluster import hierarchy
