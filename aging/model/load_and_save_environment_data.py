@@ -185,6 +185,7 @@ def load_data_env(env_dataset, **kwargs):
 
 def load_cluster(env_dataset, target_dataset, **kwargs):
     df = pd.read_csv('/n/groups/patel/samuel/EWAS/AutomaticClusters/%s_%s.csv' % (env_dataset, target_dataset)).set_index('id')
+    return df
 
 def load_target_residuals(target_dataset, **kwargs):
     Alan_residuals = pd.read_csv(path_target_residuals, usecols = [target_dataset, 'id']).set_index('id')
