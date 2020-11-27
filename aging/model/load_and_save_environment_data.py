@@ -194,9 +194,9 @@ def load_target_residuals(target_dataset, **kwargs):
 
 def load_data(env_dataset, target_dataset, **kwargs):
     if 'Clusters' in env_dataset:
-        df_env = load_data_env(env_dataset, **kwargs)
-    else :
         df_env = load_cluster(env_dataset, target_dataset, **kwargs)
+    else :
+        df_env = load_data_env(env_dataset, **kwargs)
     print(df_env)
     df_residuals = load_target_residuals(target_dataset, **kwargs)
     print(df_residuals)
