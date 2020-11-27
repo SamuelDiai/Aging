@@ -322,5 +322,8 @@ def CreateClustersFromInterestingNodes(list_interesting, linkage_matrix_raw, pat
         num_features = linkage_matrix_raw.loc[node_id, 'num_features_ij']
         print(features)
         list_features = features.split('//')
-        df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features + cols_age_sex_eid_ethnicity ).set_index('id') ## Remember to drop nas
+        df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features ).set_index('id') ## Remember to drop nas
+        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
+        df_cluster = df_cluster.join(df_sex_age_ethnicity)
         df_cluster.to_csv(path_saving + 'Cluster_score_%s_numfeatures_%s.csv' % (score, num_features))
