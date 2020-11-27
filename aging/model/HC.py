@@ -302,7 +302,10 @@ def CreateBestClusterFromInterestingNodes(list_interesting, linkage_matrix_raw, 
     df_sorted = linkage_matrix_raw.loc[list_interesting].sort_values('Score_ij', ascending = False)
     best_cluster = df_sorted.iloc[0]
     list_features = best_cluster['name_ij'].split('//')
-    df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features + cols_age_sex_eid_ethnicity ).set_index('id')
+    df_cluster = pd.read_csv(path_input, usecols = ['id'] + list_features ).set_index('id')
+    df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+    df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
+    df_cluster = df_cluster.join(df_sex_age_ethnicity)
     df_cluster.to_csv(path_saving + 'Clusters_%s_%s.csv' % (env_df, target))
 
 
