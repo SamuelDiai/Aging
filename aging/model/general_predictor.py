@@ -74,14 +74,14 @@ class BaseModel():
                 }
             elif self.model_name == 'LightGbm':
                 return {
-                        'num_leaves': hp.randint('num_leaves', 40) + 5,
-                        'min_child_samples': hp.randint('min_child_samples', 400) + 100,
-                        'min_child_weight': hp.choice('min_child_weight', [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]),
-                        'subsample': hp.uniform('subsample', low=0.2, high=0.8),
-                        'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
-                        'reg_alpha': hp.choice('reg_alpha', [0, 1e-1, 1, 2, 5, 7, 10, 50, 100]),
-                        'reg_lambda': hp.choice('reg_lambda', [0, 1e-1, 1, 5, 10, 20, 50, 100]),
-                        'n_estimators' : hp.randint('n_estimators', 300) + 150
+                         'num_leaves': hp.randint('num_leaves', 40) + 5,
+                         'min_child_samples': hp.randint('min_child_samples', 400) + 100,
+                         'min_child_weight': hp.loguniform('min_child_weight', -5, 4),
+                         'subsample': hp.uniform('subsample', low=0.2, high=0.8),
+                         'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
+                         'reg_alpha': hp.loguniform('reg_alpha', -2,2),
+                         'reg_lambda': hp.loguniform('reg_lambda', -2, 2),
+                         'n_estimators': hp.randint('n_estimators', 300) +  150
                     }
             elif self.model_name == 'NeuralNetwork':
                 return {
@@ -399,6 +399,7 @@ class BaseModel():
                         setattr(estimator_, key, value_)
                     else :
                         continue
+                print(estimator_)
                 pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
                 scores = cross_validate(pipeline, X_train.values, y_train, scoring = scoring, cv = inner_cv, verbose = 10, n_jobs = -1 )
                 return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
@@ -416,6 +417,7 @@ class BaseModel():
                     setattr(estim_train, key, value)
                 else :
                     continue
+            print(estim)
             pipeline_best_on_train_and_val = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
             pipeline_best_on_train = Pipeline([('scaler', StandardScaler()), ('estimator', estim_train)])
             pipeline_best_on_train_and_val.fit(X_train.values, y_train)
