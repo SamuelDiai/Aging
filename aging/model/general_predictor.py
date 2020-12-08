@@ -74,14 +74,14 @@ class BaseModel():
                 }
             elif self.model_name == 'LightGbm':
                 return {
-                         'num_leaves': hp.randint('num_leaves', 5, 45),
-                         'min_child_samples': hp.randint('min_child_samples', 100, 500),
+                         'num_leaves': hp.randint('num_leaves', 40) + 5,
+                         'min_child_samples': hp.randint('min_child_samples', 400) + 100,
                          'min_child_weight': hp.loguniform('min_child_weight', -5, 4),
                          'subsample': hp.uniform('subsample', low=0.2, high=0.8),
                          'colsample_bytree': hp.uniform('colsample_bytree', low=0.4, high=0.6),
                          'reg_alpha': hp.loguniform('reg_alpha', -2,2),
                          'reg_lambda': hp.loguniform('reg_lambda', -2, 2),
-                         'n_estimators': hp.randint('n_estimators', 150, 450)
+                         'n_estimators': hp.randint('n_estimators', 300) +  150
                     }
             elif self.model_name == 'NeuralNetwork':
                 return {
