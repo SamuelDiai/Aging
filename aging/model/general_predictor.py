@@ -394,12 +394,10 @@ class BaseModel():
                 estimator_ = self.get_model()
                 ## Set hyperparameters to the model :
                 for key, value in hyperparameters.items():
-                    value_ = int(value)
                     if hasattr(estimator_, key):
-                        setattr(estimator_, key, value_)
+                        setattr(estimator_, key, value)
                     else :
                         continue
-                print(estimator_)
                 pipeline = Pipeline([('scaler', StandardScaler()), ('estimator', estimator_)])
                 scores = cross_validate(pipeline, X_train.values, y_train, scoring = scoring, cv = inner_cv, verbose = 10, n_jobs = -1 )
                 return {'status' : STATUS_OK, 'loss' : -scores['test_score'].mean(), 'attachments' :  {'split_test_scores_and_params' :(scores['test_score'], hyperparameters)}}
@@ -417,7 +415,6 @@ class BaseModel():
                     setattr(estim_train, key, value)
                 else :
                     continue
-            print(estim)
             pipeline_best_on_train_and_val = Pipeline([('scaler', StandardScaler()), ('estimator', estim)])
             pipeline_best_on_train = Pipeline([('scaler', StandardScaler()), ('estimator', estim_train)])
             pipeline_best_on_train_and_val.fit(X_train.values, y_train)
