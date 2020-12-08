@@ -3,13 +3,13 @@
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 
 # Done :
-#target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialPulseWaveAnalysis' 'ArterialCarotids' 'Biochemistry' 'BiochemistryUrine' )
+target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' )
 
-target_datasets=( 'Abdomen' 'Musculoskeletal' )
+#target_datasets=( 'Abdomen' 'Musculoskeletal' )
 #  'PhysicalActivity' )
 
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivityQuestionnaire' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' 'Smoking' )
-input_datasets=( 'Clusters_AnthropometryBodySize' 'Clusters_ENSEMBLE_LifestyleAndEnvironment' )
+input_datasets=( 'Clusters_AnthropometryBodySize' 'Clusters_AnthropometryImpedance' 'Clusters_ArterialStiffness' 'Clusters_Biochemistry' 'Clusters_BloodBiochemistry' 'Clusters_BloodCount' 'Clusters_BloodPressure' 'Clusters_BoneDensitometryOfHeel' )
 #'ArterialStiffness' 'Biochemistry' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BrainAndCognitive' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainMRIAllBiomarkers' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveAllBiomarkers' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'VascularAllBiomarkers' 'UrineBiochemistry' 'Spirometry' 'PhysicalActivity' 'MusculoskeletalAllBiomarkers' 'HeartSize' 'HeartPWA' 'EyesAllBiomarkers' 'HandGripStrength' 'HearingTest' 'HeartAllBiomarkers' 'HeartMRIAll' )
 
 
@@ -17,7 +17,7 @@ search_dir_clusters='/n/groups/patel/samuel/EWAS/AutomaticClusters/'
 search_dir_inputs='/n/groups/patel/samuel/EWAS/inputs_final'
 outer_splits=10
 inner_splits=9
-n_iter=2
+n_iter=30
 n_splits=10
 
 memory=8G
