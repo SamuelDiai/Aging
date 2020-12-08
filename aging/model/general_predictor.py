@@ -304,7 +304,7 @@ class BaseModel():
         #list_test_folds_eid = [elem[elem.isin(eids)].values for elem in list_test_folds]
         list_test_folds = pd.read_csv(path_eid_split + '/All_eids.csv').astype(int).set_index('eid')
         list_test_folds_eid_ = list_test_folds.loc[eids]
-        list_test_folds_eid = [list_test_folds_eid_[list_test_folds_eid_['fold'] == fold_] for fold_ in range(splits)]
+        list_test_folds_eid = [list_test_folds_eid_[list_test_folds_eid_['fold'] == fold_].index for fold_ in range(splits)]
         if fold is not None:
             list_train_folds_eid = np.concatenate(list_test_folds_eid[:fold] + list_test_folds_eid[fold + 1:])
             list_train_fold_id = X.index[X.eid.isin(list_train_folds_eid)]
