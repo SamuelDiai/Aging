@@ -9,7 +9,7 @@ target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'Abdo
 #  'PhysicalActivity' )
 
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivityQuestionnaire' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' 'Smoking' )
-input_datasets=( 'Clusters_PhysicalActivity' )
+input_datasets=( 'Clusters_MusculoskeletalAllBiomarkers' 'Clusters_HeartSize' 'Clusters_HeartPWA' 'Clusters_EyesAllBiomarkers' 'Clusters_HandGripStrength' 'Clusters_HearingTest' 'Clusters_HeartAllBiomarkers' 'Clusters_HeartMRIAll' )
 #'ArterialStiffness' 'Biochemistry' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BrainAndCognitive' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainMRIAllBiomarkers' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveAllBiomarkers' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'VascularAllBiomarkers' 'UrineBiochemistry' 'Spirometry' 'PhysicalActivity' 'MusculoskeletalAllBiomarkers' 'HeartSize' 'HeartPWA' 'EyesAllBiomarkers' 'HandGripStrength' 'HearingTest' 'HeartAllBiomarkers' 'HeartMRIAll' )
 
 
@@ -20,7 +20,7 @@ inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=20G
+memory=8G
 n_cores=1
 
 # declare -a IDsLoads=()
