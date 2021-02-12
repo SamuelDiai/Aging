@@ -169,7 +169,7 @@ def load_data_env(env_dataset, **kwargs):
     if 'medical_diagnoses' in env_dataset :
         path_env = path_inputs_env + env_dataset + '.csv'
         df = pd.read_csv(path_env)
-        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
         df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
         df = df_sex_age_ethnicity.merge(df, on = 'eid').set_index('id')
         return df
