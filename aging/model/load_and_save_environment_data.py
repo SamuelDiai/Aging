@@ -166,22 +166,30 @@ def load_sex_age_ethnicity_data(**kwargs):
 
 
 def load_data_env(env_dataset, **kwargs):
-    ## TO CHANGEEEEE !!!!
-    use_inputed = True
-## Find columns to read
-    path_env = path_inputs_env + env_dataset + '.csv'
-    cols_to_read = pd.read_csv(path_env, nrows = 2).set_index('id').columns
-    ## Features + eid + id / without ethnicity + age + sex
-    cols_to_read = [elem for elem in cols_to_read if elem not in ['Ethnicity', 'Age when attended assessment centre', 'Sex', 'eid', 'Unnamed: 0'] + ETHNICITY_COLS + ['Ethnicity.' + elem for elem in ETHNICITY_COLS]] + ['id']
-    if use_inputed == True:
-        df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
+    if 'medical_diagnoses' in env_dataset :
+        path_env = path_inputs_env + env_dataset + '.csv'
+        df = pd.read_csv(path_env)
+        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
+        df = df_sex_age_ethnicity.merge(df, on = 'eid').set_index('id')
+        return df
     else :
-        df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
-    df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
-    df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
-    #df_age_new =
-    df = df.join(df_sex_age_ethnicity)
-    return df
+        ## TO CHANGEEEEE !!!!
+        use_inputed = True
+    ## Find columns to read
+        path_env = path_inputs_env + env_dataset + '.csv'
+        cols_to_read = pd.read_csv(path_env, nrows = 2).set_index('id').columns
+        ## Features + eid + id / without ethnicity + age + sex
+        cols_to_read = [elem for elem in cols_to_read if elem not in ['Ethnicity', 'Age when attended assessment centre', 'Sex', 'eid', 'Unnamed: 0'] + ETHNICITY_COLS + ['Ethnicity.' + elem for elem in ETHNICITY_COLS]] + ['id']
+        if use_inputed == True:
+            df = pd.read_csv(path_input_env_inputed, usecols = cols_to_read).set_index('id')
+        else :
+            df = pd.read_csv(path_input_env, usecols = cols_to_read).set_index('id')
+        df_sex_age_ethnicity = pd.read_csv('/n/groups/patel/Alan/Aging/Medical_Images/data/data-features_instances.csv').set_index('id').drop(columns = ['Abdominal_images_quality', 'instance', 'outer_fold'])
+        df_sex_age_ethnicity = df_sex_age_ethnicity.rename(columns = {'Age' : 'Age when attended assessment centre'})
+        #df_age_new =
+        df = df.join(df_sex_age_ethnicity)
+        return df
 
 def load_cluster(env_dataset, target_dataset, **kwargs):
     df = pd.read_csv('/n/groups/patel/samuel/EWAS/AutomaticClusters/%s_%s.csv' % (env_dataset, target_dataset)).set_index('id')
