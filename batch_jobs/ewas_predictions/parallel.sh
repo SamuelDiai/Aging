@@ -9,7 +9,7 @@ target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'Abdo
 #  'PhysicalActivity' )
 
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivityQuestionnaire' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' 'Smoking' )
-input_datasets=( 'Clusters_ENSEMBLE_HealthAndMedicalHistory' 'Clusters_ENSEMBLE_LifestyleAndEnvironment' 'Clusters_ENSEMBLE_PsychosocialFactors' 'Clusters_ENSEMBLE_SocioDemographics' )
+input_datasets=( 'medical_diagnoses_A' 'medical_diagnoses_B' 'medical_diagnoses_C' 'medical_diagnoses_D' 'medical_diagnoses_E' 'medical_diagnoses_F' 'medical_diagnoses_G' 'medical_diagnoses_H' 'medical_diagnoses_I' 'medical_diagnoses_J' 'medical_diagnoses_K' 'medical_diagnoses_L' 'medical_diagnoses_M' 'medical_diagnoses_N' 'medical_diagnoses_O' 'medical_diagnoses_P' 'medical_diagnoses_Q' 'medical_diagnoses_R' 'medical_diagnoses_S' 'medical_diagnoses_T' 'medical_diagnoses_U' 'medical_diagnoses_V' 'medical_diagnoses_W' 'medical_diagnoses_X' 'medical_diagnoses_Y' 'medical_diagnoses_Z' )
 #'ArterialStiffness' 'Biochemistry' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BrainAndCognitive' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainMRIAllBiomarkers' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveAllBiomarkers' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'VascularAllBiomarkers' 'UrineBiochemistry' 'Spirometry' 'PhysicalActivity' 'MusculoskeletalAllBiomarkers' 'HeartSize' 'HeartPWA' 'EyesAllBiomarkers' 'HandGripStrength' 'HearingTest' 'HeartAllBiomarkers' 'HeartMRIAll' )
 
 
@@ -20,7 +20,7 @@ inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=8G
+memory=16G
 n_cores=1
 
 # declare -a IDsLoads=()
@@ -129,29 +129,29 @@ for input_dataset in "${input_datasets[@]}"
 
 			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
 
-		for model in "${models[@]}"
-		do
-			declare -a IDs=()
-			for ((fold=0; fold <= $outer_splits-1; fold++))
-			do
-			  job_name="${target_dataset}_${model}_${input_dataset}_${fold}.job"
-			  out_file="./logs/${target_dataset}_${model}_${input_dataset}_${fold}.out"
-			  err_file="./logs/${target_dataset}_${model}_${input_dataset}_${fold}.err"
-				ID=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single.sh $model $outer_splits $inner_splits $n_iter $target_dataset $input_dataset $fold)
-				IDs+=($ID)
-			done
+		#for model in "${models[@]}"
+		#do
+		#	declare -a IDs=()
+		#	for ((fold=0; fold <= $outer_splits-1; fold++))
+		#	do
+		#	  job_name="${target_dataset}_${model}_${input_dataset}_${fold}.job"
+		#	  out_file="./logs/${target_dataset}_${model}_${input_dataset}_${fold}.out"
+		#	  err_file="./logs/${target_dataset}_${model}_${input_dataset}_${fold}.err"
+		#		ID=$(sbatch --parsable --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single.sh $model $outer_splits $inner_splits $n_iter $target_dataset $input_dataset $fold)
+		#		IDs+=($ID)
+		#	done
+#
+  	#  job_name="${target_dataset}_${model}_${input_dataset}_features.job"
+  	#	out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
+  	#	err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
+    #  sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
 
-  	  job_name="${target_dataset}_${model}_${input_dataset}_features.job"
-  		out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
-  		err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
-      sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
+		#	job_name="${target_dataset}_${model}_${input_dataset}_postprocessing.job"
+		#	out_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.out"
+		#	err_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.err"
 
-			job_name="${target_dataset}_${model}_${input_dataset}_postprocessing.job"
-			out_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.out"
-			err_file="./logs/${target_dataset}_${model}_${input_dataset}_postprocessing.err"
-
-			printf -v joinedIDS '%s:' "${IDs[@]}"
-			sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/postprocessing.sh $model $target_dataset $input_dataset $outer_splits
-		done
+		#	printf -v joinedIDS '%s:' "${IDs[@]}"
+		#	sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/postprocessing.sh $model $target_dataset $input_dataset $outer_splits
+		#done
 	done
 done
