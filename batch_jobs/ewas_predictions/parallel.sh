@@ -4,7 +4,7 @@ models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 
 # Done :
 #target_datasets=( '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' )
-target_datasets=( '*' )
+target_datasets=( '\*' )
 #target_datasets=( 'Abdomen' 'Musculoskeletal' )
 #  'PhysicalActivity' )
 
@@ -120,10 +120,8 @@ n_cores=1
 
 for input_dataset in "${input_datasets[@]}"
 	do
-	echo input_dataset
 	for target_dataset in "${target_datasets[@]}"
 	do
-			echo target_dataset
 			job_name="${target_dataset}_${input_dataset}.job"
 			out_file="./logs/${target_dataset}_${input_dataset}.out"
 			err_file="./logs/${target_dataset}_${input_dataset}.err"
