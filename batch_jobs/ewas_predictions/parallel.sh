@@ -125,7 +125,7 @@ for input_dataset in "${input_datasets[@]}"
 			job_name="${target_dataset}_${input_dataset}.job"
 			out_file="./logs/${target_dataset}_${input_dataset}.out"
 			err_file="./logs/${target_dataset}_${input_dataset}.err"
-
+			echo $job_name
 			sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
 
 		#for model in "${models[@]}"
