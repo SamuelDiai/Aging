@@ -174,7 +174,7 @@ def load_data_env(env_dataset, **kwargs):
         df = df_sex_age_ethnicity.merge(df, on = 'eid').set_index('id')
         return df
     else :
-        env_dataset = env_dataset.replace('/', '')
+        env_dataset = env_dataset.replace('\\', '')
         ## TO CHANGEEEEE !!!!
         use_inputed = True
     ## Find columns to read
