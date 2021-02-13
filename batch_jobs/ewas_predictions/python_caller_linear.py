@@ -34,16 +34,19 @@ cols_except_age_sex_residual_ethnicty = df.drop(columns = ['residuals', 'Age whe
 
 d = pd.DataFrame(columns = ['env_feature_name', 'target_dataset_name', 'p_val', 'corr_value', 'size_na_dropped'])
 for column in cols_except_age_sex_residual_ethnicty:
-    df_col = df[[column, 'residuals'] + columns_age_sex_ethnicity]
-    df_col = df_col.dropna()
-    lin_residual = LinearRegression()
-    lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residuals'].values)
-    res_residual = df_col['residuals'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
-    lin_feature = LinearRegression()
-    lin_feature.fit(df_col[columns_age_sex_ethnicity].values, df_col[column].values)
-    res_feature = df_col[column].values - lin_feature.predict(df_col[columns_age_sex_ethnicity].values)
-    corr, p_val = pearsonr(res_residual, res_feature)
-    d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr, 'size_na_dropped' : df_col.shape[0]}, ignore_index = True)
+    try :
+        df_col = df[[column, 'residuals'] + columns_age_sex_ethnicity]
+        df_col = df_col.dropna()
+        lin_residual = LinearRegression()
+        lin_residual.fit(df_col[columns_age_sex_ethnicity].values, df_col['residuals'].values)
+        res_residual = df_col['residuals'].values - lin_residual.predict(df_col[columns_age_sex_ethnicity].values)
+        lin_feature = LinearRegression()
+        lin_feature.fit(df_col[columns_age_sex_ethnicity].values, df_col[column].values)
+        res_feature = df_col[column].values - lin_feature.predict(df_col[columns_age_sex_ethnicity].values)
+        corr, p_val = pearsonr(res_residual, res_feature)
+        d = d.append({'env_feature_name' : column, 'target_dataset_name' : target_dataset, 'p_val' : p_val, 'corr_value' : corr, 'size_na_dropped' : df_col.shape[0]}, ignore_index = True)
+    except ValueError:
+        continue
 d.to_csv(path_output_linear_study + 'linear_correlations_%s_%s.csv' % (input_dataset, target_dataset), index=False)
 
 
