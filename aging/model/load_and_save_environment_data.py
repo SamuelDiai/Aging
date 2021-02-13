@@ -197,6 +197,7 @@ def load_cluster(env_dataset, target_dataset, **kwargs):
     return df
 
 def load_target_residuals(target_dataset, **kwargs):
+    target_dataset =  target_dataset.replace('\\', '')
     Alan_residuals = pd.read_csv(path_target_residuals, usecols = [target_dataset, 'id']).set_index('id')
     Alan_residuals.columns = ['residuals']
     return Alan_residuals
