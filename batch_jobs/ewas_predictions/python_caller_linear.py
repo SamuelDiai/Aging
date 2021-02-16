@@ -55,19 +55,22 @@ d2 = pd.DataFrame(columns = ['target_dataset_name', 'env_feature_name', 'p_val',
 
 columns_sex_ethnicity = ['Sex'] + ETHNICITY_COLS
 for column in cols_except_age_sex_residual_ethnicty:
-    df_col2 = df[[column] + columns_age_sex_ethnicity]
-    df_col2 = df_col2.dropna()
+    try :
+        df_col2 = df[[column] + columns_age_sex_ethnicity]
+        df_col2 = df_col2.dropna()
 
-    lin_residual2 = LinearRegression()
-    lin_residual2.fit(df_col2[columns_sex_ethnicity].values, df_col2['Age when attended assessment centre'].values)
-    res_residual2 = df_col2['Age when attended assessment centre'].values - lin_residual2.predict(df_col2[columns_sex_ethnicity].values)
+        lin_residual2 = LinearRegression()
+        lin_residual2.fit(df_col2[columns_sex_ethnicity].values, df_col2['Age when attended assessment centre'].values)
+        res_residual2 = df_col2['Age when attended assessment centre'].values - lin_residual2.predict(df_col2[columns_sex_ethnicity].values)
 
-    lin_feature2 = LinearRegression()
-    lin_feature2.fit(df_col2[columns_sex_ethnicity].values, df_col2[column].values)
-    res_feature2 = df_col2[column].values - lin_feature2.predict(df_col2[columns_sex_ethnicity].values)
+        lin_feature2 = LinearRegression()
+        lin_feature2.fit(df_col2[columns_sex_ethnicity].values, df_col2[column].values)
+        res_feature2 = df_col2[column].values - lin_feature2.predict(df_col2[columns_sex_ethnicity].values)
 
-    cslope, intercept, r_value, p_value, std_err = linregress(res_feature2, res_residual2)
-    d2 = d2.append({'target_dataset_name' : target_dataset,'env_name' : input_dataset, 'env_feature_name' : column,   'p_val' : p_value, 'r_val' : r_value, 'cslope' : cslope, 'intercept' : intercept}, ignore_index = True)
+        cslope, intercept, r_value, p_value, std_err = linregress(res_feature2, res_residual2)
+        d2 = d2.append({'target_dataset_name' : target_dataset,'env_name' : input_dataset, 'env_feature_name' : column,   'p_val' : p_value, 'r_val' : r_value, 'cslope' : cslope, 'intercept' : intercept}, ignore_index = True)
+    except ValueError:
+        continue
 d2.to_csv('/n/groups/patel/samuel/EWAS/LinearAge/' +  'linear_age_%s_%s.csv' % (input_dataset, target_dataset), index = False)
 
 
