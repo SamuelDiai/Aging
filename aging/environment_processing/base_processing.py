@@ -13,7 +13,7 @@ if sys.platform == 'linux':
 	path_input_env = "/n/groups/patel/samuel/EWAS/Environmental_raw.csv"
 	path_input_env_inputed = "/n/groups/patel/samuel/EWAS/Environmental_inputed.csv"
 	path_target_residuals = "/n/groups/patel/Alan/Aging/Medical_Images/data/RESIDUALS_bestmodels_instances_Age_test.csv"
-	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_final/"
+	path_output_linear_study = "/n/groups/patel/samuel/EWAS/linear_output_paper/"
 	path_final_preds = "/n/groups/patel/samuel/EWAS/preds_final/"
 	path_clusters = "/n/groups/patel/samuel/EWAS/AutomaticClusters/"
 	path_HC_features="/n/groups/patel/samuel/EWAS/HC_features/"
