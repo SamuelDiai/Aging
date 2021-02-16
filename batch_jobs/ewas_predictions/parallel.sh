@@ -19,7 +19,7 @@ inner_splits=9
 n_iter=30
 n_splits=10
 
-memory=32G
+memory=64G
 n_cores=1
 
 # declare -a IDsLoads=()
