@@ -8,8 +8,8 @@ target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 
 
 
 #input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
-input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
-#input_datasets=( 'Clusters_Medication' 'Clusters_Hearing' 'Clusters_Household' 'Clusters_MentalHealth' 'Clusters_OtherSociodemographics' 'Clusters_PhysicalActivityQuestionnaire' 'Clusters_SexualFactors' 'Clusters_Sleep' )
+#input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
+input_datasets=( 'Clusters_Medication' 'Clusters_Hearing' 'Clusters_Household' 'Clusters_MentalHealth' 'Clusters_OtherSociodemographics' 'Clusters_PhysicalActivityQuestionnaire' 'Clusters_SexualFactors' 'Clusters_Sleep' )
 #input_datasets=( 'Clusters_Employment' 'Clusters_FamilyHistory' 'Clusters_SocialSupport' 'Clusters_SunExposure' 'Clusters_EarlyLifeFactors' 'Clusters_Smoking' )
 
 #input_datasets=( 'medical_diagnoses_A' 'medical_diagnoses_B' 'medical_diagnoses_C' 'medical_diagnoses_D' 'medical_diagnoses_E' 'medical_diagnoses_F' 'medical_diagnoses_G' 'medical_diagnoses_H' 'medical_diagnoses_I' 'medical_diagnoses_J' 'medical_diagnoses_K' 'medical_diagnoses_L' 'medical_diagnoses_M' 'medical_diagnoses_N' 'medical_diagnoses_O' 'medical_diagnoses_P' 'medical_diagnoses_Q' 'medical_diagnoses_R' 'medical_diagnoses_S' 'medical_diagnoses_T' 'medical_diagnoses_U' 'medical_diagnoses_V' 'medical_diagnoses_W' 'medical_diagnoses_X' 'medical_diagnoses_Y' 'medical_diagnoses_Z' )
