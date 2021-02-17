@@ -7,8 +7,8 @@ models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' )
 
 
-input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
-#input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
+#input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
+input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
 #input_datasets=( 'Clusters_Medication' 'Clusters_Hearing' 'Clusters_Household' 'Clusters_MentalHealth' 'Clusters_OtherSociodemographics' 'Clusters_PhysicalActivityQuestionnaire' 'Clusters_SexualFactors' 'Clusters_Sleep' )
 #input_datasets=( 'Clusters_Employment' 'Clusters_FamilyHistory' 'Clusters_SocialSupport' 'Clusters_SunExposure' 'Clusters_EarlyLifeFactors' 'Clusters_Smoking' )
 
