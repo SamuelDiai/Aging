@@ -6,7 +6,7 @@ if sys.platform == 'linux':
     sys.path.append('/n/groups/patel/samuel/Aging')
 elif sys.platform == 'darwin':
     sys.path.append('/Users/samuel/Desktop/Aging')
-
+sys.setrecursionlimit(10000)
 from aging.environment_processing.base_processing import path_input_env_inputed, path_clusters, path_HC_features
 from aging.model.HC import AglomerativeClusteringFull, Create_full_linkage_matrix, GetInterestingNodes, CreateMappingScoreAndFeatures, CreateBestClusterFromInterestingNodes
 
