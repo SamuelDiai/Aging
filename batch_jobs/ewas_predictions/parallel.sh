@@ -1,28 +1,31 @@
 #!/bin/bash
-#models=( "ElasticNet" )
-models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
+models=( "ElasticNet" )
+#models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 
 # Done :
-#target_datasets=( '\*' )
-target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' 'PhysicalActivity' )
+target_datasets=( '\*' )
+#target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' 'PhysicalActivity' )
 
 
 #input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
 #input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
 #input_datasets=( 'Clusters_Medication' 'Clusters_Hearing' 'Clusters_Household' 'Clusters_MentalHealth' 'Clusters_OtherSociodemographics' 'Clusters_PhysicalActivityQuestionnaire' 'Clusters_SexualFactors' 'Clusters_Sleep' )
-input_datasets=( 'Clusters_Employment' 'Clusters_FamilyHistory' 'Clusters_SocialSupport' 'Clusters_SunExposure' 'Clusters_EarlyLifeFactors' 'Clusters_Smoking' )
+#input_datasets=( 'Clusters_Employment' 'Clusters_FamilyHistory' 'Clusters_SocialSupport' 'Clusters_SunExposure' 'Clusters_EarlyLifeFactors' 'Clusters_Smoking' )
 
-#input_datasets=( 'medical_diagnoses_A' 'medical_diagnoses_B' 'medical_diagnoses_C' 'medical_diagnoses_D' 'medical_diagnoses_E' 'medical_diagnoses_F' 'medical_diagnoses_G' 'medical_diagnoses_H' 'medical_diagnoses_I' 'medical_diagnoses_J' 'medical_diagnoses_K' 'medical_diagnoses_L' 'medical_diagnoses_M' 'medical_diagnoses_N' 'medical_diagnoses_O' 'medical_diagnoses_P' 'medical_diagnoses_Q' 'medical_diagnoses_R' 'medical_diagnoses_S' 'medical_diagnoses_T' 'medical_diagnoses_U' 'medical_diagnoses_V' 'medical_diagnoses_W' 'medical_diagnoses_X' 'medical_diagnoses_Y' 'medical_diagnoses_Z' )
-
+#input_datasets=( 'medical_diagnoses_A' 'medical_diagnoses_B' 'medical_diagnoses_C' 'medical_diagnoses_D' 'medical_diagnoses_E' 'medical_diagnoses_F' )
+#input_datasets=( 'medical_diagnoses_G' 'medical_diagnoses_H' 'medical_diagnoses_I' 'medical_diagnoses_J' 'medical_diagnoses_K' 'medical_diagnoses_L' )
+#input_datasets=( 'medical_diagnoses_M' 'medical_diagnoses_N' 'medical_diagnoses_O' 'medical_diagnoses_P' 'medical_diagnoses_Q' 'medical_diagnoses_R' )
+#input_datasets=( 'medical_diagnoses_S' 'medical_diagnoses_T' 'medical_diagnoses_U' 'medical_diagnoses_V' 'medical_diagnoses_W' 'medical_diagnoses_X' 'medical_diagnoses_Y' 'medical_diagnoses_Z' )
+input_datasets=( 'medical_diagnoses_A' )
 #input_datasets=( 'PhysicalActivity' 'ArterialStiffness' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'UrineBiochemistry' 'Spirometry' 'HeartSize' 'HeartPWA' 'HandGripStrength' 'HearingTest' 'AnthropometryImpedance' 'AnthropometryBodySize' )
 
 
 search_dir_clusters='/n/groups/patel/samuel/EWAS/AutomaticClusters/'
 search_dir_inputs='/n/groups/patel/samuel/EWAS/inputs_final'
-outer_splits=10
-inner_splits=9
-n_iter=30
-n_splits=10
+outer_splits=3
+inner_splits=2
+n_iter=2
+n_splits=2
 
 memory=16G
 n_cores=1
