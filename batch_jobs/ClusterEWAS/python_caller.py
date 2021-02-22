@@ -24,6 +24,7 @@ tree, linkage_matrix_raw = Create_full_linkage_matrix(Zdf, initial_dict)
 
 print("Done creating linkage, creating interesting nodes")
 list_interesting = GetInterestingNodes(tree, linkage_matrix_raw, printing = False)
+print(list_interesting)
 mapping_index_to_score, mapping_index_to_features = CreateMappingScoreAndFeatures(linkage_matrix_raw)
 
 print("Done creating interesting nodes, Creating dataset")
