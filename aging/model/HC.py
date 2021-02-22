@@ -300,6 +300,7 @@ def GetInterestingNodes(tree_, linkage_matrix_raw, printing = True):
         return list_interesting
 
 def CreateBestClusterFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input, path_clusters, target, env_df):
+    print("linkage_matrix_raw", linkage_matrix_raw)
     df_sorted = linkage_matrix_raw.loc[list_interesting].sort_values('Score_ij', ascending = False)
     best_cluster = df_sorted.iloc[0]
     list_features = best_cluster['name_ij'].split('//')
