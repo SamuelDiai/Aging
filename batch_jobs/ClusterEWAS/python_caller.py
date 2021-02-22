@@ -27,4 +27,6 @@ list_interesting = GetInterestingNodes(tree, linkage_matrix_raw, printing = Fals
 mapping_index_to_score, mapping_index_to_features = CreateMappingScoreAndFeatures(linkage_matrix_raw)
 
 print("Done creating interesting nodes, Creating dataset")
+print(mapping_index_to_score)
+print(mapping_index_to_features)
 CreateBestClusterFromInterestingNodes(list_interesting, linkage_matrix_raw, path_input_env_inputed, path_clusters, target = target_dataset, env_df = env_dataset)
