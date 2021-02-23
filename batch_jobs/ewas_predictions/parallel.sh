@@ -3,12 +3,12 @@
 models=( "LightGbm" "NeuralNetwork" "ElasticNet" )
 
 # Done :
-target_datasets=( 'PhysicalActivity' )
+target_datasets=( '\*' 'PhysicalActivity' )
 #target_datasets=( 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' )
 #target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialCarotids' 'ArterialPulseWaveAnalysis' 'Biochemistry' 'BiochemistryBlood' 'BiochemistryUrine' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalFullBody' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalScalars' 'MusculoskeletalSpine' 'PhysicalActivity' )
 
 #input_datasets=( 'Clusters_Breathing' )
-input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
+#input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Clusters_ElectronicDevices' )
 #input_datasets=( 'Clusters_Eyesight' 'Clusters_Mouth' 'Clusters_GeneralHealth' 'Clusters_Breathing' 'Clusters_Claudification' 'Clusters_GeneralPain' 'Clusters_ChestPain' 'Clusters_CancerScreening' )
 #input_datasets=( 'Clusters_Medication' 'Clusters_Hearing' 'Clusters_Household' 'Clusters_MentalHealth' 'Clusters_OtherSociodemographics' 'Clusters_PhysicalActivityQuestionnaire' 'Clusters_SexualFactors' 'Clusters_Sleep' )
 #input_datasets=( 'Clusters_Employment' 'Clusters_FamilyHistory' 'Clusters_SocialSupport' 'Clusters_SunExposure' 'Clusters_EarlyLifeFactors' 'Clusters_Smoking' )
@@ -18,7 +18,9 @@ input_datasets=( 'Clusters_Alcohol' 'Clusters_Diet' 'Clusters_Education' 'Cluste
 #input_datasets=( 'medical_diagnoses_N' 'medical_diagnoses_O' 'medical_diagnoses_P' 'medical_diagnoses_Q' 'medical_diagnoses_R' 'medical_diagnoses_S' )
 #input_datasets=( 'medical_diagnoses_T' 'medical_diagnoses_U' 'medical_diagnoses_V' 'medical_diagnoses_W' 'medical_diagnoses_X' 'medical_diagnoses_Y' 'medical_diagnoses_Z' )
 
-#input_datasets=( 'PhysicalActivity' 'ArterialStiffness' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'UrineBiochemistry' 'Spirometry' 'HeartSize' 'HeartPWA' 'HandGripStrength' 'HearingTest' 'AnthropometryImpedance' 'AnthropometryBodySize' )
+input_datasets=( 'Clusters_ArterialStiffness' 'Clusters_BloodBiochemistry' 'Clusters_BloodCount' 'Clusters_BloodPressure' 'Clusters_BoneDensitometryOfHeel' 'Clusters_BraindMRIWeightedMeans' 'Clusters_BrainGreyMatterVolumes' 'Clusters_BrainSubcorticalVolumes' 'Clusters_CarotidUltrasound' 'Clusters_HearingTest' 'Clusters_AnthropometryImpedance' )
+#input_datasets=( 'Clusters_CognitiveFluidIntelligence' 'Clusters_CognitiveMatrixPatternCompletion' 'Clusters_CognitiveNumericMemory' 'Clusters_CognitivePairedAssociativeLearning' 'Clusters_CognitivePairsMatching' 'Clusters_CognitiveProspectiveMemory' 'Clusters_CognitiveReactionTime' 'Clusters_CognitiveSymbolDigitSubstitution' 'Clusters_AnthropometryBodySize' )
+#input_datasets=( 'Clusters_CognitiveTowerRearranging' 'Clusters_CognitiveTrailMaking' 'Clusters_ECGAtRest' 'Clusters_EyeAcuity' 'Clusters_EyeAutorefraction' 'Clusters_EyeIntraocularPressure' 'Clusters_UrineBiochemistry' 'Clusters_Spirometry' 'Clusters_HeartSize' 'Clusters_HeartPWA' 'Clusters_HandGripStrength' )
 
 
 search_dir_clusters='/n/groups/patel/samuel/EWAS/AutomaticClusters/'
