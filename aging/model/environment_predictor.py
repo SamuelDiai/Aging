@@ -21,8 +21,6 @@ class EnvironmentPredictor(BaseModel):
             self.model = LGBMRegressor()
         elif model == 'NeuralNetwork':
             self.model = MLPRegressor(solver = 'adam', activation = 'relu', hidden_layer_sizes = (128, 64, 32), batch_size = 1000, early_stopping = True)
-        else :
-            raise ValueError('model : "%s" not valid' % model)
 
 
     def load_dataset(self, **kwargs):
