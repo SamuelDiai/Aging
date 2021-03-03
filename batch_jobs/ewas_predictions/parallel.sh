@@ -128,8 +128,8 @@ for input_dataset in "${input_datasets[@]}"
 			# echo $job_name
 			# sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/linear_study.sh $target_dataset $input_dataset
 		# echo $target_dataset
-		# for model in "${models[@]}"
-		# do
+		for model in "${models[@]}"
+		do
 		# 	declare -a IDs=()
 		# 	for ((fold=0; fold <= $outer_splits-1; fold++))
 		# 	do
@@ -141,8 +141,8 @@ for input_dataset in "${input_datasets[@]}"
 		# 	done
 
   	 job_name="${target_dataset}_${model}_${input_dataset}_features.job"
-  		out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
-  		err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
+  	 out_file="./logs/${target_dataset}_${model}_${input_dataset}_features.out"
+  	 err_file="./logs/${target_dataset}_${model}_${input_dataset}_features.err"
      sbatch --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p medium -t 4-23:59 batch_jobs/ewas_predictions/single_features.sh $model $n_iter $target_dataset $input_dataset $n_splits
 
 			# job_name="${target_dataset}_${model}_${input_dataset}_postprocessing.job"
@@ -151,6 +151,6 @@ for input_dataset in "${input_datasets[@]}"
 			#
 			# printf -v joinedIDS '%s:' "${IDs[@]}"
 			# sbatch --dependency=afterok:${joinedIDS%:} --error=$err_file --output=$out_file --job-name=$job_name --mem-per-cpu=$memory -c $n_cores -p short -t 0-11:59 batch_jobs/ewas_predictions/postprocessing.sh $model $target_dataset $input_dataset $outer_splits
-		#done
+		done
 	done
 done
