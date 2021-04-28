@@ -15,11 +15,12 @@ The code is separated in two parts :
 
 The code is able to run the experiments for the XWAS and also for the Aging project.
 
-They both use the file **general_predictor.py** which is the core of the code. This file creates estimators and train them accordingly using a nested cross validation. (More details can be found on the paper).
+They both use the file **general_predictor.py** which is the core of the code. This file creates a base model (BaseModel class in the code) containing several estimators and train them accordingly using a nested cross validation. (More details can be found on the paper).
+
 Then, depending to whether we want to run an XWAS experiment or an Aging experiment, we build associated classes : 
 
-- EnvironmentPredictor for the XWAS
-- SpecificPredictor for the Aging 
+- EnvironmentPredictor in the file **environment_predictor.py** for the XWAS
+- SpecificPredictor in the file **specific_predictor.py** for the Aging 
 
 
 
