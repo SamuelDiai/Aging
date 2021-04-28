@@ -10,17 +10,29 @@ More details and results can be found on the paper # LINK or on the website http
 
 ## Description of the source code.
 The code is separated in two parts : 
-- The first part **aging** groups the scripts of the different experiments.
-- The second part **batch_jobs** groups the source code of the experiments.
+- The first part **aging** contains the source code of the models trained for the project. 
+- The second part **batch_jobs** groups the scripts of the different experiments. These scripts were run on HMS supercomputer O2 using single core CPUs.
 
 The code is able to run the experiments for the XWAS and also for the Aging project.
 
-They both use the file **general_predictor.py** which is the core of the code. This file creates a base model (BaseModel class in the code) containing several estimators and train them accordingly using a nested cross validation. (More details can be found on the paper).
+## Loading and preprocessing 
+
+For both subprojects, we loaded and preprocessed the data. 
+The associated python files are located in the folder aging/processing or aging/environment_processing (depending on whether we want to do XWAS or Aging). 
+One can find exactly how we loaded the dataset and how we preprocessed them.
+
+
+## Building Estimators and Training
+Both subprojects XWAS and Aging use the file **general_predictor.py** which is the core of the code. This file creates a base model (BaseModel class in the code) containing several estimators and train them accordingly using a nested cross validation. (More details can be found on the paper).
 
 Then, depending to whether we want to run an XWAS experiment or an Aging experiment, we build associated classes : 
 
 - EnvironmentPredictor in the file **environment_predictor.py** for the XWAS
 - SpecificPredictor in the file **specific_predictor.py** for the Aging 
+
+Each model handles the loading and the rescaling of the data, the training of the models (using the nested cross validation) and also the generation of the features importances which are defined differently depending on the model (Neural Networks, Boosted Trees or Linear Regression). This definition of the feature importances can also be found more precisely in the paper.
+
+
 
 
 
