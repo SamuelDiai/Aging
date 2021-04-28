@@ -25,7 +25,8 @@ For the Clustering part, we created clusters using Hierarchical Clustering. The 
 ## Loading and preprocessing 
 
 For both subprojects, we loaded and preprocessed the data. 
-The associated python files are located in the folder aging/processing or aging/environment_processing (depending on whether we want to do XWAS or Aging). 
+
+The associated python files are located in the folder **aging/processing** or **aging/environment_processing** (depending on whether we want to do XWAS or Aging). 
 One can find exactly how we loaded the dataset and how we preprocessed them.
 
 
