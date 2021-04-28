@@ -26,31 +26,6 @@ def load_raw_data(path_raw,
     features = [ elem for elem in final_df.columns if elem not in cols_ethnicity_full + ['Sex', 'Age when attended assessment centre', 'Ethnicity', 'eid']]
     return features, final_df
 
-# def load_raw_data(path_raw,
-#                   path_output,
-#                   path_inputs,
-#                   path_ethnicities = '/n/groups/patel/samuel/ethnicities.csv'):
-#     final_df = pd.read_csv(path_raw).set_index('id')
-#     df_ethnicity = df_ethnicity = pd.read_csv(path_ethnicities).set_index('eid')
-#     cols_ethnicity = ['White', 'Mixed', 'Black', 'Asian', 'Other', 'Chinese']
-#     df_ethnicity = pd.DataFrame(df_ethnicity[cols_ethnicity].idxmax(axis = 1))
-#     df_ethnicity.columns = ['Ethnicity']
-#     final_df = final_df.reset_index().merge(df_ethnicity, on ='eid').set_index('id')
-#
-#     list_int_cols = []
-#     for idx, elem in enumerate(glob.glob(path_inputs + '*.csv')):
-#         print(elem)
-#         df_temp = pd.read_csv(elem, nrows = 1).set_index('id')
-#         used_cols = [elem for elem in df_temp.columns if elem not in ['Sex', 'eid', 'Age when attended assessment centre'] + cols_ethnicity]
-#         int_cols = list(df_temp[used_cols].select_dtypes(int).columns)
-#         list_int_cols += int_cols
-#
-#     ethnicity_features = df_ethnicity.columns
-#     continuous_cols = [elem for elem in final_df.columns if elem not in list_int_cols and elem not in ethnicity_features and elem not in ['Sex', 'Age when attended assessment centre', 'eid']]
-#
-#     return list_int_cols, continuous_cols, final_df
-
-
 
 def compute_linear_coefficients_for_each_col(final_df, col):
     age_sex_ethnicity_features = ['Sex', 'Age when attended assessment centre', 'Ethnicity']

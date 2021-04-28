@@ -34,6 +34,12 @@ ETHNICITY_COLS = ['Do_not_know', 'Prefer_not_to_answer', 'NA', 'White', 'British
        'Other']
 
 def read_data(cols_categorical, cols_features, instance, **kwargs):
+	"""
+	Load features.
+	cols_categorical : contains the id of the categorical features.
+	cols_features : contains the id of the continuous (non categorical) features.
+	instance : select the UK-biobank instance.
+	"""
     nrows = None
     if 'nrows' in kwargs.keys():
         nrows = kwargs['nrows']

@@ -17,12 +17,6 @@ def read_eye_data(instances = [0, 1], **kwargs):
 	abc = abc[abc.columns[~abc.columns.str.contains('_del')]]
 	return abc
 
-# def read_eye_acuity_data(**kwargs):
-# 	cols_features =  ['20261', '5208', '5201', '5206', '5199']
-# 	cols_filter = []
-# 	instance = [0]
-# 	return read_data(cols_features, cols_filter, instance, **kwargs)
-
 def read_eye_acuity_data(instances = [0, 1], **kwargs):
 
     dict_onehot = {'6075' : {0 : 'none', 1 : 'wearing', 2 : 'elsewhere'},

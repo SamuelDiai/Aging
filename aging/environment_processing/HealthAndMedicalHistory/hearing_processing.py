@@ -9,12 +9,6 @@ from ..base_processing import read_complex_data
 4814	Tinnitus severity/nuisance => Modify encoding
 4825	Noisy workplace => modify encoding
 4836	Loud music exposure frequency => modify encoding
-## Remove deaf ppl
-
-NEW ENCODING :
-13 -> 1
-12 -> 2
-11 -> 3
 """
 
 def read_hearing_data(instances = [0, 1, 2, 3], **kwargs):
