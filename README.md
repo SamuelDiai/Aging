@@ -13,7 +13,14 @@ The code is separated in two parts :
 - The first part **aging** groups the scripts of the different experiments.
 - The second part **batch_jobs** groups the source code of the experiments.
 
-Within the second part containing the source code of
+The code is able to run the experiments for the XWAS and also for the Aging project.
+
+They both use the file **general_predictor.py** which is the core of the code. This file creates estimators and train them accordingly using a nested cross validation. (More details can be found on the paper).
+Then, depending to whether we want to run an XWAS experiment or an Aging experiment, we build associated classes : 
+
+- EnvironmentPredictor for the XWAS
+- SpecificPredictor for the Aging 
+
 
 
 
