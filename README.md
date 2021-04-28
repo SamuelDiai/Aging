@@ -16,7 +16,7 @@ The code is separated in two parts :
 The code is able to run the experiments for the XWAS and also for the Aging project.
 
 ## Inputing missing data and Creating Clusters
-As described in the paper, for the XWAS project, we needed to input missing data using cross create clusters and use them as our inputs to the models. 
+As described in the paper, for the XWAS project, we needed to input missing data and create clusters so as to use them as our inputs to the models. 
 
 For the inputing part, we used Longitudinal Inputting (more details can be found on the supplemental of the paper). The source code can be found in the file **aging/model/InputtingNans.py** and the scripts of the experiments can be found in the folder **batch_jobs/input_ewas/parallel.sh**.
 
