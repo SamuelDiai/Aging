@@ -1,4 +1,4 @@
-# Multidimentionality of Aging 
+# Multi-Dimensionality of Aging
 
 Source code of the publication **“Analyzing the multidimensionality of biological aging with the tools of deep learning across diverse image-based and physiological indicators yields robust age predictors”**.
 
