@@ -3,7 +3,7 @@
 # Done :
 target_datasets=( 'ImmuneSystem' )
 #target_datasets=( '\*' '*instances01' '*instances1.5x' '*instances23' 'Abdomen' 'AbdomenLiver' 'AbdomenPancreas' 'Arterial' 'ArterialPulseWaveAnalysis' 'ArterialCarotids' 'Biochemistry' 'BiochemistryUrine' 'BiochemistryBlood' 'Brain' 'BrainCognitive' 'BrainMRI' 'Eyes' 'EyesAll' 'EyesFundus' 'EyesOCT' 'Hearing' 'Heart' 'HeartECG' 'HeartMRI' 'ImmuneSystem' 'Lungs' 'Musculoskeletal' 'MusculoskeletalSpine' 'MusculoskeletalHips' 'MusculoskeletalKnees' 'MusculoskeletalFullBody' 'MusculoskeletalScalars' 'PhysicalActivity' )
-input_datasets=( 'ENSEMBLE_Biomarkers' )
+input_datasets=( 'ENSEMBLE_ClinicalPhenotypes' )
 #input_datasets=( 'ENSEMBLE_Biomarkers' 'ENSEMBLE_ClinicalPhenotypes' 'ENSEMBLE_Diseases' 'ENSEMBLE_Environmental' 'ENSEMBLE_Socioeconomics' 'ENSEMBLE_FamilyHistory' )
 #input_datasets=( 'Alcohol' 'Diet' 'Education' 'ElectronicDevices' 'Employment' 'FamilyHistory' 'Eyesight' 'Mouth' 'GeneralHealth' 'Breathing' 'Claudification' 'GeneralPain' 'ChestPain' 'CancerScreening' 'Medication' 'Hearing' 'Household' 'MentalHealth' 'OtherSociodemographics' 'PhysicalActivityQuestionnaire' 'SexualFactors' 'Sleep' 'SocialSupport' 'SunExposure' 'EarlyLifeFactors' 'Smoking' 'PhysicalActivity' 'ArterialStiffness' 'BloodBiochemistry' 'BloodCount' 'BloodPressure' 'BoneDensitometryOfHeel' 'BraindMRIWeightedMeans' 'BrainGreyMatterVolumes' 'BrainSubcorticalVolumes' 'CarotidUltrasound' 'CognitiveFluidIntelligence' 'CognitiveMatrixPatternCompletion' 'CognitiveNumericMemory' 'CognitivePairedAssociativeLearning' 'CognitivePairsMatching' 'CognitiveProspectiveMemory' 'CognitiveReactionTime' 'CognitiveSymbolDigitSubstitution' 'CognitiveTowerRearranging' 'CognitiveTrailMaking' 'ECGAtRest' 'EyeAcuity' 'EyeAutorefraction' 'EyeIntraocularPressure' 'UrineBiochemistry' 'Spirometry' 'HeartSize' 'HeartPWA' 'HandGripStrength' 'HearingTest' 'AnthropometryImpedance' 'AnthropometryBodySize' )
 
@@ -11,7 +11,7 @@ input_datasets=( 'ENSEMBLE_Biomarkers' )
 
 
 
-memory=64G
+memory=128G
 n_cores=1
 
 
