@@ -10,8 +10,8 @@ elif sys.platform == 'darwin':
 from aging.environment_processing.base_processing import path_input_env_inputed, path_clusters, path_HC_features
 from aging.model.HC import AglomerativeClusteringFull, Create_full_linkage_matrix, GetInterestingNodes, CreateMappingScoreAndFeatures, CreateBestClusterFromInterestingNodes
 
-target_dataset = 'Arterial'#str(sys.argv[1])
-env_dataset = 'ENSEMBLE_HealthAndMedicalHistory' #str(sys.argv[2])
+target_dataset = str(sys.argv[1])
+env_dataset = str(sys.argv[2])
 print("Starting HC")
 dict_not_changed_index, Zdf, initial_dict = AglomerativeClusteringFull(path_input_env_inputed, target_dataset = target_dataset, env_dataset = env_dataset)
 

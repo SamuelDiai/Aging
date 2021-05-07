@@ -11,7 +11,7 @@ from aging.processing.base_processing import path_input, path_clusters, path_HC_
 from aging.model.HC import *
 
 print("Starting HC")
-dict_not_changed_index, Zdf, initial_dict = AglomerativeClusteringFull(path_input, target_dataset = None)
+dict_not_changed_index, Zdf, initial_dict = AglomerativeClusteringFull(path_input, target_dataset = None, env_dataset = None)
 
 print("Done HC, saving HC")
 Zdf.set_index('index_ij').to_csv(path_HC_features + 'HC_biomarkers.csv')

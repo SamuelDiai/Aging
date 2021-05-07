@@ -13,11 +13,39 @@ from ..environment_processing.base_processing import path_inputs_env
 from UsefulFonctions import ComputeDistanceMatrix
 import os
 
-dict_ensemble_to_datasets = {
-                                'ENSEMBLE_HealthAndMedicalHistory' : ['Breathing', 'CancerScreening', 'ChestPain', 'Claudification', 'Eyesight', 'GeneralHealth', 'GeneralPain', 'Hearing', 'Medication', 'Mouth'],
-                                'ENSEMBLE_LifestyleAndEnvironment'  : ['Alcohol', 'Diet', 'ElectronicDevices', 'PhysicalActivityQuestionnaire', 'SexualFactors', 'Sleep', 'Smoking', 'SunExposure'],
-                                'ENSEMBLE_PsychosocialFactors' : ['MentalHealth', 'SocialSupport'],
-                                'ENSEMBLE_SocioDemographics' : ['Education', 'Employment', 'Household', 'OtherSociodemographics']
+
+Biomarkers = ['AnthropometryBodySize', 'AnthropometryImpedance', 'ArterialStiffness', 'BloodBiochemistry', 'BloodCount',
+              'BloodPressure', 'BoneDensitometryOfHeel', 'BrainGreyMatterVolumes', 'BrainSubcorticalVolumes',
+              'BraindMRIWeightedMeans', 'CarotidUltrasound', 'CognitiveFluidIntelligence',
+              'CognitiveMatrixPatternCompletion', 'CognitiveNumericMemory', 'CognitivePairedAssociativeLearning',
+              'CognitivePairsMatching', 'CognitiveProspectiveMemory', 'CognitiveReactionTime',
+              'CognitiveSymbolDigitSubstitution', 'CognitiveTowerRearranging', 'CognitiveTrailMaking', 'ECGAtRest',
+              'EyeAcuity', 'EyeAutorefraction', 'EyeIntraocularPressure', 'HandGripStrength', 'HearingTest', 'HeartPWA',
+              'HeartSize', 'PhysicalActivity', 'Spirometry', 'UrineBiochemistry']
+ClinicalPhenotypes = ['Breathing', 'Claudication', 'Eyesight', 'ChestPain', 'CancerScreening', 'Hearing',
+                      'MentalHealth', 'Mouth', 'GeneralHealth', 'GeneralPain', 'SexualFactors']
+Diseases = ['medical_diagnoses_A', 'medical_diagnoses_B', 'medical_diagnoses_C', 'medical_diagnoses_D',
+            'medical_diagnoses_E', 'medical_diagnoses_F', 'medical_diagnoses_G', 'medical_diagnoses_H',
+            'medical_diagnoses_I', 'medical_diagnoses_J', 'medical_diagnoses_K', 'medical_diagnoses_L',
+            'medical_diagnoses_M', 'medical_diagnoses_N', 'medical_diagnoses_O', 'medical_diagnoses_P',
+            'medical_diagnoses_Q', 'medical_diagnoses_R', 'medical_diagnoses_S', 'medical_diagnoses_T',
+            'medical_diagnoses_U', 'medical_diagnoses_V', 'medical_diagnoses_W', 'medical_diagnoses_X',
+            'medical_diagnoses_Y', 'medical_diagnoses_Z']
+FamilyHistory = ['FamilyHistory']
+Environmental = ['Alcohol', 'Diet', 'ElectronicDevices', 'EarlyLifeFactors', 'Medication', 'SunExposure', 'Sleep',
+                 'Smoking', 'PhysicalActivityQuestionnaire']
+Socioeconomics = ['Education', 'Employment', 'Household', 'OtherSociodemographics', 'SocialSupport']
+
+dict_ensemble_to_datasets = {'ENSEMBLE_Biomarkers': Biomarkers,
+                             'ENSEMBLE_ClinicalPhenotypes': ClinicalPhenotypes,
+                             'ENSEMBLE_Diseases': Diseases,
+                             'ENSEMBLE_Environmental': Environmental,
+                             'ENSEMBLE_Socioeconomics': Socioeconomics,
+                             'ENSEMBLE_FamilyHistory': FamilyHistory,
+                             'ENSEMBLE_HealthAndMedicalHistory' : ['Breathing', 'CancerScreening', 'ChestPain', 'Claudification', 'Eyesight', 'GeneralHealth', 'GeneralPain', 'Hearing', 'Medication', 'Mouth'],
+                             'ENSEMBLE_LifestyleAndEnvironment'  : ['Alcohol', 'Diet', 'ElectronicDevices', 'PhysicalActivityQuestionnaire', 'SexualFactors', 'Sleep', 'Smoking', 'SunExposure'],
+                             'ENSEMBLE_PsychosocialFactors' : ['MentalHealth', 'SocialSupport'],
+                             'ENSEMBLE_SocioDemographics' : ['Education', 'Employment', 'Household', 'OtherSociodemographics']
                             }
 
 cols_ethnicity = ['Ethnicity.White', 'Ethnicity.British', 'Ethnicity.Irish',
